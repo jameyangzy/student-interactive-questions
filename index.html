@@ -3,70 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Question Submission</title>
+    <title>Select Category</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <div class="container">
-    <div id="question1" class="question">
-        <p>Select a question:</p>
-        <button onclick="chooseOption('A1')">Question A</button>
-        <button onclick="chooseOption('B1')">Question B</button>
-        <button onclick="chooseOption('C1')">Question C</button>
-        <div id="A1" class="options hidden">
-            <p>Description for Question A</p>
-            <textarea id="answerA1" placeholder="Enter your answer"></textarea><br>
-            <button onclick="submitAnswer('A1')">Submit</button>
-        </div>
-        <div id="B1" class="options hidden">
-            <p>Description for Question B</p>
-            <input type="file" id="imageB1"/><br>
-            <button onclick="submitAnswer('B1')">Submit</button>
-        </div>
-        <div id="C1" class="options hidden">
-            <p>Description for Question C</p>
-            <select id="choiceC1">
-                <option value="">Select an option</option>
-                <option value="Option 1">Option 1</option>
-                <option value="Option 2">Option 2</option>
-            </select><br>
-            <button onclick="submitAnswer('C1')">Submit</button>
-        </div>
-    </div>
-
-    <div id="question2" class="question next-questions hidden">
-        <p>Select a question:</p>
-        <button onclick="chooseOption('A2')">Question A2</button>
-        <button onclick="chooseOption('B2')">Question B2</button>
-        <div id="A2" class="options hidden">
-            <p>Description for Question A2</p>
-            <textarea id="answerA2" placeholder="Enter your answer"></textarea><br>
-            <button onclick="submitAnswer('A2')">Submit</button>
-        </div>
-        <div id="B2" class="options hidden">
-            <p>Description for Question B2</p>
-            <select id="choiceB2">
-                <option value="">Select an option</option>
-                <option value="Option 1">Option 1</option>
-                <option value="Option 2">Option 2</option>
-            </select><br>
-            <button onclick="submitAnswer('B2')">Submit</button>
-        </div>
-    </div>
-
-    <div id="question3" class="question next-questions hidden">
-        <p>Select a question:</p>
-        <button onclick="chooseOption('A3')">Question A3</button>
-        <div id="A3" class="options hidden">
-            <p>Description for Question A3</p>
-            <input type="file" id="imageA3"/><br>
-            <button onclick="submitAnswer('A3')">Submit</button>
-        </div>
-    </div>
+    <h1>Select a Category</h1>
+    <button onclick="goToCategory('A')">Category A</button>
+    <button onclick="goToCategory('B')">Category B</button>
+    <button onclick="goToCategory('C')">Category C</button>
 </div>
 
-<script src="scripts.js"></script>
-
+<script>
+    function goToCategory(category) {
+        window.location.href = `question.html?category=${category}&question=1`;
+    }
+</script>
 </body>
 </html>
