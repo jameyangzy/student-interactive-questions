@@ -3,45 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Question</title>
+    <title>Pyramid Questions</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="container">
     <h2>Selected Category: <span id="categoryText"></span></h2>
-    <img id="questionImage" src="" alt="Question Image" style="max-width: 100%; height: auto;">
-    
+    <img id="questionImage" src="" alt="Question Image" style="max-width: 100%; height: auto; display: none;">
     <h3 id="questionText"></h3>
-
-    <div class="pyramid-container">
-        <!-- 这里是动态填充金字塔的地方 -->
-        <div class="row">
-            <div class="box highlight">280</div>
-        </div>
-        <div class="row">
-            <div class="box highlight">75</div>
-            <div class="box"><input type="text"></div>
-        </div>
-        <div class="row">
-            <div class="box highlight">31</div>
-            <div class="box"><input type="text"></div>
-            <div class="box"><input type="text"></div>
-        </div>
-        <div class="row">
-            <div class="box">10</div>
-            <div class="box highlight">13</div>
-            <div class="box"><input type="text"></div>
-            <div class="box"><input type="text"></div>
-        </div>
-        <div class="row">
-            <div class="box"><input type="text"></div>
-            <div class="box"><input type="text"></div>
-            <div class="box"><input type="text"></div>
-            <div class="box"><input type="text"></div>
-            <div class="box"><input type="text"></div>
-        </div>
-    </div>
-
+    
+    <div id="pyramidContainer" class="pyramid-container" style="display: none;"></div>
+    <div id="choicesContainer" class="choices-container" style="display: none;"></div>
+    <textarea id="answerExplanation" placeholder="Explain your reasoning here..." style="display: none; width: 100%; height: 100px;"></textarea>
+    
     <div class="hint-section">
         <button onclick="showHint()">Hint</button>
         <ul id="hintList" class="hidden"></ul>
@@ -56,16 +30,39 @@
 <script>
     const questionData = {
         A: [
-            { image: "img/A/a1.png", text: "Solve A1", hints: ["Hint 1 for A1", "Hint 2 for A1"] },
-            { image: "img/A/a2.png", text: "Solve A2", hints: ["Hint 1 for A2", "Hint 2 for A2"] },
-            { image: "img/A/a3.png", text: "Solve A3", hints: ["Hint 1 for A3", "Hint 2 for A3"] }
-        ],
-        B: [
-            { image: "img/B/b1.png", text: "Solve B1", hints: ["Hint 1 for B1", "Hint 2 for B1"] },
-            { image: "img/B/b2.png", text: "Solve B2", hints: ["Hint 1 for B2", "Hint 2 for B2"] }
-        ],
-        C: [
-            { image: "img/C/c1.png", text: "Solve C1", hints: ["Hint 1 for C1", "Hint 2 for C1"] }
+            { 
+                image: "img/A/a1.png", 
+                text: "Solve the 5-Level Pyramid", 
+                hints: ["Start from the bottom...", "Use sum rule..."]
+            },
+            { 
+                image: "img/A/a2.png", 
+                text: "Identify the Solution Type of the 5-Level Pyramid", 
+                choices: ["Unique Solution", "Multiple Solutions", "No Solution"],
+                hints: ["Try solving one way...", "Adjust numbers..."]
+            },
+            { 
+                image: "img/A/a3.png", 
+                text: "Changing the Position of the Additional Given Number", 
+                hints: ["Follow the pyramid rule...", "Adjust values..."]
+            },
+            { 
+                image: "img/A/a4.png", 
+                text: "Verify Contestant Solutions", 
+                choices: ["A is correct", "B is correct", "Both A and B", "Neither A nor B"],
+                hints: ["Check sum rule in each row..."]
+            },
+            { 
+                image: "img/A/a5.png", 
+                text: "Finding Minimum Information for Unique Solution", 
+                choices: ["4", "5", "6"],
+                hints: ["Analyze patterns..."]
+            },
+            { 
+                image: "img/A/a6.png", 
+                text: "Design and Solve a Pyramid with Limited Information", 
+                hints: ["Choose 5 values wisely..."]
+            }
         ]
     };
 
@@ -81,9 +78,19 @@
 
         if (questionData[category] && questionData[category][questionIndex]) {
             const q = questionData[category][questionIndex];
-            document.getElementById("questionImage").src = q.image;
             document.getElementById("questionText").innerText = q.text;
             document.getElementById("hintList").innerHTML = q.hints.map(hint => `<li>${hint}</li>`).join("");
+
+            if (q.image) {
+                document.getElementById("questionImage").src = q.image;
+                document.getElementById("questionImage").style.display = "block";
+            }
+            
+            if (q.choices) {
+                document.getElementById("choicesContainer").style.display = "block";
+                document.getElementById("choicesContainer").innerHTML = q.choices.map(choice => `<label><input type="radio" name="choice"> ${choice}</label><br>`).join("");
+                document.getElementById("answerExplanation").style.display = "block";
+            }
         }
     }
 
