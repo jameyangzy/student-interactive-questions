@@ -53,7 +53,7 @@ ol {
 
 /* 修改按钮样式 */
 button {
-    background-color: #007BFF; /* 按钮背景颜色 */
+    background-color: #3498db; /* 按钮背景颜色 */
     color: #fff; /* 按钮文字颜色 */
     padding: 10px 15px;
     border: none;
@@ -62,12 +62,11 @@ button {
     transition: background-color 0.3s;
     margin: 5px;
     font-size: 16px;
-    width: 100%;
-    max-width: 400px; /* 按钮最大宽度 */
+    width: 100px; /* 按钮宽度 */
 }
 
 button:hover {
-    background-color: #005bb5; /* 鼠标悬停时的背景颜色 */
+    background-color: #2980b9; /* 鼠标悬停时的背景颜色 */
 }
 
 select, input[type="file"] {
@@ -187,11 +186,12 @@ input[type="text"] {
     text-align: center; /* 文字居中 */
     border: 2px solid #333;
     border-radius: 8px;
-    background-color: #f8f8f8;
+    background-color: #3498db; /* 按钮颜色统一 */
+    color: #fff; /* 按钮文字颜色 */
     cursor: pointer;
     transition: 0.3s;
 }
 
 .option-btn:hover {
-    background-color: #ddd;
+    background-color: #2980b9; /* 鼠标悬停时的背景颜色 */
 }
