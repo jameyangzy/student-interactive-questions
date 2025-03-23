@@ -10,16 +10,22 @@
 <div class="container">
     <h1>BRICK PYRAMID</h1>
     <img src="https://raw.githubusercontent.com/jameyangzy/student-interactive-questions/main/img/Introducation.png" alt="Brick Pyramid">
-    
-    <p>1. Fill in the Brick Pyramid above according to the following rule:</p>
-    <p><em>The number on each brick is the sum of the numbers on the two bricks it stands upon (except for the bottom row).</em></p>
-    <p>2. How many solutions did you find? Could there be more? Explain.</p>
-    <p>3. Create your own Brick Pyramid problem(s).</p>
 
     <h2>Please select one approach:</h2>
-    <button onclick="goToCategory('A')">A: Try solving the problem directly.</button>
-    <button onclick="goToCategory('B')">B: Start with a simpler 3-level case.</button>
-    <button onclick="goToCategory('C')">C: Analyze it using algebra.</button>
+    
+    <div class="option-container">
+        <button onclick="goToCategory('A')" class="option-btn">
+            <strong>A:</strong> I prefer to try solving the problem directly by filling in different numbers and checking if they follow the pyramid rule.
+        </button>
+
+        <button onclick="goToCategory('B')" class="option-btn">
+            <strong>B:</strong> The 5-level pyramid seems too difficult, so I want to start with a simpler 3-level case to understand the basic concept first.
+        </button>
+
+        <button onclick="goToCategory('C')" class="option-btn">
+            <strong>C:</strong> This problem seems related to systems of equations, so I want to analyze it using algebra and equation-solving methods.
+        </button>
+    </div>
 </div>
 
 <script>
