@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Approach</title>
+    <title>Selection</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,26 +11,25 @@
     <h1>BRICK PYRAMID</h1>
     <img src="img/Introducation.png" alt="Brick Pyramid">
 
-    <h2>Please select one approach:</h2>
-    
+    <p>1. Fill in the Brick Pyramid above according to the following rule:</p>
+    <p><em>The number on each brick is the sum of the numbers on the two bricks it stands upon (except for the bottom row).</em></p>
+    <p>2. How many solutions did you find? Could there be more? Explain.</p>
+    <p>3. Create your own Brick Pyramid problem(s).</p>
+
+    <p><strong>Please select one approach:</strong></p>
+
     <div class="option-container">
-        <button onclick="goToCategory('A')" class="option-btn">
-            <strong>A:</strong> I prefer to try solving the problem directly by filling in different numbers and checking if they follow the pyramid rule.
-        </button>
-
-        <button onclick="goToCategory('B')" class="option-btn">
-            <strong>B:</strong> The 5-level pyramid seems too difficult, so I want to start with a simpler 3-level case to understand the basic concept first.
-        </button>
-
-        <button onclick="goToCategory('C')" class="option-btn">
-            <strong>C:</strong> This problem seems related to systems of equations, so I want to analyze it using algebra and equation-solving methods.
-        </button>
+        <button class="option-btn" onclick="selectOption('A')">A: I prefer to try solving the problem directly by filling in different numbers and checking if they follow the pyramid rule.</button>
+        <button class="option-btn" onclick="selectOption('B')">B: The 5-level pyramid seems too difficult, so I want to start with a simpler 3-level case to understand the basic concept first.</button>
+        <button class="option-btn" onclick="selectOption('C')">C: This problem seems related to systems of equations, so I want to analyze it using algebra and equation-solving methods.</button>
     </div>
 </div>
 
 <script>
-    function goToCategory(category) {
-        window.location.href = `question.html?category=${category}&question=1`;
+    function selectOption(option) {
+        // 这里可以添加逻辑处理用户选择
+        alert("You selected option " + option);
+        window.location.href = "index.html"; // 跳转到正式答题页面
     }
 </script>
 
