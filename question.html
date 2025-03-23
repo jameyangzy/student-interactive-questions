@@ -3,38 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pyramid Questions</title>
+    <title>Questions</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="container">
-    <!-- 题目序号 -->
-    <h2 id="questionNumber"></h2>
-    <!-- 问题描述 -->
-    <h3 id="questionText" class="center"></h3>
-    
-    <!-- 金字塔结构 -->
-    <div id="pyramidContainer" class="pyramid-container" style="display: none;"></div>
-    
-    <!-- 选择题 -->
-    <div id="choicesContainer" class="choices-container" style="display: none;"></div>
-    
-    <!-- 文本框 -->
-    <textarea id="answerExplanation" placeholder="Explain your reasoning here..." style="display: none; width: 100%; height: 100px;"></textarea>
-    
-    <!-- Hint 部分 -->
-    <div class="hint-section">
-        <button onclick="showHint()">Hint</button>
-        <ul id="hintList" class="hidden"></ul>
+    <div class="container">
+        <h2 id="question-title"></h2>
+        
+        <p id="question-text"></p>
+
+        <img id="question-image" src="" alt="Question Image">
+
+        <div id="answer-area">
+            <input type="text" id="answer-input" class="answer-box" placeholder="Enter your answer">
+        </div>
+
+        <button onclick="showHint()">Show Hint</button>
+        <p id="hint-text" style="display: none;"></p>
+
+        <button onclick="nextQuestion()">Next</button>
     </div>
 
-    <!-- 按钮部分 -->
-    <div class="button-section">
-        <button onclick="goBack()">Return</button>
-        <button onclick="submitAnswer()">Submit</button>
-    </div>
-</div>
-
-<script src="scripts.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
