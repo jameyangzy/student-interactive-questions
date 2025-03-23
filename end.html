@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>End of Activity</title>
+    <title>End</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="container">
     <h1>BRICK PYRAMID</h1>
     <img src="img/end.png" alt="Brick Pyramid">
-    
+
     <p>1. Fill in the Brick Pyramid above according to the following rule:</p>
     <p><em>The number on each brick is the sum of the numbers on the two bricks it stands upon (except for the bottom row).</em></p>
     <p>2. How many solutions did you find? Could there be more? Explain.</p>
     <p>3. Create your own Brick Pyramid problem(s).</p>
 
-    <p><strong>Please answer these three questions.</strong></p>
+    <h2>Please answer these three questions.</h2>
 
-    <button onclick="restart()">Restart</button>
+    <button onclick="goToHome()">Finish</button>
 </div>
 
 <script>
-    function restart() {
-        window.location.href = "index.html";
+    function goToHome() {
+        window.location.href = "index.html"; // 跳转到主页或重新开始
     }
 </script>
 
