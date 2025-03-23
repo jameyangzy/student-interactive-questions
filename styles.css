@@ -1,101 +1,197 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
 }
 
 .container {
-    width: 80%;
-    max-width: 800px;
-    text-align: center;
-    background-color: white;
-    padding: 20px;
+    width: 90%; /* 页面宽度调整为 90% */
+    max-width: 800px; /* 最大宽度增加到 800px */
+    height: auto;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+    text-align: center;
 }
 
-.return-btn {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
+h1 {
+    text-align: center;
+    color: #333; /* 标题颜色 */
+}
+
+p {
+    text-align: left;
+    color: #555; /* 段落文字颜色 */
+}
+
+ol {
+    text-align: left;
+    color: #555; /* 列表文字颜色 */
+}
+
+.question {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.question:last-child {
+    border-bottom: none;
+}
+
+.question p {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+/* 修改按钮样式 */
+button {
+    background-color: #007BFF; /* 按钮背景颜色 */
+    color: #fff; /* 按钮文字颜色 */
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 400px; /* 按钮最大宽度 */
 }
 
-.return-btn:hover {
-    background-color: #45a049;
+button:hover {
+    background-color: #005bb5; /* 鼠标悬停时的背景颜色 */
 }
 
-.question-header {
-    margin-bottom: 20px;
+select, input[type="file"] {
+    width: 90%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 50px;
 }
 
-.question-number {
-    font-weight: bold;
-    font-size: 1.5em;
+textarea {
+    width: 70vh;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 70px;
 }
 
-.question-description {
-    margin-bottom: 20px;
-    font-size: 1.2em;
+.hidden {
+    display: none;
 }
 
-.pyramid {
-    margin-bottom: 20px;
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px auto;
+    display: block;
 }
 
-.level {
+.image-description {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.image-description.hidden {
+    display: none;
+}
+
+.hint-section ul {
+    list-style-type: decimal; /* 提示列表使用数字序号 */
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+/* 新增样式 */
+.category-display, .difficulty-selection {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.question-select-container {
     display: flex;
     justify-content: center;
-    margin: 10px 0;
+    align-items: center;
+    margin-top: 20px;
 }
 
-.brick {
-    width: 50px;
+#questionLabel {
+    margin-right: 10px;
+}
+
+.pyramid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    margin: 1px 0;
+}
+
+.box {
+    width: 60px;
     height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    margin: 0 2px;
+    background-color: #f3f3f3;
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+input[type="text"] {
+    width: 58px;
+    height: 28px;
     text-align: center;
-    font-size: 1.2em;
-    margin: 0 5px;
+    border: 1px solid #000;
+    background-color: white;
 }
 
-.hint-section {
+/* 新增样式：纵向排列选项 */
+.option-container {
+    display: flex;
+    flex-direction: column; /* 纵向排列 */
+    align-items: center; /* 居中对齐 */
+    gap: 15px; /* 选项之间的间距 */
     margin-top: 20px;
 }
 
-.hint-btn {
-    padding: 10px 20px;
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    border-radius: 5px;
+.option-btn {
+    width: 100%; /* 按钮宽度 */
+    max-width: 400px; /* 按钮最大宽度 */
+    padding: 15px;
+    font-size: 16px;
+    text-align: center; /* 文字居中 */
+    border: 2px solid #333;
+    border-radius: 8px;
+    background-color: #f8f8f8;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-.hint-btn:hover {
-    background-color: #0b7dda;
-}
-
-.hint-content {
-    margin-top: 10px;
-    text-align: left;
-}
-
-.submit-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.submit-btn:hover {
-    background-color: #45a049;
+.option-btn:hover {
+    background-color: #ddd;
 }
