@@ -223,19 +223,22 @@ const questionData = {
 let currentCategory = "";
 let currentQuestionIndex = 0;
 
+
 function loadQuestion() {
     const urlParams = new URLSearchParams(window.location.search);
-    currentCategory = urlParams.get('category');
-    const questions = questionData[currentCategory];
+    currentCategory = urlParams.get('category'); // 获取当前分类 (A, B, C)
+    currentQuestionIndex = parseInt(urlParams.get('index')) || 0; // 获取题目索引, 默认从0开始
 
-    if (!questions) {
-        alert("Invalid category selected.");
+    const questions = questionData[currentCategory]; // 获取当前分类的题目
+
+    if (!questions || currentQuestionIndex >= questions.length) {
+        alert("Invalid category or index.");
         return;
     }
 
-    // 显示当前题目
-    displayQuestion(questions[currentQuestionIndex]);
+    displayQuestion(questions[currentQuestionIndex]); // 显示当前题目
 }
+
 
 function displayQuestion(question) {
     // 更新题目序号和描述
