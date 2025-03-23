@@ -1,221 +1,327 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Page</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Question Page</h1>
+const questionData = {
+    A: [
+        {
+            title: "Question A1: Solve the 5-Level Pyramid",
+            text: "Fill in the missing values in the 5-level pyramid. The bottom-left brick is 5.",
+            hints: [
+                "Start from the bottom row.",
+                "Each brick is the sum of the two bricks below it.",
+                "Check your calculations carefully."
+            ],
+            pyramid: "280, -1, -1, -1, 75, -1, 31, -1, -1, -1, 5, -1, 13, -1, -1",
+            choices: [], // 无选择题
+            hasTextarea: false
+        },
+        {
+            title: "Question A2: Identify the Solution Type",
+            text: "Determine whether the pyramid has a unique solution, multiple solutions, or no solution.",
+            hints: [
+                "Try to find one solution.",
+                "Check if you can find another solution.",
+                "Determine the solution type based on your findings."
+            ],
+            pyramid: "280, -1, -1, -1, 75, -1, 31, -1, -1, -1, 5, -1, 13, -1, -1",
+            choices: ["Unique Solution", "Multiple Solutions", "No Solution"],
+            hasTextarea: true
+        },
+        {
+            title: "Question A3: Change the Position of a Given Number",
+            text: "Change the position of a given number and solve the pyramid again.",
+            hints: [
+                "Adjust the position of the given number.",
+                "Recalculate the pyramid based on the new position.",
+                "Check if the solution changes."
+            ],
+            pyramid: "280, -1, -1, -1, 75, -1, 31, -1, -1, -1, -1, -1, 13, -1, -1",
+            choices: [], // 无选择题
+            hasTextarea: true
+        },
+        {
+            title: "Question A4: Verify Contestant Solutions",
+            text: "Verify whether the submitted solutions are correct and fix any mistakes.",
+            hints: [
+                "Check each row carefully.",
+                "Ensure every brick follows the sum rule.",
+                "Correct any errors you find."
+            ],
+            pyramid: "280, 149, 131, 74, 75, 56, 31, 43, 32, 24, 1, 30, 13, 19, 5",
+            choices: ["A is correct", "B is correct", "Both A and B", "Neither A nor B"],
+            hasTextarea: true
+        },
+        {
+            title: "Question A5: Minimum Information for Unique Solution",
+            text: "What is the least amount of given values required to create a unique-solution pyramid?",
+            hints: [
+                "Analyze the number of unknowns and equations.",
+                "Determine the minimum number of given values needed.",
+                "Test your hypothesis with examples."
+            ],
+            pyramid: "", // 无金字塔
+            choices: ["4", "5", "6"],
+            hasTextarea: true
+        },
+        {
+            title: "Question A6: Design a Pyramid with Limited Information",
+            text: "Design a pyramid with only 5 given numbers and ensure it has a solution.",
+            hints: [
+                "Choose 5 numbers for the bottom row.",
+                "Fill in the rest of the pyramid using the sum rule.",
+                "Check if your pyramid has a valid solution."
+            ],
+            pyramid: "-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1",
+            choices: [], // 无选择题
+            hasTextarea: false
+        }
+    ],
+    B: [
+        {
+            title: "Question B1: Solve the 3-Level Pyramid",
+            text: "Fill in the missing values in the 3-level pyramid.",
+            hints: [
+                "Use the pyramid rule.",
+                "Start from the bottom row.",
+                "Check your calculations."
+            ],
+            pyramid: "280, -1, -1, 75, -1, 13",
+            choices: [], // 无选择题
+            hasTextarea: false
+        },
+        {
+            title: "Question B2: Unique Solution in 4-Level Pyramid",
+            text: "Complete the 4-level pyramid and confirm that only one solution exists.",
+            hints: [
+                "Use the pyramid rule to determine the missing numbers.",
+                "Check if there is only one possible solution."
+            ],
+            pyramid: "280, -1, -1, 75, -1, 31, -1, -1",
+            choices: ["Yes", "No"],
+            hasTextarea: true
+        },
+        {
+            title: "Question B3: Harder 4-Level Pyramid",
+            text: "Solve the 4-level pyramid with a unique solution (harder version).",
+            hints: [
+                "Assign variables to the unknown numbers.",
+                "Use the given numbers to create equations.",
+                "Solve the system of equations."
+            ],
+            pyramid: "280, -1, -1, 75, -1, 31, -1, 24",
+            choices: ["Yes", "No"],
+            hasTextarea: true
+        },
+        {
+            title: "Question B4: Identify Solution Types",
+            text: "Determine which pyramid has a unique solution, multiple solutions, or no solution.",
+            hints: [
+                "For Pyramid A, try adjusting the bottom row.",
+                "For Pyramid B, check if a single set of values works.",
+                "For Pyramid C, check for contradictions."
+            ],
+            pyramid: "", // 无金字塔
+            choices: ["Unique Solution", "Multiple Solutions", "No Solution"],
+            hasTextarea: true
+        },
+        {
+            title: "Question B5: Solve the 5-Level Pyramid",
+            text: "Solve the 5-level pyramid and identify its solution type.",
+            hints: [
+                "Fill in the missing values step by step.",
+                "Determine if the solution is unique, multiple, or none."
+            ],
+            pyramid: "280, -1, -1, 75, -1, 31, -1, -1, -1, 13",
+            choices: ["Unique Solution", "Multiple Solutions", "No Solution"],
+            hasTextarea: true
+        },
+        {
+            title: "Question B6: Design a Pyramid with Limited Information",
+            text: "Design a pyramid with only 5 given numbers and ensure it has a solution.",
+            hints: [
+                "Choose 5 numbers for the bottom row.",
+                "Fill in the rest of the pyramid using the sum rule.",
+                "Check if your pyramid has a valid solution."
+            ],
+            pyramid: "-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1",
+            choices: [], // 无选择题
+            hasTextarea: false
+        }
+    ],
+    C: [
+        {
+            title: "Question C1: Solve the System of Equations",
+            text: "Solve the system of equations: x + y = 10, x - y = 2.",
+            hints: [
+                "Use substitution or elimination.",
+                "Solve for one variable first.",
+                "Check your solution."
+            ],
+            pyramid: "", // 无金字塔
+            choices: [], // 无选择题
+            hasTextarea: true
+        },
+        {
+            title: "Question C2: Update the Pyramid",
+            text: "Change the bottom number and recalculate the pyramid.",
+            hints: [
+                "Start from the bottom row.",
+                "Update each brick according to the sum rule."
+            ],
+            pyramid: "48, 20, 28, 8, 12, 16, 3, 5, 7, 9, 1, 2, 3, 4, 5",
+            choices: [], // 无选择题
+            hasTextarea: false
+        },
+        {
+            title: "Question C3: Relate Bottom Numbers to Top Number",
+            text: "Write an equation that expresses the relationship between the bottom row numbers and the top number (280).",
+            hints: [
+                "Assign variables to the unknown bottom-row numbers.",
+                "Use the pyramid rule to express how these numbers add up.",
+                "Write the final equation."
+            ],
+            pyramid: "280, -1, -1, 75, -1, 31, -1, -1, -1, 13",
+            choices: [], // 无选择题
+            hasTextarea: true
+        },
+        {
+            title: "Question C4: Find the Mistake in the Pyramid",
+            text: "Find the incorrect equation in the pyramid and revise it.",
+            hints: [
+                "Use the pyramid rule to verify each equation.",
+                "Identify where the equation does not hold.",
+                "Solve for the correct value."
+            ],
+            pyramid: "", // 无金字塔
+            choices: [], // 无选择题
+            hasTextarea: true
+        },
+        {
+            title: "Question C5: Solve for Missing Numbers",
+            text: "Use algebra to solve for the missing values in the bottom row.",
+            hints: [
+                "Assign variables to the unknown numbers.",
+                "Write equations based on the pyramid rule.",
+                "Solve the system of equations."
+            ],
+            pyramid: "280, -1, -1, 75, -1, 31, -1, -1, -1, 13",
+            choices: [], // 无选择题
+            hasTextarea: true
+        },
+        {
+            title: "Question C6: Design a Pyramid with Limited Information",
+            text: "Design a pyramid with only 5 given numbers and ensure it has a solution.",
+            hints: [
+                "Choose 5 numbers for the bottom row.",
+                "Fill in the rest of the pyramid using the sum rule.",
+                "Check if your pyramid has a valid solution."
+            ],
+            pyramid: "-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1",
+            choices: [], // 无选择题
+            hasTextarea: false
+        }
+    ]
+};
 
-        <!-- Category A: Logical and Pyramid Questions -->
-        <section id="category-a">
-            <h2>Category A</h2>
-            
-            <!-- Question A1 -->
-            <div class="question">
-                <h3>Question 1: Solve the 5-Level Pyramid with a Given Value</h3>
-                <img src="a1_image.png" alt="A1 Pyramid" class="pyramid-image">
-                <div class="hint" id="hint-a1">
-                    <p>Hint: Start from the bottom row, and use the sum rule step by step to fill in the pyramid.</p>
-                </div>
-                <button onclick="toggleHint('a1')">Show/Hide Hint</button>
-                <label for="answer-a1">Fill in the missing values in the pyramid:</label>
-                <input type="text" id="answer-a1">
-            </div>
-            
-            <!-- Question A2 -->
-            <div class="question">
-                <h3>Question 2: Identify the Solution Type of the 5-Level Pyramid</h3>
-                <img src="a2_image.png" alt="A2 Pyramid" class="pyramid-image">
-                <p>Main task: Whether the above pyramid has a unique solution, multiple solutions, or no solution.</p>
-                <form>
-                    <label><input type="radio" name="solution-type-a2" value="unique"> A. Unique Solution</label><br>
-                    <label><input type="radio" name="solution-type-a2" value="multiple"> B. Multiple Solutions</label><br>
-                    <label><input type="radio" name="solution-type-a2" value="no-solution"> C. No Solution</label>
-                </form>
-                <label for="explanation-a2">Please explain your reason(s):</label>
-                <textarea id="explanation-a2"></textarea>
-            </div>
+let currentCategory = "";
+let currentQuestionIndex = 0;
 
-            <!-- Question A3 -->
-            <div class="question">
-                <h3>Question 3: Changing the Position of the Additional Given Number</h3>
-                <img src="a3_image.png" alt="A3 Pyramid" class="pyramid-image">
-                <label for="answer-a3">Please fill in the missing values in the pyramid:</label>
-                <input type="text" id="answer-a3">
-                <label for="explanation-a3">Please explain how you found the solution:</label>
-                <textarea id="explanation-a3"></textarea>
-            </div>
+function loadQuestion() {
+    const urlParams = new URLSearchParams(window.location.search);
+    currentCategory = urlParams.get('category');
+    const questions = questionData[currentCategory];
 
-            <!-- Question A4 -->
-            <div class="question">
-                <h3>Question 4: The Mysterious Brick Pyramid Challenge</h3>
-                <img src="a4_1_image.png" alt="A4 Pyramid A" class="pyramid-image">
-                <img src="a4_2_image.png" alt="A4 Pyramid B" class="pyramid-image">
-                <p>Main task: Verify whether both pyramids are correct, can you fix the mistakes?</p>
-                <form>
-                    <label><input type="radio" name="verify-a4" value="A"> A: A is correct</label><br>
-                    <label><input type="radio" name="verify-a4" value="B"> B: B is correct</label><br>
-                    <label><input type="radio" name="verify-a4" value="both"> C: Both A and B</label><br>
-                    <label><input type="radio" name="verify-a4" value="neither"> D: Neither A nor B</label>
-                </form>
-                <label for="explanation-a4">Please explain your reason(s):</label>
-                <textarea id="explanation-a4"></textarea>
-            </div>
+    if (!questions) {
+        alert("Invalid category selected.");
+        return;
+    }
 
-            <!-- Question A5 -->
-            <div class="question">
-                <h3>Question 5: Finding the Minimum Information Needed for a Unique Solution</h3>
-                <img src="a5_1_image.png" alt="A5 Unique Pyramid" class="pyramid-image">
-                <img src="a5_2_image.png" alt="A5 Multiple Pyramid" class="pyramid-image">
-                <img src="a5_3_image.png" alt="A5 No Solution Pyramid" class="pyramid-image">
-                <form>
-                    <label><input type="radio" name="minimum-info" value="4"> A. 4</label><br>
-                    <label><input type="radio" name="minimum-info" value="5"> B. 5</label><br>
-                    <label><input type="radio" name="minimum-info" value="6"> C. 6</label>
-                </form>
-            </div>
+    // 显示当前题目
+    displayQuestion(questions[currentQuestionIndex]);
+}
 
-            <!-- Question A6 -->
-            <div class="question">
-                <h3>Question 6: Design and Solve a Pyramid with Limited Information</h3>
-                <img src="a6_image.png" alt="A6 Pyramid" class="pyramid-image">
-                <label for="answer-a6">Please fill in the pyramid with 5 given numbers:</label>
-                <input type="text" id="answer-a6">
-            </div>
-        </section>
+function displayQuestion(question) {
+    // 更新题目序号和描述
+    document.getElementById('questionNumber').innerText = question.title;
+    document.getElementById('questionText').innerText = question.text;
 
-        <!-- Category B: Algebra and Systems -->
-        <section id="category-b">
-            <h2>Category B</h2>
-            
-            <!-- Question B1 -->
-            <div class="question">
-                <h3>Question 1: Solve for the Missing Values in a 3-Level Pyramid</h3>
-                <img src="b1_image.png" alt="B1 Pyramid" class="pyramid-image">
-                <label for="answer-b1">Fill in the missing values:</label>
-                <input type="text" id="answer-b1">
-            </div>
+    // 更新 Hint
+    const hintList = document.getElementById('hintList');
+    hintList.innerHTML = question.hints.map((hint, index) => `<li>${index + 1}. ${hint}</li>`).join("");
 
-            <!-- Question B2 -->
-            <div class="question">
-                <h3>Question 2: A 4-Level Pyramid with a Unique Solution</h3>
-                <img src="b2_image.png" alt="B2 Pyramid" class="pyramid-image">
-                <p>Main Task: Find the missing numbers and complete the pyramid. Confirm there is only one solution.</p>
-                <form>
-                    <label><input type="radio" name="unique-solution-b2" value="yes"> Yes</label><br>
-                    <label><input type="radio" name="unique-solution-b2" value="no"> No</label>
-                </form>
-            </div>
+    // 显示或隐藏金字塔
+    const pyramidContainer = document.getElementById('pyramidContainer');
+    if (question.pyramid) {
+        pyramidContainer.style.display = "block";
+        generatePyramid(question.pyramid);
+    } else {
+        pyramidContainer.style.display = "none";
+    }
 
-            <!-- Question B3 -->
-            <div class="question">
-                <h3>Question 3: A 4-Level Pyramid with a Unique Solution (Harder Version)</h3>
-                <img src="b3_image.png" alt="B3 Pyramid" class="pyramid-image">
-                <label for="answer-b3">Find the missing numbers:</label>
-                <input type="text" id="answer-b3">
-                <form>
-                    <label><input type="radio" name="unique-solution-b3" value="yes"> Yes</label><br>
-                    <label><input type="radio" name="unique-solution-b3" value="no"> No</label>
-                </form>
-            </div>
+    // 显示或隐藏选择题
+    const choicesContainer = document.getElementById('choicesContainer');
+    if (question.choices.length > 0) {
+        choicesContainer.style.display = "block";
+        choicesContainer.innerHTML = question.choices.map(choice => `
+            <label>
+                <input type="radio" name="choice" value="${choice}"> ${choice}
+            </label><br>
+        `).join("");
+    } else {
+        choicesContainer.style.display = "none";
+    }
 
-            <!-- Question B4 -->
-            <div class="question">
-                <h3>Question 4: Identifying Different Types of Pyramid Solutions</h3>
-                <img src="b4_image.png" alt="B4 Pyramid" class="pyramid-image">
-                <label for="answer-b4">Choose the solution type for each pyramid:</label>
-                <form>
-                    <label>Pyramid A: <input type="radio" name="solution-a" value="unique"> Unique</label>
-                    <label>Pyramid B: <input type="radio" name="solution-b" value="multiple"> Multiple</label>
-                    <label>Pyramid C: <input type="radio" name="solution-c" value="no"> No Solution</label>
-                </form>
-            </div>
+    // 显示或隐藏文本框
+    const answerExplanation = document.getElementById('answerExplanation');
+    if (question.hasTextarea) {
+        answerExplanation.style.display = "block";
+    } else {
+        answerExplanation.style.display = "none";
+    }
+}
 
-            <!-- Question B5 -->
-            <div class="question">
-                <h3>Question 5: Solve the 5-Level Pyramid and Identify Its Solution Type</h3>
-                <img src="b5_image.png" alt="B5 Pyramid" class="pyramid-image">
-                <form>
-                    <label><input type="radio" name="solution-b5" value="unique"> A. Unique Solution</label><br>
-                    <label><input type="radio" name="solution-b5" value="multiple"> B. Multiple Solutions</label><br>
-                    <label><input type="radio" name="solution-b5" value="no"> C. No Solution</label>
-                </form>
-            </div>
+function generatePyramid(pyramidData) {
+    const values = pyramidData.split(",").map(value => value.trim());
+    const pyramidContainer = document.getElementById('pyramidContainer');
+    pyramidContainer.innerHTML = "";
 
-            <!-- Question B6 -->
-            <div class="question">
-                <h3>Question 6: Design and Solve a Pyramid with Limited Information</h3>
-                <img src="b6_image.png" alt="B6 Pyramid" class="pyramid-image">
-                <label for="answer-b6">Fill in the pyramid with 5 given numbers:</label>
-                <input type="text" id="answer-b6">
-            </div>
-        </section>
+    let rowIndex = 0;
+    let brickIndex = 0;
 
-        <!-- Category C: Advanced and Challenging Questions -->
-        <section id="category-c">
-            <h2>Category C</h2>
-            
-            <!-- Question C1 -->
-            <div class="question">
-                <h3>Question 1: Solve for the Missing Values in a 4-Level Pyramid</h3>
-                <img src="c1_image.png" alt="C1 Pyramid" class="pyramid-image">
-                <label for="answer-c1">Fill in the missing values:</label>
-                <input type="text" id="answer-c1">
-            </div>
+    while (brickIndex < values.length) {
+        const row = document.createElement('div');
+        row.className = 'row';
 
-            <!-- Question C2 -->
-            <div class="question">
-                <h3>Question 2: A 5-Level Pyramid with a Unique Solution</h3>
-                <img src="c2_image.png" alt="C2 Pyramid" class="pyramid-image">
-                <label for="answer-c2">Complete the pyramid:</label>
-                <input type="text" id="answer-c2">
-            </div>
+        for (let i = 0; i <= rowIndex; i++) {
+            const brick = document.createElement('div');
+            brick.className = 'box';
 
-            <!-- Question C3 -->
-            <div class="question">
-                <h3>Question 3: Identify the Correct Solution for a Pyramid</h3>
-                <img src="c3_image.png" alt="C3 Pyramid" class="pyramid-image">
-                <form>
-                    <label><input type="radio" name="solution-c3" value="unique"> A. Unique Solution</label><br>
-                    <label><input type="radio" name="solution-c3" value="multiple"> B. Multiple Solutions</label><br>
-                    <label><input type="radio" name="solution-c3" value="no-solution"> C. No Solution</label>
-                </form>
-            </div>
+            if (values[brickIndex] === "-1") {
+                const input = document.createElement('input');
+                input.type = 'text';
+                brick.appendChild(input);
+            } else {
+                brick.textContent = values[brickIndex];
+            }
 
-            <!-- Question C4 -->
-            <div class="question">
-                <h3>Question 4: Validate the Solution for a Pyramid with a Limited Number of Given Numbers</h3>
-                <img src="c4_image.png" alt="C4 Pyramid" class="pyramid-image">
-                <label for="answer-c4">Fill in the pyramid:</label>
-                <input type="text" id="answer-c4">
-            </div>
+            row.appendChild(brick);
+            brickIndex++;
+        }
 
-            <!-- Question C5 -->
-            <div class="question">
-                <h3>Question 5: Identify the Mistakes in a Pyramid with Multiple Solutions</h3>
-                <img src="c5_image.png" alt="C5 Pyramid" class="pyramid-image">
-                <form>
-                    <label><input type="radio" name="mistakes-c5" value="A"> A. Mistakes Found</label><br>
-                    <label><input type="radio" name="mistakes-c5" value="B"> B. No Mistakes</label>
-                </form>
-            </div>
+        pyramidContainer.appendChild(row);
+        rowIndex++;
+    }
+}
 
-            <!-- Question C6 -->
-            <div class="question">
-                <h3>Question 6: Solve the Complex 5-Level Pyramid</h3>
-                <img src="c6_image.png" alt="C6 Pyramid" class="pyramid-image">
-                <label for="answer-c6">Fill in the missing numbers:</label>
-                <input type="text" id="answer-c6">
-            </div>
-        </section>
+function showHint() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
 
-        <button onclick="window.location.href = 'end.html';">Submit</button>
-    </div>
+function goBack() {
+    window.history.back();
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+function submitAnswer() {
+    alert("Answer submitted!");
+    window.location.href = "end.html";
+}
+
+window.onload = loadQuestion;
