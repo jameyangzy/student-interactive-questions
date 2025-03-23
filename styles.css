@@ -1,83 +1,69 @@
-/* 整体页面布局优化 */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f4f9;
     color: #333;
     margin: 0;
-    padding: 20px; /* 让内容不至于贴边 */
+    padding: 0;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     height: 100vh;
 }
 
-/* 让容器更宽，避免太窄 */
 .container {
-    width: 95%;
-    max-width: 900px; /* 调整宽度 */
+    width: 80%;
+    max-width: 800px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 25px;
-    text-align: left; /* 文本左对齐 */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
 }
 
-/* 选项按钮容器（纵向排列） */
+h1 {
+    text-align: center;
+}
+
+p {
+    text-align: left;
+}
+
 .option-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* 左对齐 */
-    gap: 15px; /* 按钮之间的间隔 */
+    align-items: center;
+    gap: 15px;
     margin-top: 20px;
 }
 
-/* 选项按钮样式 */
 .option-btn {
     width: 100%;
     padding: 15px;
-    font-size: 18px;
+    font-size: 16px;
     text-align: left;
     border: 2px solid #333;
     border-radius: 8px;
     background-color: #f8f8f8;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: 0.3s;
 }
 
 .option-btn:hover {
     background-color: #ddd;
 }
 
-/* 题目文本样式 */
-.question {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-}
-
-/* 处理含有多个图片的选项 */
-.image-option {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* 选项之间的间隔 */
-}
-
-.image-option label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.image-option img {
-    width: 100%; /* 适应宽度 */
-    max-width: 400px; /* 限制最大宽度 */
-    border: 1px solid #ccc;
+button {
+    background-color: inherit;
+    color: #333;
+    padding: 10px 15px;
+    border: 2px solid #333;
     border-radius: 5px;
+    cursor: pointer;
     transition: 0.3s;
+    font-size: 16px;
+    width: 120px;
 }
 
-.image-option img:hover {
-    transform: scale(1.05);
-    border-color: #000;
+button:hover {
+    background-color: #ddd;
 }
