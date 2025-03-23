@@ -3,32 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Question Submission</title>
+    <title>Interactive Question</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="container">
-    <div class="category-display">
-        <p>Selected Category: <span id="categoryText"></span></p>
-    </div>
-    <div class="difficulty-selection">
-        <p id="difficultyDisplay">Elementary Level</p>
-    </div>
-    <div class="question-select-container">
-        <label for="questionSelect" id="questionLabel">Select:</label>
-        <select id="questionSelect" onchange="loadQuestion()">
-        </select>
-    </div>
-    <!-- 动态加载的题目描述区域 -->
-    <div class="text-description">
-        <h3 id="questionText"></h3>
-    </div>
+    <h2>Selected Category: <span id="categoryText"></span></h2>
+    <img id="questionImage" src="" alt="Question Image" style="max-width: 100%; height: auto;">
+    
+    <h3 id="questionText"></h3>
 
-    <!-- 图片描述区域 -->
-    <div class="image-description">
-        <img id="questionImage" src="" alt="Question Image" style="max-width: 100%; height: auto;">
-    </div>
     <div class="pyramid-container">
+        <!-- 这里是动态填充金字塔的地方 -->
         <div class="row">
             <div class="box highlight">280</div>
         </div>
@@ -55,20 +41,65 @@
             <div class="box"><input type="text"></div>
         </div>
     </div>
-    <!-- 提示按钮和提示文本 -->
-    <div class="hint-section">
 
-        <ul id="hintList" class="hidden" style="text-align: left; padding-left: 30px"></ul>
+    <div class="hint-section">
+        <button onclick="showHint()">Hint</button>
+        <ul id="hintList" class="hidden"></ul>
     </div>
 
-    <!-- 返回按钮和其他按钮 -->
     <div class="button-section">
         <button onclick="goBack()">Return</button>
-        <button id="hintButton">Hint</button>
-        <button id="submitButton" onclick="submitAnswer()">Submit</button>
+        <button onclick="submitAnswer()">Submit</button>
     </div>
 </div>
 
-<script src="scripts.js"></script>
+<script>
+    const questionData = {
+        A: [
+            { image: "img/A/a1.png", text: "Solve A1", hints: ["Hint 1 for A1", "Hint 2 for A1"] },
+            { image: "img/A/a2.png", text: "Solve A2", hints: ["Hint 1 for A2", "Hint 2 for A2"] },
+            { image: "img/A/a3.png", text: "Solve A3", hints: ["Hint 1 for A3", "Hint 2 for A3"] }
+        ],
+        B: [
+            { image: "img/B/b1.png", text: "Solve B1", hints: ["Hint 1 for B1", "Hint 2 for B1"] },
+            { image: "img/B/b2.png", text: "Solve B2", hints: ["Hint 1 for B2", "Hint 2 for B2"] }
+        ],
+        C: [
+            { image: "img/C/c1.png", text: "Solve C1", hints: ["Hint 1 for C1", "Hint 2 for C1"] }
+        ]
+    };
+
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    function loadQuestion() {
+        const category = getQueryParam("category");
+        const questionIndex = parseInt(getQueryParam("question")) - 1;
+        document.getElementById("categoryText").innerText = category;
+
+        if (questionData[category] && questionData[category][questionIndex]) {
+            const q = questionData[category][questionIndex];
+            document.getElementById("questionImage").src = q.image;
+            document.getElementById("questionText").innerText = q.text;
+            document.getElementById("hintList").innerHTML = q.hints.map(hint => `<li>${hint}</li>`).join("");
+        }
+    }
+
+    function showHint() {
+        document.getElementById("hintList").classList.toggle("hidden");
+    }
+
+    function goBack() {
+        window.location.href = "introduction.html";
+    }
+
+    function submitAnswer() {
+        alert("Answer submitted!");
+    }
+
+    window.onload = loadQuestion;
+</script>
 </body>
 </html>
