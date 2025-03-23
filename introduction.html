@@ -8,27 +8,25 @@
 </head>
 <body>
 <div class="container">
-    <h1>Brick Pyramid</h1>
+    <h1>BRICK PYRAMID</h1>
     <img src="https://github.com/jameyangzy/student-interactive-questions/raw/main/img/Introducation.png" 
          alt="Brick Pyramid" style="max-width: 100%; height: auto;">
-    <p>
-        Fill in the Brick Pyramid above according to the following rule:
-        The number on each brick is the sum of the numbers on the two bricks it stands upon (except for the bottom row).
-    </p>
-    <p>
-        How many solutions did you find? Could there be more? Explain.
-        Create your own Brick Pyramid problem(s).
-    </p>
-    
-    <h3>Please select one approach:</h3>
-    <button onclick="goToCategory('A')">A: Try solving directly</button>
-    <button onclick="goToCategory('B')">B: Start with a simpler 3-level case</button>
-    <button onclick="goToCategory('C')">C: Analyze using algebra</button>
+    <p>Fill in the Brick Pyramid above according to the following rule:<br>
+        The number on each brick is the sum of the numbers on the two bricks it stands upon (except for the bottom row).</p>
+    <p>How many solutions did you find? Could there be more? Explain.<br>
+        Create your own Brick Pyramid problem(s).</p>
+
+    <h2>What We Will Do Today:</h2>
+    <p>1. Fill in the missing values in the Brick Pyramid by applying the given rule.</p>
+    <p>2. Determine the number of possible solutions—is there only one correct way to complete the pyramid, or are there multiple solutions?</p>
+    <p>3. Create our own Brick Pyramid problem to challenge ourselves and others!</p>
+
+    <button onclick="startSelection()">Next</button>
 </div>
 
 <script>
-    function goToCategory(category) {
-        window.location.href = `question.html?category=${category}&question=1`;
+    function startSelection() {
+        window.location.href = "selection.html";
     }
 </script>
 </body>
