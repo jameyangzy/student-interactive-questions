@@ -28,6 +28,10 @@ p {
     text-align: left;
 }
 
+ol {
+    text-align: left;
+}
+
 .option-container {
     display: flex;
     flex-direction: column;
@@ -54,7 +58,7 @@ p {
 
 button {
     background-color: inherit;
-    color: #333;
+    color: #fff;
     padding: 10px 15px;
     border: 2px solid #333;
     border-radius: 5px;
