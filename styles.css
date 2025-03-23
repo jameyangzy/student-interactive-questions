@@ -11,8 +11,8 @@ body {
 }
 
 .container {
-    width: 90%;
-    max-width: 600px;
+    width: 90%; /* 页面宽度调整为 90% */
+    max-width: 800px; /* 最大宽度增加到 800px */
     height: auto;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -62,7 +62,8 @@ button {
     transition: background-color 0.3s;
     margin: 5px;
     font-size: 16px;
-    width: 100px;
+    width: 100%;
+    max-width: 400px; /* 按钮最大宽度 */
 }
 
 button:hover {
@@ -167,4 +168,30 @@ input[type="text"] {
     text-align: center;
     border: 1px solid #000;
     background-color: white;
+}
+
+/* 新增样式：纵向排列选项 */
+.option-container {
+    display: flex;
+    flex-direction: column; /* 纵向排列 */
+    align-items: center; /* 居中对齐 */
+    gap: 15px; /* 选项之间的间距 */
+    margin-top: 20px;
+}
+
+.option-btn {
+    width: 100%; /* 按钮宽度 */
+    max-width: 400px; /* 按钮最大宽度 */
+    padding: 15px;
+    font-size: 16px;
+    text-align: center; /* 文字居中 */
+    border: 2px solid #333;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.option-btn:hover {
+    background-color: #ddd;
 }
