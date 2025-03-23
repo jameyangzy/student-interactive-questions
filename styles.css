@@ -9,6 +9,7 @@ body {
     align-items: center;
     height: 100vh;
 }
+
 .container {
     width: 90%;
     max-width: 600px;
@@ -23,14 +24,17 @@ body {
 
 h1 {
     text-align: center;
+    color: #333; /* 标题颜色 */
 }
 
 p {
     text-align: left;
+    color: #555; /* 段落文字颜色 */
 }
 
 ol {
     text-align: left;
+    color: #555; /* 列表文字颜色 */
 }
 
 .question {
@@ -47,9 +51,10 @@ ol {
     margin-bottom: 15px;
 }
 
+/* 修改按钮样式 */
 button {
-    background-color: #007BFF;
-    color: #fff;
+    background-color: #007BFF; /* 按钮背景颜色 */
+    color: #fff; /* 按钮文字颜色 */
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
@@ -61,10 +66,10 @@ button {
 }
 
 button:hover {
-     background-color: #2980b9;
+    background-color: #005bb5; /* 鼠标悬停时的背景颜色 */
 }
 
-select, input[type="file"]{
+select, input[type="file"] {
     width: 90%;
     margin: 10px 0;
     padding: 10px;
@@ -73,7 +78,8 @@ select, input[type="file"]{
     border-radius: 5px;
     height: 50px;
 }
-textarea{
+
+textarea {
     width: 70vh;
     margin: 10px 0;
     padding: 10px;
@@ -104,7 +110,7 @@ img {
 }
 
 .hint-section ul {
-    list-style-type: disc;
+    list-style-type: decimal; /* 提示列表使用数字序号 */
     padding-left: 20px;
     margin-top: 10px;
 }
@@ -125,6 +131,7 @@ img {
 #questionLabel {
     margin-right: 10px;
 }
+
 .pyramid-container {
     display: flex;
     flex-direction: column;
@@ -132,11 +139,13 @@ img {
     justify-content: center;
     margin-bottom: 30px;
 }
+
 .row {
     display: flex;
     justify-content: center;
     margin: 1px 0;
 }
+
 .box {
     width: 60px;
     height: 30px;
@@ -147,9 +156,11 @@ img {
     margin: 0 2px;
     background-color: #f3f3f3;
 }
+
 .highlight {
     background-color: yellow;
 }
+
 input[type="text"] {
     width: 58px;
     height: 28px;
