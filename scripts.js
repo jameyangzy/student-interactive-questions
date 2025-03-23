@@ -2,7 +2,7 @@ const questionData = {
     A: [
         {
             title: "Question A1: Solve the 5-Level Pyramid",
-            text: "Fill in the missing values in the 5-level pyramid.",
+            text: "Fill in the missing values in the 5-level pyramid. The bottom-left brick is 5.",
             hints: [
                 "Start from the bottom row.",
                 "Each brick is the sum of the two bricks below it.",
