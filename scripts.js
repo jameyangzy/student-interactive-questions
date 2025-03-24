@@ -3,7 +3,7 @@ const questionData = {
         {
             number: "A1",
             text: "Question 1: Solve the 5-Level Pyramid with a Given Value",
-            task: "Welcome to the Brick Pyramid Challenge! Apply logical reasoning to fill in the missing values.",
+            task: "Welcome to the Brick Pyramid Challenge! ...",
             mainTask: "Determine all missing values and complete the pyramid.",
             pyramidStructure: [
                 [null, null, null, null, 280],
@@ -12,24 +12,22 @@ const questionData = {
                 [5, 13, null, null]
             ],
             hints: [
-                "Start from the bottom row—you already know the first number (5).",
-                "Move upward step by step, using the sum rule.",
-                "Check your calculations."
+                "Start from the bottom row...",
+                "Move upward step by step...",
+                "Check your calculations..."
             ]
         },
         // 继续定义其他题目...
     ],
-    // 定义 B 和 C 类别题目...
+    // 定义B和C类别题目...
 };
 
-function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-}
+window.onload = loadQuestion;  // 确保函数在页面加载时调用
 
 function loadQuestion() {
     const category = getQueryParam("category");
-    const questionIndex = parseInt(getQueryParam("question")) - 1;
+    const questionIndex = parseInt(getQueryParam("question")) - 1 || 0;  // 确保默认值
+
     const question = questionData[category] ? questionData[category][questionIndex] : null;
 
     if (!question) {
@@ -44,8 +42,11 @@ function loadQuestion() {
     document.getElementById("pyramidContainer").innerHTML = `<p>${question.mainTask}</p>${pyramidHTML}`;
     document.getElementById("choicesContainer").innerHTML = question.choices ? question.choices.map(choice => `<label><input type="radio" name="choice">${choice}</label><br>`).join("") : "";
     document.getElementById("hintList").innerHTML = question.hints.map(hint => `<li>${hint}</li>`).join("");
+}
 
-    document.title = `Question ${question.number}`;
+function getQueryParam(param) {
+    const queryParams = new URLSearchParams(window.location.search);
+    return queryParams.get(param);
 }
 
 function createPyramidHTML(pyramidData) {
@@ -73,5 +74,3 @@ function submitAnswer() {
     alert("Answer submitted!");
     window.location.href = 'end.html';
 }
-
-window.onload = loadQuestion;
