@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pyramid Questions</title>
+    <title>Question</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="container">
-    <h2 id="questionNumber" class="question-number"></h2>
-    <h3 id="questionText" class="question-text"></h3>
-    <div id="pyramidContainer" class="pyramid-container"></div>
-    <div id="choicesContainer" class="choices-container"></div>
+    <div class="container">
+        <div class="question-header">
+            <h2 id="questionNumber"></h2>
+            <h3 id="questionText"></h3>
+        </div>
 
-    <div class="hint-section">
-        <button onclick="showHint()">Hint</button>
-        <ul id="hintList" class="hidden"></ul>
+        <div id="pyramidContainer"></div>
+        <div id="choicesContainer"></div>
+        <div id="explanationContainer"></div>
+
+        <div class="hint-section">
+            <button class="hint-btn" onclick="toggleHint()">Toggle Hint</button>
+            <div id="hintContent" class="hidden"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="navigate(-1)">Previous</button>
+            <button class="nav-btn" onclick="navigate(1)">Next</button>
+            <button class="submit-btn" onclick="submitAnswer()">Submit All</button>
+        </div>
     </div>
 
-    <div class="button-section">
-        <button onclick="goBack()">Return</button>
-        <button onclick="nextQuestion()">Next</button>
-        <button onclick="submitAnswer()">Submit</button>
-    </div>
-</div>
-
-<script src="scripts.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
