@@ -193,17 +193,18 @@ input[type="text"] {
 }
 
 .option-btn {
-    width: 100%; /* 按钮宽度 */
+    width: 100%; /* 按钮宽度调整为100% */
     max-width: 400px; /* 按钮最大宽度 */
     padding: 15px;
     font-size: 16px;
-    text-align: center; /* 文字居中 */
+    text-align: center;
     border: 2px solid #333;
     border-radius: 8px;
     background-color: #3498db; /* 按钮颜色统一 */
     color: #fff; /* 按钮文字颜色 */
     cursor: pointer;
     transition: 0.3s;
+    margin-top: 10px;
 }
 
 .option-btn:hover {
