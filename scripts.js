@@ -3,7 +3,7 @@ const questionData = {
         {
             number: "A1",
             text: "Question 1: Solve the 5-Level Pyramid with a Given Value",
-            task: "Welcome to the Brick Pyramid Challenge! ...",
+            task: "Welcome to the Brick Pyramid Challenge! Apply logical reasoning...",
             mainTask: "Determine all missing values and complete the pyramid.",
             pyramidStructure: [
                 [null, null, null, null, 280],
@@ -14,21 +14,25 @@ const questionData = {
             hints: [
                 "Start from the bottom row...",
                 "Move upward step by step...",
-                "Check your calculations..."
+                "Check your calculations."
             ]
         },
-        // 继续定义其他题目...
+        // Add more questions here...
     ],
-    // 定义B和C类别题目...
+    // Define B and C categories...
 };
 
-window.onload = loadQuestion;  // 确保函数在页面加载时调用
+let currentQuestionIndex = 0;
+
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
 
 function loadQuestion() {
     const category = getQueryParam("category");
-    const questionIndex = parseInt(getQueryParam("question")) - 1 || 0;  // 确保默认值
-
-    const question = questionData[category] ? questionData[category][questionIndex] : null;
+    const questionList = questionData[category];
+    const question = questionList[currentQuestionIndex];
 
     if (!question) {
         document.getElementById("questionNumber").innerText = "Invalid question index!";
@@ -44,17 +48,12 @@ function loadQuestion() {
     document.getElementById("hintList").innerHTML = question.hints.map(hint => `<li>${hint}</li>`).join("");
 }
 
-function getQueryParam(param) {
-    const queryParams = new URLSearchParams(window.location.search);
-    return queryParams.get(param);
-}
-
 function createPyramidHTML(pyramidData) {
     let html = "<div class='pyramid'>";
     for (let row of pyramidData) {
         html += "<div class='pyramid-row'>";
         for (let brick of row) {
-            html += `<input type="text" value="${brick !== null ? brick : ""}" class="pyramid-input" style="width: 50px;">`;
+            html += `<input type="text" value="${brick !== null ? brick : ""}" class="pyramid-input">`;
         }
         html += "</div>";
     }
@@ -70,7 +69,20 @@ function goBack() {
     window.location.href = "selection.html";
 }
 
+function nextQuestion() {
+    const category = getQueryParam("category");
+    const questionList = questionData[category];
+    if (currentQuestionIndex < questionList.length - 1) {
+        currentQuestionIndex++;
+        loadQuestion();
+    } else {
+        alert("You've completed all questions!");
+    }
+}
+
 function submitAnswer() {
     alert("Answer submitted!");
     window.location.href = 'end.html';
 }
+
+window.onload = loadQuestion;
