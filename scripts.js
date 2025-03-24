@@ -3,8 +3,8 @@ const questionData = {
         {
             number: "A1",
             text: "Question 1: Solve the 5-Level Pyramid with a Given Value",
-            task: "Welcome to the Brick Pyramid Challenge! ...",
-            mainTask: "Use the pyramid rule to determine all missing values and complete the pyramid.",
+            task: "Welcome to the Brick Pyramid Challenge! Apply logical reasoning to fill in the missing values.",
+            mainTask: "Determine all missing values and complete the pyramid.",
             pyramidStructure: [
                 [null, null, null, null, 280],
                 [null, null, null, 75],
@@ -12,9 +12,9 @@ const questionData = {
                 [5, 13, null, null]
             ],
             hints: [
-                "Start from the bottom row—you already know the first number (5). Use the rule to find the next brick in that row.",
-                "Move upward step by step, using the sum rule to fill in the second row, then the third, and so on.",
-                "Check your calculations—each brick must be the sum of the two below it."
+                "Start from the bottom row—you already know the first number (5).",
+                "Move upward step by step, using the sum rule.",
+                "Check your calculations."
             ]
         },
         // 继续定义其他题目...
