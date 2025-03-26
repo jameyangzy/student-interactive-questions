@@ -378,7 +378,6 @@ const questionData = {
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
 };
-
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) {
@@ -386,16 +385,20 @@ function loadQuestion(questionId) {
         return;
     }
 
-    document.getElementById('questionNumber').innerText = question.type;
+    // 设置问题类型在 h1 标签
+    document.getElementById('questionType').innerText = question.type;
+
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
     
+    // 如果有金字塔结构和颜色，渲染金字塔
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
         document.getElementById('interactiveArea').innerHTML = '';
     }
 
+    // 设置图片来源路径
     const imgElement = document.getElementById('questionImage');
     imgElement.src = question.img || '';
     const imgElement2 = document.getElementById('questionImage2');
@@ -406,6 +409,7 @@ function loadQuestion(questionId) {
     setupInputs(question.variables, question.equationVariables);
     setupHints(question.hints);
 
+    // 显示或隐藏额外输入或解释区域
     const explanationElement = document.getElementById('explanation');
     explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
@@ -417,10 +421,13 @@ function renderPyramid(pyramidStructure, pyramidColors) {
     pyramidStructure.forEach((row, rowIndex) => {
         const pyramidRow = document.createElement('div');
         pyramidRow.className = 'pyramid-row';
+
         row.forEach((value, colIndex) => {
             const box = document.createElement('div');
             box.className = 'box';
             const editable = pyramidColors[rowIndex][colIndex];
+
+            // 如果是可编辑的，则添加输入框
             if (editable) {
                 const input = document.createElement('input');
                 input.type = 'text';
@@ -430,8 +437,10 @@ function renderPyramid(pyramidStructure, pyramidColors) {
             } else {
                 box.textContent = value !== null ? value : '';
             }
+            
             pyramidRow.appendChild(box);
         });
+
         pyramidContainer.appendChild(pyramidRow);
     });
 }
@@ -456,6 +465,11 @@ function setupHints(hints) {
     hintList.innerHTML = hints.map((hint, index) => `<li>${index + 1}. ${hint}</li>`).join('');
 }
 
+function toggleHints() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
+
 function goBack() {
     window.location.href = 'selection.html';
 }
@@ -464,14 +478,9 @@ function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
-
-    // 这里根据next参数改变问题编号
     questionNumber += next ? 1 : -1;
 
-    // 构造下一个问题的ID
     const nextQuestionId = `${category}${questionNumber}`;
-
-    // 检查questionData确保下一个问题存在
     if (questionData[nextQuestionId]) {
         history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
         loadQuestion(nextQuestionId);
@@ -479,4 +488,3 @@ function navigate(next) {
         alert("No more questions available.");
     }
 }
-
