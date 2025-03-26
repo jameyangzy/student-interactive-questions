@@ -531,27 +531,19 @@ function loadQuestion(questionId) {
     const explanationElement = document.getElementById('explanation');
     explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
-async function submitAnswers() {
+
+function submitAnswers() {
     const userAnswers = {
         // 收集用户答案
+        taskDetails: document.getElementById('taskDetails').innerText,
+        explanation: document.querySelector('#explanation textarea').value
+        // 可以添加更多收集逻辑
     };
 
-    try {
-        const response = await fetch('/submit-answers', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userAnswers })
-        });
+    // 这里可以添加保存答案的逻辑，例如提交至服务器或使用localStorage
+    console.log(userAnswers); // 显示收集的答案供调试使用
 
-        if (response.ok) {
-            window.location.href = 'end.html'; // 成功后跳转
-        } else {
-            console.error('Submit failed');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    // 跳转至结束页面
+    window.location.href = 'end.html';
 }
 
