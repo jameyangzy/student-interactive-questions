@@ -401,12 +401,33 @@ function loadQuestion(questionId) {
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
-    pyramidContainer.innerHTML = pyramidStructure.map((row, rowIndex) =>
-        `<div class='pyramid-row'>${row.map((value, colIndex) => {
+    pyramidContainer.innerHTML = '';
+
+    pyramidStructure.forEach((row, rowIndex) => {
+        const pyramidRow = document.createElement('div');
+        pyramidRow.className = 'pyramid-row';
+
+        row.forEach((value, colIndex) => {
+            const box = document.createElement('div');
+            box.className = 'box';
             const editable = pyramidColors[rowIndex][colIndex];
-            return `<div class='brick' style='background-color:${editable ? 'yellow' : 'white'}'>${editable ? '<input type="text">' : value}</div>`;
-        }).join('')}</div>`
-    ).join('');
+
+            // 如果可编辑，则添加输入框
+            if (editable) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = value !== null ? value : '';
+                box.appendChild(input);
+                box.classList.add('highlight');
+            } else {
+                box.textContent = value !== null ? value : '';
+            }
+            
+            pyramidRow.appendChild(box);
+        });
+
+        pyramidContainer.appendChild(pyramidRow);
+    });
 }
 
 function setupInputs(variables, equationVariables) {
