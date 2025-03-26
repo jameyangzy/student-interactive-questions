@@ -9,31 +9,26 @@
 <body>
 <div class="container">
     <h3 id="questionType"></h3>
-
     <div id="questionImageContainer">
         <img id="questionImage" alt="">
         <img id="questionImage2" alt="">
         <img id="questionImage3" alt="">
     </div>
     <div id="questionText" style="white-space: pre-wrap;"></div>
-    <div id="taskDetails"></div> <!-- 确保这是唯一一个 taskDetails -->
     <div id="interactiveArea"></div>
-    <div id="inputs"></div>
-    <div id="explanation" style="display: none;">
-        <p>Please explain how you found the solution:</p>
-        <textarea rows="4" cols="50" placeholder="Type your explanation here..."></textarea>
-    </div>
+    <div id="taskDetails">Question Details</div>
+    <textarea id="explanation" placeholder="Explain your answer"></textarea>
     <div id="hintSection">
         <button class="hint-btn" onclick="toggleHints()">Hints</button>
         <ul id="hintList" class="hidden"></ul>
     </div>
     <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
-    <!-- 添加提交按钮 -->
-    <div id="submitButtonContainer" style="display: none;">
+    <div id="submitButtonContainer" style="display:none;">
         <button onclick="submitAnswers()">Submit</button>
     </div>
 </div>
+
 
 <script src="scripts.js"></script>
 <script>
