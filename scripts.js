@@ -390,6 +390,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function setupHints(hints) {
+    const hintsContainer = document.getElementById('hintsContainer');
+    hintsContainer.innerHTML = '';  // 清空现有的提示
+
+    hints.forEach((hint, index) => {
+        const hintElement = document.createElement('div');
+        hintElement.className = 'hint';
+        hintElement.innerText = hint.text;
+        hintElement.addEventListener('click', () => {
+            // 显示提示内容
+            alert(hint.text);
+        });
+        hintsContainer.appendChild(hintElement);
+    });
+}
+
 
 function loadQuestion(questionId) {
     const question = questionData[questionId];
