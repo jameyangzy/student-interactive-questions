@@ -373,6 +373,11 @@ const questionData = {
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
 };
+
+const questionData = {
+    // Question data should remain here as defined
+};
+
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) {
@@ -399,6 +404,10 @@ function loadQuestion(questionId) {
     imgElement3.src = question.img3 || '';
 
     setupHints(question.hints);
+
+    // 显示或隐藏额外输入或解释区域
+    const explanationElement = document.getElementById('explanation');
+    explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
 
 function renderPyramid(pyramidStructure, pyramidColors) {
@@ -460,65 +469,6 @@ function goBack() {
     window.location.href = 'selection.html';
 }
 
-
-function navigate(next) {
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'C';
-    let questionNumber = parseInt(params.get('question')) || 1;
-    questionNumber += next ? 1 : -1;
-
-    const nextQuestionId = `${category}${questionNumber}`;
-
-    if (questionData[nextQuestionId]) {
-        history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-        loadQuestion(nextQuestionId);
-    } else {
-        alert("No more questions available.");
-    }
-}
-
-const LAST_QUESTION_NUMBER = 6; // 假设最后一道题是第6题，根据实际情况更改
-
-function loadQuestion(questionId) {
-    const question = questionData[questionId];
-    if (!question) {
-        goBack();
-        return;
-    }
-
-    // 拆分 type 为两部分
-    const [shortType, longType] = question.type.split(':', 2);
-
-    // 将拆分后的类型设置到不同的元素
-    document.getElementById('shortType').innerText = shortType.trim();
-    document.getElementById('longType').innerText = longType.trim();
-
-    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
-    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
-    
-    // 如果有金字塔结构和颜色，渲染金字塔
-    if (question.pyramidStructure && question.pyramidColors) {
-        renderPyramid(question.pyramidStructure, question.pyramidColors);
-    } else {
-        document.getElementById('interactiveArea').innerHTML = '';
-    }
-
-    // 设置图片来源路径
-    const imgElement = document.getElementById('questionImage');
-    imgElement.src = question.img || '';
-    const imgElement2 = document.getElementById('questionImage2');
-    imgElement2.src = question.img2 || '';
-    const imgElement3 = document.getElementById('questionImage3');
-    imgElement3.src = question.img3 || '';
-
-    setupInputs(question.variables, question.equationVariables);
-    setupHints(question.hints);
-
-    // 显示或隐藏额外输入或解释区域
-    const explanationElement = document.getElementById('explanation');
-    explanationElement.style.display = question.additionalInput ? 'block' : 'none';
-}
-
 async function submitAnswers() {
     const userAnswers = {
         taskDetails: document.getElementById('taskDetails').innerText,
@@ -531,7 +481,6 @@ async function submitAnswers() {
     const path = 'results.json';
 
     try {
-        // 获取现有文件的信息以获取SHA值
         const fileResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
             headers: {
                 Authorization: `token ${token}`
@@ -547,7 +496,6 @@ async function submitAnswers() {
 
         const encodedContent = btoa(JSON.stringify({ userAnswers }));
 
-        // 更新文件内容
         const result = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
             method: 'PUT',
             headers: {
@@ -562,7 +510,7 @@ async function submitAnswers() {
         });
 
         if (result.ok) {
-            window.location.href = 'end.html'; // 成功后跳转
+            window.location.href = 'end.html';
         } else {
             throw new Error('Failed to update file.');
         }
@@ -570,4 +518,3 @@ async function submitAnswers() {
         console.error('Error:', error);
     }
 }
-
