@@ -427,7 +427,6 @@ function renderPyramid(pyramidStructure, pyramidColors) {
             box.className = 'box';
             const editable = pyramidColors[rowIndex][colIndex];
 
-            // 如果是可编辑的，则添加输入框
             if (editable) {
                 const input = document.createElement('input');
                 input.type = 'text';
@@ -444,6 +443,7 @@ function renderPyramid(pyramidStructure, pyramidColors) {
         pyramidContainer.appendChild(pyramidRow);
     });
 }
+
 
 function setupInputs(variables, equationVariables) {
     const inputsContainer = document.getElementById('inputs');
