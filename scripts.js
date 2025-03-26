@@ -380,20 +380,17 @@ function loadQuestion(questionId) {
         return;
     }
 
-    // 设置问题类型在 h1 标签
     document.getElementById('questionType').innerText = question.type;
-
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
     
-    // 如果有金字塔结构和颜色，渲染金字塔
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
         document.getElementById('interactiveArea').innerHTML = '';
     }
 
-    // 设置图片来源路径
+    // 图片加载
     const imgElement = document.getElementById('questionImage');
     imgElement.src = question.img || '';
     const imgElement2 = document.getElementById('questionImage2');
@@ -401,12 +398,7 @@ function loadQuestion(questionId) {
     const imgElement3 = document.getElementById('questionImage3');
     imgElement3.src = question.img3 || '';
 
-    setupInputs(question.variables, question.equationVariables);
     setupHints(question.hints);
-
-    // 显示或隐藏额外输入或解释区域
-    const explanationElement = document.getElementById('explanation');
-    explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
 
 function renderPyramid(pyramidStructure, pyramidColors) {
@@ -427,7 +419,6 @@ function renderPyramid(pyramidStructure, pyramidColors) {
                 input.type = 'text';
                 input.value = value !== null ? value : '';
                 box.appendChild(input);
-                box.classList.add('highlight');
             } else {
                 box.textContent = value !== null ? value : '';
             }
@@ -437,22 +428,6 @@ function renderPyramid(pyramidStructure, pyramidColors) {
 
         pyramidContainer.appendChild(pyramidRow);
     });
-}
-
-
-function setupInputs(variables, equationVariables) {
-    const inputsContainer = document.getElementById('inputs');
-    inputsContainer.innerHTML = '';
-
-    if (variables) {
-        inputsContainer.innerHTML += variables.map(variable => `<div>${variable} = <input type="text" id="input${variable}" placeholder="Enter value for ${variable}"></div>`).join('');
-    }
-
-    if (equationVariables) {
-        inputsContainer.innerHTML += '<div>Equation: ';
-        inputsContainer.innerHTML += equationVariables.map(variable => `${variable} <input type="text" id="input${variable}" placeholder="">`).join(' + ');
-        inputsContainer.innerHTML += '</div>';
-    }
 }
 
 function setupHints(hints) {
@@ -465,9 +440,26 @@ function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
+function navigate(next) {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category') || 'C';
+    let questionNumber = parseInt(params.get('question')) || 1;
+    questionNumber += next ? 1 : -1;
+
+    const nextQuestionId = `${category}${questionNumber}`;
+
+    if (questionData[nextQuestionId]) {
+        history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+        loadQuestion(nextQuestionId);
+    } else {
+        alert("No more questions available.");
+    }
+}
+
 function goBack() {
     window.location.href = 'selection.html';
 }
+
 
 function navigate(next) {
     const params = new URLSearchParams(window.location.search);
