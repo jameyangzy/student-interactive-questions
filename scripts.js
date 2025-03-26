@@ -464,11 +464,19 @@ function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
+
+    // 这里根据next参数改变问题编号
     questionNumber += next ? 1 : -1;
+
+    // 构造下一个问题的ID
     const nextQuestionId = `${category}${questionNumber}`;
+
+    // 检查questionData确保下一个问题存在
     if (questionData[nextQuestionId]) {
+        history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
         loadQuestion(nextQuestionId);
     } else {
         alert("No more questions available.");
     }
 }
+
