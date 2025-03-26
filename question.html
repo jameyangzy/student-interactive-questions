@@ -24,11 +24,15 @@
         <textarea rows="4" cols="50" placeholder="Type your explanation here..."></textarea>
     </div>
     <div id="hintSection">
-        <button class="hint-btn" onclick="toggleHints()">Hints</button> 
+        <button class="hint-btn" onclick="toggleHints()">Hints</button>
         <ul id="hintList" class="hidden"></ul> 
     </div>
     <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
+    <!-- 添加提交按钮 -->
+    <div id="submitButtonContainer" style="display:none;">
+        <button onclick="submitAnswers()">Submit</button>
+    </div>
 </div>
 
 <script src="scripts.js"></script>
@@ -40,6 +44,11 @@
         const questionNumber = parseInt(urlParams.get('question')) || 1;
         const questionId = `${category}${questionNumber}`;
         loadQuestion(questionId);
+
+        // 如果是最后一道题，则显示提交按钮
+        if (questionNumber === LAST_QUESTION_NUMBER) {
+            document.getElementById('submitButtonContainer').style.display = 'block';
+        }
     });
 
     function toggleHints() {
