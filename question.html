@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <h3 id="questionType"></h3> 
+    <h3 id="questionType"></h3>
 
     <div id="questionImageContainer">
         <img id="questionImage" alt="">
@@ -16,7 +16,7 @@
         <img id="questionImage3" alt="">
     </div>
     <div id="questionText" style="white-space: pre-wrap;"></div>
-    <div id="taskDetails"></div>
+    <div id="taskDetails"></div> <!-- 确保这是唯一一个 taskDetails -->
     <div id="interactiveArea"></div>
     <div id="inputs"></div>
     <div id="explanation" style="display: none;">
@@ -25,15 +25,12 @@
     </div>
     <div id="hintSection">
         <button class="hint-btn" onclick="toggleHints()">Hints</button>
-        <ul id="hintList" class="hidden"></ul> 
+        <ul id="hintList" class="hidden"></ul>
     </div>
     <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
     <!-- 添加提交按钮 -->
-    
-    <div>
-        <div id="taskDetails">Question Details</div>
-        <textarea id="explanation" placeholder="Explain your answer"></textarea>
+    <div id="submitButtonContainer" style="display: none;">
         <button onclick="submitAnswers()">Submit</button>
     </div>
 </div>
