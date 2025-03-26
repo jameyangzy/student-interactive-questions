@@ -432,7 +432,7 @@ function renderPyramid(pyramidStructure, pyramidColors) {
 
 function setupInputs(variables, equationVariables) {
     const inputsContainer = document.getElementById('inputs');
-    inputsContainer.innerHTML = '';
+    inputsContainer.innerHTML = ''; // Ensure inputs can be dynamically filled
 
     if (variables) {
         inputsContainer.innerHTML += variables.map(variable => `<div>${variable} = <input type="text" id="input${variable}" placeholder="Enter value for ${variable}"></div>`).join('');
