@@ -531,3 +531,27 @@ function loadQuestion(questionId) {
     const explanationElement = document.getElementById('explanation');
     explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
+async function submitAnswers() {
+    const userAnswers = {
+        // 收集用户答案
+    };
+
+    try {
+        const response = await fetch('/submit-answers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userAnswers })
+        });
+
+        if (response.ok) {
+            window.location.href = 'end.html'; // 成功后跳转
+        } else {
+            console.error('Submit failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
