@@ -61,18 +61,18 @@ const questionData = {
         "img": "",
         "hints": [],
         "pyramidStructure": [
-            [null],
+            [280],
             [null, null],
             [null, 75, null],
-            [5, null, null, null],
-            [null, null, null, null, 1]
+            [31, null, null, null],
+            [null, null, 13, null, 1]
         ],
         "pyramidColors": [
-            [false],
+            [true],
             [false, false],
             [false, true, false],
             [true, false, false, false],
-            [false, false, false, false, true]
+            [false, false, true, false, true]
         ],
         "solutionsDetails": "Main task: Try to solve the following pyramid by filling in the missing values while following the pyramid rule.",
         "additionalInput": "Please explain how you found the solution."
@@ -144,14 +144,14 @@ const questionData = {
             "Work step by step, checking your calculations."
         ],
         "pyramidStructure": [
-            [null],
-            [null, null],
-            [null, null, null]
+            [280],
+            [145, null],
+            [null, 75, null]
         ],
         "pyramidColors": [
-            [false],
-            [false, false],
-            [false, false, false]
+            [true],
+            [true, false],
+            [false, true, false]
         ],
         "solutionsDetails": "Main task: Find the missing numbers and fill in the pyramid completely."
     },
@@ -169,16 +169,16 @@ const questionData = {
             "Use the pyramid rule to determine the missing numbers."
         ],
         "pyramidStructure": [
-            [null],
-            [null, null],
-            [null, null, null],
-            [null, null, null, null]
+            [280],
+            [null, 131],
+            [null, 75, null],
+            [31, null, null, null]
         ],
         "pyramidColors": [
-            [false],
-            [false, false],
-            [false, false, false],
-            [false, false, false, false]
+            [true],
+            [false, true],
+            [false, true, false],
+            [true, false, false, false]
         ],
         "choices": ["Yes", "No"],
         "solutionsDetails": "Main task: Find the missing numbers and complete the pyramid. Then, confirm that only one solution exists."
@@ -198,16 +198,16 @@ const questionData = {
             "If you cannot determine a missing number directly, assign variables to the two unknown numbers in the bottom row (e.g., a, b), and use the given numbers (75 and 280) to create equations that relate them. Solve step by step to see if there is only one possible solution for a and b."
         ],
         "pyramidStructure": [
-            [null],
+            [280],
             [null, null],
-            [null, null, null],
-            [null, null, null, null]
+            [null, 75, null],
+            [31, null, null, 24]
         ],
         "pyramidColors": [
-            [false],
+            [true],
             [false, false],
-            [false, false, false],
-            [false, false, false, false]
+            [false, true, false],
+            [true, false, false, true]
         ],
         "choices": ["Yes", "No"],
         "solutionsDetails": "Main task: Find the missing numbers and complete the pyramid. Then, confirm that only one solution exists."
@@ -238,18 +238,18 @@ const questionData = {
         "img": "",
         "hints": [],
         "pyramidStructure": [
-            [null],
+            [280],
             [null, null],
-            [null, null, null],
-            [null, null, null, null],
-            [null, null, null, null, null]
+            [null, 75, null],
+            [31, null, null, null],
+            [null, null, 13, null, null]
         ],
         "pyramidColors": [
-            [false],
+            [true],
             [false, false],
-            [false, false, false],
-            [false, false, false, false],
-            [false, false, false, false, false]
+            [false, true, false],
+            [true, false, false, false],
+            [false, false, true, false, false]
         ],
         "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
         "solutionsDetails": "Main task: Solve for the missing values and identify the solution type."
