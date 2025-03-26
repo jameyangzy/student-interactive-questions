@@ -1,16 +1,19 @@
 const questionData = {
-    "A1": {
+   "A1": {
         "type": "pyramid",
-        "task": "Solve the 5-Level Pyramid with a Given Value",
-        "task": "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid. ",
-        "task": "Each brick follows a simple rule: ",
-        "task": "In this pyramid, one value is already given—the bottom-left brick is 5.Your task is to fill in the missing numbers so that the pyramid follows the rule.",        
+        "task": (
+            "Solve the 5-Level Pyramid with a Given Value\n" +
+            "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid.\n" +
+            "Each brick follows a simple rule:\n" +
+            "In this pyramid, one value is already given—the bottom-left brick is 5.\n" +
+            "Your task is to fill in the missing numbers so that the pyramid follows the rule."
+        ),
         "hints": [
             "Start from the bottom row—you already know the first number (5). Use the rule to find the next brick in that row.",
             "Move upward step by step, using the sum rule to fill in the second row, then the third, and so on.",
             "Check your calculations—each brick must be the sum of the two below it."
         ],
-         "pyramidStructure": [
+        "pyramidStructure": [
             [280],
             [null, null],
             [null, 75, null],
@@ -24,9 +27,7 @@ const questionData = {
             [true, false, false, false],
             [true, false, true, false, true]
         ],
-        "task": "Main task:",
-        "task": " Use the pyramid rule to determine all missing values and complete the pyramid. Answer mode: Fill the numbers in the empty spaces of the pyramid."
-    
+        "solutionsDetails": "Main task: Use the pyramid rule to determine all missing values and complete the pyramid.\nAnswer mode: Fill the numbers in the empty spaces of the pyramid."
     },
     "A2": {
         "type": "solutionType",
@@ -239,22 +240,15 @@ function loadQuestion(questionId) {
     }
 
     document.getElementById('questionNumber').innerText = `Question ${questionId}`;
-    document.getElementById('questionText').innerText = question.task;
-    document.getElementById('taskDetails').innerText = question.details;
+    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
+    document.getElementById('taskDetails').innerText = question.details.replace(/\n/g, "\n");
+    document.getElementById('solutionsDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
 
-    const interactiveArea = document.getElementById('interactiveArea');
-    interactiveArea.innerHTML = '';
-
-    if (question.type === 'pyramid') {
-        renderPyramid(question.pyramidStructure || []);
-    } else if (question.type === 'choices') {
-        renderChoices(question.choices);
-    } else if (question.type === 'equation') {
-        renderEquationInputs(question.equationInputs);
-    }
-
-    setupHints(question.hints || []);
+    renderPyramid(question.pyramidStructure, question.pyramidColors);
+    setupHints(question.hints);
 }
+
+
 
 function renderPyramid(pyramidStructure) {
     const pyramidContainer = document.getElementById('interactiveArea');
