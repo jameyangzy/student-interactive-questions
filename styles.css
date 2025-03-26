@@ -4,7 +4,7 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-    min-height: 150vh; /* 保证网页至少有一个视口高度 */
+    min-height: 100vh; /* 保证网页至少有一个视口高度 */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,8 +34,17 @@ h1 {
 #questionImageContainer {
     display: flex;
     justify-content: center;
-    margin: 20px 0; /* 图片容器的垂直间距 */
+    margin: 10px 0; /* 图片容器的垂直间距 */
 }
+
+#questionImage, #questionImage2, #questionImage3 {
+    max-width: 80%; /* 限制图片最大宽度为容器宽度的80% */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* 图片本身居中 */
+}
+
+
 #questionText, #taskDetails, #interactiveArea, #inputs, #explanation, #hintSection, button {
     margin-bottom: 20px; /* 为每个元素增加间距 */
 }
