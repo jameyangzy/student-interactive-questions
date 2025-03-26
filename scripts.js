@@ -373,6 +373,24 @@ const questionData = {
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
 };
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+    console.log('URL Params:', { category, questionNumber, questionId }); // 调试输出
+    loadQuestion(questionId);
+
+    // 如果是最后一道题，则显示提交按钮
+    const LAST_QUESTION_NUMBER = 6; // 需要根据实体定义实际最后题目编号
+    if (questionNumber === LAST_QUESTION_NUMBER) {
+        document.getElementById('submitButtonContainer').style.display = 'block';
+    }
+});
+
+
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) {
