@@ -376,14 +376,12 @@ function loadQuestion(questionId) {
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
     
-    // Render pyramid if available
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
         document.getElementById('interactiveArea').innerHTML = '';
     }
 
-    // Render images if available
     const imgElement = document.getElementById('questionImage');
     imgElement.src = question.img || '';
     const imgElement2 = document.getElementById('questionImage2');
@@ -394,7 +392,6 @@ function loadQuestion(questionId) {
     setupInputs(question.variables, question.equationVariables);
     setupHints(question.hints);
 
-    // Manage additional inputs or explanation areas
     const explanationElement = document.getElementById('explanation');
     explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
@@ -406,13 +403,10 @@ function renderPyramid(pyramidStructure, pyramidColors) {
     pyramidStructure.forEach((row, rowIndex) => {
         const pyramidRow = document.createElement('div');
         pyramidRow.className = 'pyramid-row';
-
         row.forEach((value, colIndex) => {
             const box = document.createElement('div');
             box.className = 'box';
             const editable = pyramidColors[rowIndex][colIndex];
-
-            // 如果可编辑，则添加输入框
             if (editable) {
                 const input = document.createElement('input');
                 input.type = 'text';
@@ -422,17 +416,15 @@ function renderPyramid(pyramidStructure, pyramidColors) {
             } else {
                 box.textContent = value !== null ? value : '';
             }
-            
             pyramidRow.appendChild(box);
         });
-
         pyramidContainer.appendChild(pyramidRow);
     });
 }
 
 function setupInputs(variables, equationVariables) {
     const inputsContainer = document.getElementById('inputs');
-    inputsContainer.innerHTML = ''; // Ensure inputs can be dynamically filled
+    inputsContainer.innerHTML = '';
 
     if (variables) {
         inputsContainer.innerHTML += variables.map(variable => `<div>${variable} = <input type="text" id="input${variable}" placeholder="Enter value for ${variable}"></div>`).join('');
@@ -454,73 +446,11 @@ function goBack() {
     window.location.href = 'selection.html';
 }
 
-function generatePyramid(question) {
-    const values = question.pyramid.split(',').map(value => value.trim());
-    const colors = question.pyramid_color.split(',').map(color => color.trim());
-    const pyramidContainer = document.querySelector('.pyramid-container');
-    pyramidContainer.innerHTML = ''; // 清空现有的金字塔结构
-
-    const numRows = calculateNumRows(values.length);
-
-    for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
-        const row = document.createElement('div');
-        row.className = 'row';
-        for (let colIndex = 0; colIndex <= rowIndex; colIndex++) {
-            const index = rowIndex * (rowIndex + 1) / 2 + colIndex;
-            if (index < values.length) {
-                const box = document.createElement('div');
-                box.className = 'box';
-                // 设置背景颜色
-                if (colors[index] === 'true') {
-                    box.classList.add('highlight');
-                }
-                // 根据values中的值设置box内容
-                if (values[index] === '-1') {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    box.appendChild(input);
-                } else if (values[index] === '-2') {
-                    box.textContent = ''; // 空白内容的砖块
-                } else if (values[index] === '?') {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.value = '?'; // 默认内容是?的输入框
-                    box.appendChild(input);
-                } else {
-                    box.textContent = values[index]; // 数值砖块
-                }
-                row.appendChild(box);
-            }
-        }
-        pyramidContainer.appendChild(row);
-    }
-
-    if (question.textarea === 'true') {
-        // 如果需要文本区，添加文本区
-        const answerSection = document.createElement('div');
-        answerSection.className = 'answer-section';
-        answerSection.innerHTML = '<textarea id="answerInput" placeholder="Enter your answer here"></textarea>';
-        pyramidContainer.appendChild(answerSection);
-    }
-}
-
-// 定义行数计算函数
-function calculateNumRows(count) {
-    let rows = 0;
-    while ((rows * (rows + 1)) / 2 < count) {
-        rows++;
-    }
-    return rows;
-}
-
-
-
 function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
     questionNumber += next ? 1 : -1;
-
     const nextQuestionId = `${category}${questionNumber}`;
     if (questionData[nextQuestionId]) {
         loadQuestion(nextQuestionId);
