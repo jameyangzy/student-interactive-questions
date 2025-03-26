@@ -38,7 +38,7 @@ const questionData = {
             "2. Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
             "3. No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule."
         ),
-        "img": "",
+        "img": "img/A/a2.png",
         "hints": [
             "Try to find one solution—fill in the missing numbers step by step using the pyramid rule.",
             "Check if you can find another solution—try adjusting some of the missing numbers while still following the pyramid rule.",
@@ -296,6 +296,20 @@ const questionData = {
         "task": "Start from the bottom row—change 2 to a 3, then recalculate the brick directly above it. Move upward step by step, ensuring that every brick is updated according to the sum rule.",
         "img": "img/C/c2_1.png",
         "hints": [],
+         "pyramidStructure": [
+            [null],
+            [null, null],
+            [null, null, null],
+            [null, null, null, null],
+            [1, 2, 3, 4, 5]
+        ],
+        "pyramidColors": [
+            [true],
+            [true, true],
+            [true, true, true],
+            [true, true, true, true],
+            [false, false, false, false, false]
+        ],
         "solutionsDetails": "Main task: Ensure that every brick is updated according to the pyramid rule."
     },
     "C3": {
@@ -305,7 +319,7 @@ const questionData = {
             "Each number is the sum of the two numbers directly below it.\n" +
             "We know that the top number is 280, but the bottom row numbers are missing."
         ),
-        "img": "",
+        "img": "img/C/c3.png",
         "hints": [
             "Assign variables (a, b, c, d) to the unknown bottom-row numbers.",
             "Use the pyramid rule to express how these numbers add up layer by layer.",
