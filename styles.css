@@ -102,6 +102,15 @@ button:hover {
     background-color: #f3f3f3;
 }
 
+.box input {
+    width: 50px; /* 调整输入框宽度 */
+    height: 20px; /* 调整输入框高度 */
+    text-align: center;
+    border: 1px solid #000;
+    background-color: white;
+}
+
+
 .highlight {
     background-color: yellow;
 }
