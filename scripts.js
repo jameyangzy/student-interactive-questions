@@ -34,13 +34,28 @@ const questionData = {
         "solutionsDetails": "Main task: Whether the above pyramid has a unique solution, multiple solutions, or no solution. Answer mode: Please explain the reason(s) in the text box."
     },
     "A3": {
-        "type": "pyramidChange",
-        "task": "Changing the Position of the Additional Given Number",
-        "details": "In the previous problem A1, we explored how adding an extra number to the bottom row affected the solution type of the pyramid. Now, let's take a step further: What happens when we change the position of this additional number?",
+        "type": "pyramid",
+        "task": "Solve the Pyramid by Filling Missing Values",
+        "details": "Your task is to fill in the missing values in the pyramid based on the sum rule.",
         "hints": [
-            "Try to solve the following pyramid by filling in the missing values while following the pyramid rule."
+            "Start from the known values and use logical reasoning to deduce the missing numbers.",
+            "Ensure every brick follows the sum of the two bricks directly below it."
         ],
-        "solutionsDetails": "Answer mode: Fill the numbers in the empty spaces of the pyramid. Please explain how you found the solution in the text box."
+        "pyramidStructure": [
+            [280],
+            [null, null],
+            [null, 75, null],
+            [31, null, null, null],
+            [null, null, 13, null, 1]
+        ],
+        "pyramidColors": [
+            [true],
+            [false, false],
+            [true, true, false],
+            [true, false, false, false],
+            [false, false, true, false, true]
+        ],
+        "solutionsDetails": "Main task: Fill the numbers in the empty spaces of the pyramid using the pyramid rule."
     },
     "A4": {
         "type": "verifyPyramids",
@@ -265,3 +280,21 @@ function submitAnswer() {
 function goBack() {
     window.location.href = 'selection.html';
 }
+
+function renderPyramid(pyramidStructure, pyramidColors) {
+    const pyramidContainer = document.getElementById('interactiveArea');
+    pyramidContainer.innerHTML = pyramidStructure.map((row, rowIndex) =>
+        `<div class='pyramid-row'>${row.map((value, colIndex) => {
+            const editable = value === null;
+            const color = pyramidColors[rowIndex][colIndex] ? 'yellow' : 'white';
+            return `<div class='brick' style='background-color:${color}'>${editable ? '<input type="text">' : value}</div>`;
+        }).join('')}</div>`
+    ).join('');
+}
+
+window.onload = function() {
+    const questionId = 'A3';  // 直接加载 A3 以便调试
+    const question = questionData[questionId];
+    renderPyramid(question.pyramidStructure, question.pyramidColors);
+};
+
