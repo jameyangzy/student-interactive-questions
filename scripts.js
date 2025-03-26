@@ -374,10 +374,6 @@ const questionData = {
     }
 };
 
-const questionData = {
-    // Question data should remain here as defined
-};
-
 function loadQuestion(questionId) {
     console.log('Loading question:', questionId); // 调试输出
     const question = questionData[questionId];
