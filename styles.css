@@ -4,12 +4,13 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    min-height: 100vh; /* 统一页面高度 */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
+    justify-content: center; /* 垂直居中页面内容 */
 }
+
 
 .container {
     width: 90%;
@@ -17,9 +18,13 @@ body {
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: hidden;
     padding: 20px;
     text-align: center;
+    margin: 20px 0; /* 为容器增加垂直居中 */
+}
+
+h3 {
+    margin-bottom: 20px; /* 为标题增加间距 */
 }
 
 h1 {
@@ -27,8 +32,13 @@ h1 {
     margin-bottom: 20px;
 }
 
-#questionImageContainer, #interactiveArea, #inputs, #explanation, #hintSection {
-    margin-bottom: 20px;
+#questionImageContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; /* 图片容器的垂直间距 */
+}
+#questionText, #taskDetails, #interactiveArea, #inputs, #explanation, #hintSection, button {
+    margin-bottom: 20px; /* 为每个元素增加间距 */
 }
 
 .hint-btn {
@@ -76,8 +86,14 @@ button:hover {
     margin: 1px 0;
 }
 
+.pyramid-row {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0; /* 为每一行金字塔增加间距 */
+}
+
 .box {
-    width: 60px; /* 可根据实际效果调整尺寸 */
+    width: 60px; /* 可以根据实际需要调整尺寸 */
     height: 30px;
     display: flex;
     align-items: center;
@@ -102,5 +118,6 @@ button:hover {
     max-width: 100%;
     height: auto;
     display: block;
-    margin: 0 auto; /* 图片本身居中 */
+    margin: 0 auto; /* 图片居中 */
 }
+
