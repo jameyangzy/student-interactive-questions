@@ -389,9 +389,8 @@ function loadQuestion(questionId) {
     imgElement2.src = question.img2 || '';
     const imgElement3 = document.getElementById('questionImage3');
     imgElement3.src = question.img3 || '';
-    
-    setupInputs(question.variables, question.equationVariables);
 
+    setupInputs(question.variables, question.equationVariables);
     setupHints(question.hints);
 
     // Manage additional inputs or explanation areas
