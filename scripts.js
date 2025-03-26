@@ -1,5 +1,4 @@
 const questionData = {
-  {
     "A1": {
         "type": "pyramid",
         "task": "**Solve the 5-Level Pyramid with a Given Value**",
@@ -190,8 +189,6 @@ const questionData = {
         "details": "In this challenge, you will design a pyramid with only 5 known numbers.",
         "solutionsDetails": "**Main task:** Can you create a pyramid with 5 given numbers? Build a complete pyramid by choosing 5 numbers for the bottom row and filling in all other values using the pyramid rule to ensure that your pyramid has a solution.\n**Answer mode:** Fill the pyramid with 5 known numbers."
     }
-}
-
 };
 
 window.onload = function() {
