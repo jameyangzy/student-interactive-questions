@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 id="questionType"></h1> <!-- type 放在 h1 并居中 -->
+    <h3 id="questionType"></h3> <!-- type 在 h1 元素中显示，并居中 -->
 
     <div id="questionImageContainer">
         <img id="questionImage" alt="">
@@ -24,10 +24,10 @@
         <textarea rows="4" cols="50" placeholder="Type your explanation here..."></textarea>
     </div>
     <div id="hintSection">
-        <button class="hint-btn" onclick="toggleHints()">Hints</button> <!-- hints 显示按钮 -->
-        <ul id="hintList" class="hidden"></ul> <!-- hints 列表，默认隐藏 -->
+        <button class="hint-btn" onclick="toggleHints()">Hints</button> 
+        <ul id="hintList" class="hidden"></ul> 
     </div>
-    <button onclick="navigate(false)">return</button>
+    <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
 </div>
 
@@ -44,7 +44,7 @@
 
     function toggleHints() {
         const hintList = document.getElementById('hintList');
-        hintList.classList.toggle('hidden'); // 切换隐藏显示
+        hintList.classList.toggle('hidden');
     }
 </script>
 </body>
