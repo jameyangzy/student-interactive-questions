@@ -489,3 +489,45 @@ function navigate(next) {
         alert("No more questions available.");
     }
 }
+
+const LAST_QUESTION_NUMBER = 6; // 假设最后一道题是第6题，根据实际情况更改
+
+function loadQuestion(questionId) {
+    const question = questionData[questionId];
+    if (!question) {
+        goBack();
+        return;
+    }
+
+    // 拆分 type 为两部分
+    const [shortType, longType] = question.type.split(':', 2);
+
+    // 将拆分后的类型设置到不同的元素
+    document.getElementById('shortType').innerText = shortType.trim();
+    document.getElementById('longType').innerText = longType.trim();
+
+    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
+    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
+    
+    // 如果有金字塔结构和颜色，渲染金字塔
+    if (question.pyramidStructure && question.pyramidColors) {
+        renderPyramid(question.pyramidStructure, question.pyramidColors);
+    } else {
+        document.getElementById('interactiveArea').innerHTML = '';
+    }
+
+    // 设置图片来源路径
+    const imgElement = document.getElementById('questionImage');
+    imgElement.src = question.img || '';
+    const imgElement2 = document.getElementById('questionImage2');
+    imgElement2.src = question.img2 || '';
+    const imgElement3 = document.getElementById('questionImage3');
+    imgElement3.src = question.img3 || '';
+
+    setupInputs(question.variables, question.equationVariables);
+    setupHints(question.hints);
+
+    // 显示或隐藏额外输入或解释区域
+    const explanationElement = document.getElementById('explanation');
+    explanationElement.style.display = question.additionalInput ? 'block' : 'none';
+}
