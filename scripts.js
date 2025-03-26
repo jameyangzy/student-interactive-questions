@@ -535,22 +535,49 @@ function loadQuestion(questionId) {
 async function submitAnswers() {
     const userAnswers = {
         taskDetails: document.getElementById('taskDetails').innerText,
-        explanation: document.querySelector('#explanation textarea').value
+        explanation: document.getElementById('explanation').value
     };
 
+    const token = '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'; // 请替换为您的 GitHub Token
+    const owner = 'jameyangzy';
+    const repo = 'student-interactive-questions';
+    const path = 'results.json';
+
     try {
-        const response = await fetch('/submit-answers', {
-            method: 'POST',
+        // 获取现有文件的信息以获取SHA值
+        const fileResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userAnswers })
+                Authorization: `token ${token}`
+            }
         });
 
-        if (response.ok) {
+        if (!fileResponse.ok) {
+            throw new Error('Failed to fetch file information.');
+        }
+
+        const file = await fileResponse.json();
+        const sha = file.sha;
+
+        const encodedContent = btoa(JSON.stringify({ userAnswers }));
+
+        // 更新文件内容
+        const result = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Update results',
+                content: encodedContent,
+                sha: sha
+            })
+        });
+
+        if (result.ok) {
             window.location.href = 'end.html'; // 成功后跳转
         } else {
-            console.error('Submit failed');
+            throw new Error('Failed to update file.');
         }
     } catch (error) {
         console.error('Error:', error);
