@@ -83,8 +83,7 @@ const questionData = {
             "You are a puzzle master at the Mathematical Pyramid Tournament. Two contestants, A and B, have submitted their completed 5-level Brick Pyramid solutions. However, the judges are unsure whether their solutions are correct.\n" +
             "Your role? Act as the final verifier—check their pyramids, and correct any mistakes."
         ),
-        "img": "img/A/a4_1.png",
-        "img2": "img/A/a4_2.png",
+        "img": "img/A/a4.png",
         "hints": [],
         "choices": [
             "A: A is correct",
@@ -103,9 +102,7 @@ const questionData = {
             "Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
             "No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule."
         ),
-        "img": "img/A/a5_1.png",
-        "img2": "img/A/a5_2.png",
-        "img3": "img/A/a5_3.png",
+        "img": "img/A/a5.png",
         "choices": ["A. 4", "B. 5", "C. 6"],
         "solutionsDetails": ""
     },
@@ -220,9 +217,7 @@ const questionData = {
             "Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
             "No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule."
         ),
-        "img": "img/B/b4_1.png",
-        "img2": "img/B/b4_2.png",
-        "img3": "img/B/b4_3.png",
+        "img": "img/B/b4.png",
         "hints": [],
         "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
         "solutionsDetails": "Main task: Determine solution types for each pyramid."
