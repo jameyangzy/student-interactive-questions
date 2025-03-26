@@ -24,7 +24,7 @@ const questionData = {
             [true, false, false, false],
             [true, false, true, false, true]
         ],
-        "task": "Main task:"
+        "task": "Main task:",
         "task": " Use the pyramid rule to determine all missing values and complete the pyramid. Answer mode: Fill the numbers in the empty spaces of the pyramid."
     
     },
@@ -35,7 +35,7 @@ const questionData = {
         "task": "1.The pyramid has a unique solution, meaning that there is only one possible way to fill in the missing values.",
         "task": "2.Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.",
         "task": "3.No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule.",
-        "imgs":"img/A/a2.png"
+        "imgs":"img/A/a2.png",
         "hints": [
             "Try to find one solution—fill in the missing numbers step by step using the pyramid rule.",
             "Check if you can find another solution—try adjusting some of the missing numbers while still following the pyramid rule.",
@@ -46,7 +46,7 @@ const questionData = {
             "B. Multiple Solutions",
             "C. No Solution"
         ],
-        "task": "Main task:"
+        "task": "Main task:",
         "task": "Whether the above pyramid has a unique solution, multiple solutions, or no solution. Answer mode: Please explain the reason(s) in the text box."
     },
     "A3": {
