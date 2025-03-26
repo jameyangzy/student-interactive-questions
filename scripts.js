@@ -192,10 +192,14 @@ const questionData = {
 };
 
 let currentQuestion = 1; // 当前问题编号
+let questionCategory = 'A'; // 设置默认分类
 
-window.onload = function() {
+window.onload = function () {
     const params = new URLSearchParams(window.location.search);
-    const questionId = params.get('question') || `A${currentQuestion}`; // 默认加载第一个问题
+    questionCategory = params.get('category') || 'A'; // 获取选择的类别
+    currentQuestion = parseInt(params.get('question')) || 1; // 获取问题编号
+
+    const questionId = `${questionCategory}${currentQuestion}`; // 按类别和编号读取题目
 
     loadQuestion(questionId);
 };
@@ -213,11 +217,9 @@ function loadQuestion(questionId) {
     document.getElementById('questionText').innerText = question.task;
     document.getElementById('taskDetails').innerText = question.details;
     
-    // 简单展示
     const interactiveArea = document.getElementById('interactiveArea');
-    interactiveArea.innerHTML = ''; // Clear existing content
+    interactiveArea.innerHTML = ''; 
 
-    // 根据题目类型加载不同互动区域
     if (question.type === 'pyramid') {
         renderPyramid(question.pyramidStructure || []);
     } else if (question.type === 'choices') {
@@ -257,7 +259,7 @@ function toggleHints() {
 
 function navigate(direction) {
     currentQuestion += direction;
-    const questionId = `A${currentQuestion}`;
+    const questionId = `${questionCategory}${currentQuestion}`; // 根据类别和问题编号加载
     loadQuestion(questionId);
 }
 
