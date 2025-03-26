@@ -29,23 +29,8 @@
     </div>
 </div>
 
-
 <script src="scripts.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const category = urlParams.get('category') || 'C';
-        const questionNumber = parseInt(urlParams.get('question')) || 1;
-        const questionId = `${category}${questionNumber}`;
-        loadQuestion(questionId);
-
-        // 如果是最后一道题，则显示提交按钮
-        if (questionNumber === LAST_QUESTION_NUMBER) {
-            document.getElementById('submitButtonContainer').style.display = 'block';
-        }
-    });
-
     function toggleHints() {
         const hintList = document.getElementById('hintList');
         hintList.classList.toggle('hidden');
