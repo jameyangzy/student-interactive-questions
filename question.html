@@ -28,6 +28,18 @@
     <button onclick="navigate(false)">return</button>
     <button onclick="navigate(true)">Next</button>
 
-    <script src="scripts.js"></script>
+   <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+
+            const category = urlParams.get('category') || 'C';
+            const questionNumber = parseInt(urlParams.get('question')) || 1;
+
+            const questionId = `${category}${questionNumber}`;
+            loadQuestion(questionId);
+        });
+    </script>
 </body>
 </html>
