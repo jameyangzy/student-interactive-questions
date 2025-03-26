@@ -363,6 +363,7 @@ const questionData = {
         ],
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
+}
 
 function loadQuestion(questionId) {
     const question = questionData[questionId];
