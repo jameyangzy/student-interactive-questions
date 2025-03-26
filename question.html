@@ -4,28 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pyramid Challenge</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="questionNumber"></div>
-    <div id="questionImageContainer">
-        <img id="questionImage" alt="">
-        <img id="questionImage2" alt="">
-        <img id="questionImage3" alt="">
+    <div class="container">
+        <div id="questionNumber"></div>
+        <div id="questionImageContainer">
+            <img id="questionImage" alt="">
+            <img id="questionImage2" alt="">
+            <img id="questionImage3" alt="">
+        </div>
+        <div id="questionText" style="white-space: pre-wrap;"></div>
+        <div id="taskDetails"></div>
+        <div id="interactiveArea"></div>
+        <div id="inputs"></div>
+        <div id="explanation" style="display: none;">
+            <p>Please explain how you found the solution:</p>
+            <textarea rows="4" cols="50" placeholder="Type your explanation here..."></textarea>
+        </div>
+        <div id="hintSection">
+            <p>Hints:</p>
+            <ul id="hintList"></ul>
+        </div>
+        <button onclick="navigate(false)">return</button>
+        <button onclick="navigate(true)">Next</button>
     </div>
-    <div id="questionText" style="white-space: pre-wrap;"></div>
-    <div id="taskDetails"></div>
-    <div id="interactiveArea"></div>
-    <div id="inputs"></div>
-    <div id="explanation" style="display: none;">
-        <p>Please explain how you found the solution:</p>
-        <textarea rows="4" cols="50" placeholder="Type your explanation here..."></textarea>
-    </div>
-    <div id="hintSection">
-        <p>Hints:</p>
-        <ul id="hintList"></ul>
-    </div>
-    <button onclick="navigate(false)">return</button>
-    <button onclick="navigate(true)">Next</button>
     <script src="scripts.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
