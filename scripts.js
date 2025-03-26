@@ -478,17 +478,14 @@ function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
-
-    // 更新问题编号，根据传入的参数+1或者-1
     questionNumber += next ? 1 : -1;
 
     const nextQuestionId = `${category}${questionNumber}`;
+
     if (questionData[nextQuestionId]) {
-        // 更新浏览器状态和URL
         history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
         loadQuestion(nextQuestionId);
     } else {
         alert("No more questions available.");
     }
 }
-
