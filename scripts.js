@@ -373,16 +373,13 @@ const questionData = {
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
 };
-
 function loadQuestion(questionId) {
-    console.log('Loading question:', questionId); // 调试输出
     const question = questionData[questionId];
-    console.log('Question data:', question); // 调试输出
     if (!question) {
         goBack();
         return;
     }
-
+    
     document.getElementById('questionType').innerText = question.type;
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
@@ -393,35 +390,14 @@ function loadQuestion(questionId) {
         document.getElementById('interactiveArea').innerHTML = '';
     }
 
-    // 图片加载
-    const imgElement = document.getElementById('questionImage');
-    imgElement.src = question.img || '';
-    const imgElement2 = document.getElementById('questionImage2');
-    imgElement2.src = question.img2 || '';
-    const imgElement3 = document.getElementById('questionImage3');
-    imgElement3.src = question.img3 || '';
-
     setupHints(question.hints);
 
-    // 显示或隐藏额外输入或解释区域
-    const explanationElement = document.getElementById('explanation');
-    explanationElement.style.display = question.additionalInput ? 'block' : 'none';
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-    console.log('URL Params:', { category, questionNumber, questionId }); // 调试输出
-    loadQuestion(questionId);
-
-    // 如果是最后一道题，则显示提交按钮
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
+    if (question.additionalInput) {
+        document.getElementById('explanation').style.display = 'block';
+    } else {
+        document.getElementById('explanation').style.display = 'none';
     }
-})
+}
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
@@ -452,16 +428,6 @@ function renderPyramid(pyramidStructure, pyramidColors) {
     });
 }
 
-function setupHints(hints) {
-    const hintList = document.getElementById('hintList');
-    hintList.innerHTML = hints.map((hint, index) => `<li>${index + 1}. ${hint}</li>`).join('');
-}
-
-function toggleHints() {
-    const hintList = document.getElementById('hintList');
-    hintList.classList.toggle('hidden');
-}
-
 function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
@@ -478,23 +444,15 @@ function navigate(next) {
     }
 }
 
-function goBack() {
-    window.location.href = 'selection.html';
-}
-
 async function submitAnswers() {
     const userAnswers = {
         taskDetails: document.getElementById('taskDetails').innerText,
         explanation: document.getElementById('explanation').value
     };
 
-    const token = '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'; // 请替换为您的 GitHub Token
-    const owner = 'jameyangzy';
-    const repo = 'student-interactive-questions';
-    const path = 'results.json';
-
+    // GitHub API 操作
     try {
-        const fileResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+        const fileResponse = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
             headers: {
                 Authorization: `token ${token}`
             }
@@ -507,9 +465,9 @@ async function submitAnswers() {
         const file = await fileResponse.json();
         const sha = file.sha;
 
-        const encodedContent = btoa(JSON.stringify({ userAnswers }));
+        const encodedContent = btoa(JSON.stringify(userAnswers));
 
-        const result = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+        const result = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
             method: 'PUT',
             headers: {
                 Authorization: `token ${token}`,
@@ -530,4 +488,4 @@ async function submitAnswers() {
     } catch (error) {
         console.error('Error:', error);
     }
-};
+}
