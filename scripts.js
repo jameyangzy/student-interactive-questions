@@ -289,7 +289,7 @@ const questionData = {
     "C2": {
         "type": "C2-Question 2: Updating the Pyramid After Changing a Bottom Number",
         "task": "Start from the bottom row—change 2 to a 3, then recalculate the brick directly above it. Move upward step by step, ensuring that every brick is updated according to the sum rule.",
-        "img": "img/C/c2_1.png",
+        "img": "img/C/c2.png",
         "hints": [],
          "pyramidStructure": [
             [null],
