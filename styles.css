@@ -4,23 +4,22 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-    min-height: 200vh; /* 统一页面高度 */
+    min-height: 150vh; /* 保证网页至少有一个视口高度 */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center; /* 垂直居中页面内容 */
 }
 
-
 .container {
-    width: 90%;
-    max-width: 800px;
+    width: 90%; /* 使用更大宽度比例 */
+    max-width: 800px; /* 增大最大宽度限制 */
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 20px;
     text-align: center;
-    margin: 20px 0; /* 为容器增加垂直居中 */
+    margin: 20px; /* 增加整体的页面垂直间距 */
 }
 
 h3 {
@@ -89,17 +88,17 @@ button:hover {
 .pyramid-row {
     display: flex;
     justify-content: center;
-    margin: 5px 0; /* 为每一行金字塔增加间距 */
+    margin: 5px 0; /* 为每一行金字塔增加适当间距 */
 }
 
 .box {
-    width: 60px; /* 可以根据实际需要调整尺寸 */
+    width: 60px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid #000;
-    margin: 0 2px;
+    margin: 0 2px; /* 设置左右间距确保布局正常 */
     background-color: #f3f3f3;
 }
 
