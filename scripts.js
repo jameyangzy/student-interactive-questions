@@ -379,7 +379,9 @@ const questionData = {
 };
 
 function loadQuestion(questionId) {
+    console.log('Loading question:', questionId); // 调试输出
     const question = questionData[questionId];
+    console.log('Question data:', question); // 调试输出
     if (!question) {
         goBack();
         return;
@@ -409,6 +411,21 @@ function loadQuestion(questionId) {
     const explanationElement = document.getElementById('explanation');
     explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+    console.log('URL Params:', { category, questionNumber, questionId }); // 调试输出
+    loadQuestion(questionId);
+
+    // 如果是最后一道题，则显示提交按钮
+    if (questionNumber === LAST_QUESTION_NUMBER) {
+        document.getElementById('submitButtonContainer').style.display = 'block';
+    }
+})
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
@@ -517,4 +534,4 @@ async function submitAnswers() {
     } catch (error) {
         console.error('Error:', error);
     }
-}
+};
