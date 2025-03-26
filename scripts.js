@@ -191,45 +191,47 @@ const questionData = {
     }
 };
 
+let currentQuestion = 1; // 当前问题编号
+
 window.onload = function() {
     const params = new URLSearchParams(window.location.search);
-    const questionId = params.get('question'); 
+    const questionId = params.get('question') || `A${currentQuestion}`; // 默认加载第一个问题
 
     loadQuestion(questionId);
-}
+};
 
 function loadQuestion(questionId) {
     const question = questionData[questionId];
-    
+
     if (!question) {
+        alert("Question not found!");
         goBack();
         return;
     }
 
-    document.getElementById('questionNumber').innerText = questionId;
-    document.getElementById('questionTitle').innerText = `Question: ${question.task}`;
+    document.getElementById('questionNumber').innerText = `Question ${questionId}`;
+    document.getElementById('questionText').innerText = question.task;
     document.getElementById('taskDetails').innerText = question.details;
     
-    if (question.image) {
-        const questionImage = document.getElementById('questionImage');
-        questionImage.src = question.image;
-        questionImage.style.display = 'block';
-    }
+    // 简单展示
+    const interactiveArea = document.getElementById('interactiveArea');
+    interactiveArea.innerHTML = ''; // Clear existing content
 
-    if (question.mode === 'pyramid') {
+    // 根据题目类型加载不同互动区域
+    if (question.type === 'pyramid') {
         renderPyramid(question.pyramidStructure || []);
-    } else if (question.mode === 'choices') {
+    } else if (question.type === 'choices') {
         renderChoices(question.choices);
-    } else if (question.mode === 'equation') {
+    } else if (question.type === 'equation') {
         renderEquationInputs(question.equationInputs);
     }
 
-    setupHints(question.hints);
+    setupHints(question.hints || []);
 }
 
 function renderPyramid(pyramidStructure) {
     const pyramidContainer = document.getElementById('interactiveArea');
-    pyramidContainer.innerHTML = pyramidStructure.map(row => 
+    pyramidContainer.innerHTML = pyramidStructure.map(row =>
         `<div class='pyramid-row'>${row.map(value => `<div class='brick'>${value === null ? '<input type="text">' : value}</div>`).join('')}</div>`
     ).join('');
 }
@@ -237,14 +239,11 @@ function renderPyramid(pyramidStructure) {
 function renderChoices(choices) {
     const choicesContainer = document.getElementById('interactiveArea');
     choicesContainer.innerHTML = choices.map(choice => `<label><input type="radio" name="choices"> ${choice}</label><br>`).join('');
-    document.getElementById('answerExplanation').style.display = 'block';
 }
 
 function renderEquationInputs(inputs) {
     const equationContainer = document.getElementById('interactiveArea');
-    equationContainer.innerHTML = inputs.map(input => `
-        <label>${input} = <input type="text" name="${input}"></label><br>
-    `).join('');
+    equationContainer.innerHTML = inputs.map(input => `<label>${input} = <input type="text" name="${input}"></label><br>`).join('');
 }
 
 function setupHints(hints) {
@@ -254,6 +253,12 @@ function setupHints(hints) {
 
 function toggleHints() {
     document.getElementById('hintList').classList.toggle('hidden');
+}
+
+function navigate(direction) {
+    currentQuestion += direction;
+    const questionId = `A${currentQuestion}`;
+    loadQuestion(questionId);
 }
 
 function submitAnswer() {
