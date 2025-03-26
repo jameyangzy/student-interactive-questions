@@ -1,105 +1,183 @@
-/* 基础样式 */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
     margin: 0;
-    padding: 20px;
-    background-color: #f0f2f5;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
-
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* 题目头部 */
-.question-header {
-    margin-bottom: 30px;
-}
-
-#questionNumber {
-    font-size: 1.2em;
-    color: #666;
-}
-
-.centered {
+    width: 90%;
+    max-width: 600px;
+    height: auto;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 20px;
     text-align: center;
-    margin: 20px 0;
 }
 
-/* 交互区域 */
-#interactiveArea {
-    margin: 20px 0;
+h1 {
+    text-align: center;
 }
 
-.input-group {
-    margin: 15px 0;
+p {
+    text-align: left;
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
+ol {
+    text-align: left;
 }
 
-input[type="text"], textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* 金字塔样式 */
-.pyramid-container {
+.option-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
-.pyramid-row {
-    display: flex;
-    justify-content: center;
-    margin: 5px 0;
+.option-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    text-align: left;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.brick {
-    width: 60px;
-    height: 30px;
-    border: 1px solid #999;
-    margin: 0 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8f9fa;
+.option-btn:hover {
+    background-color: #ddd;
 }
 
-/* 提示部分 */
-.hint-section {
-    margin-top: 30px;
+.question {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.question:last-child {
+    border-bottom: none;
+}
+
+.question p {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+    font-size: 16px;
+    width: 100px;
+}
+
+button:hover {
+     background-color: #2980b9;
+}
+
+select, input[type="file"]{
+    width: 90%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 50px;
+}
+textarea{
+    width: 70vh;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 70px;
 }
 
 .hidden {
     display: none;
 }
 
-/* 导航按钮 */
-.navigation-buttons {
-    margin-top: 30px;
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+}
+
+.image-description {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.image-description.hidden {
+    display: none;
+}
+
+.hint-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+/* 新增样式 */
+.category-display, .difficulty-selection {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.question-select-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background: #007bff;
-    color: white;
+#questionLabel {
+    margin-right: 10px;
 }
-
-button:hover {
-    background: #0056b3;
+.pyramid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.row {
+    display: flex;
+    justify-content: center;
+    margin: 1px 0;
+}
+.box {
+    width: 60px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    margin: 0 2px;
+    background-color: #f3f3f3;
+}
+.highlight {
+    background-color: yellow;
+}
+input[type="text"] {
+    width: 58px;
+    height: 28px;
+    text-align: center;
+    border: 1px solid #000;
+    background-color: white;
 }
