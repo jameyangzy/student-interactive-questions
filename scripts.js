@@ -2,25 +2,40 @@ const questionData = {
     "A1": {
         "type": "pyramid",
         "task": "Solve the 5-Level Pyramid with a Given Value",
-        "details": "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid. Each brick follows a simple rule: Every brick is the sum of the two bricks directly below it. In this pyramid, one value is already given—the bottom-left brick is 5.",
+        "task": "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid. ",
+        "task": "Each brick follows a simple rule: ",
+        "task": "In this pyramid, one value is already given—the bottom-left brick is 5.Your task is to fill in the missing numbers so that the pyramid follows the rule.",        
         "hints": [
             "Start from the bottom row—you already know the first number (5). Use the rule to find the next brick in that row.",
             "Move upward step by step, using the sum rule to fill in the second row, then the third, and so on.",
             "Check your calculations—each brick must be the sum of the two below it."
         ],
-        "pyramidStructure": [
-            [null],
+         "pyramidStructure": [
+            [280],
             [null, null],
-            [null, null, null],
-            [null, null, null, null],
-            [5, null, null, null, null]
+            [null, 75, null],
+            [31, null, null, null],
+            [5, null, 13, null, 1]
         ],
-        "solutionsDetails": "Main task: Use the pyramid rule to determine all missing values and complete the pyramid. Answer mode: Fill the numbers in the empty spaces of the pyramid."
+        "pyramidColors": [
+            [true],
+            [false, false],
+            [true, true, false],
+            [true, false, false, false],
+            [true, false, true, false, true]
+        ],
+        "task": "Main task:"
+        "task": " Use the pyramid rule to determine all missing values and complete the pyramid. Answer mode: Fill the numbers in the empty spaces of the pyramid."
+    
     },
     "A2": {
         "type": "solutionType",
         "task": "Identify the Solution Type of the 5-Level Pyramid",
-        "details": "In our pyramid problem, we have three different types of solutions: Unique Solution, Multiple Solutions, No Solution.",
+        "task": "In our pyramid problem, we have three different types of solutions:",
+        "task": "1.The pyramid has a unique solution, meaning that there is only one possible way to fill in the missing values.",
+        "task": "2.Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.",
+        "task": "3.No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule.",
+        "imgs":"img/A/a2.png"
         "hints": [
             "Try to find one solution—fill in the missing numbers step by step using the pyramid rule.",
             "Check if you can find another solution—try adjusting some of the missing numbers while still following the pyramid rule.",
@@ -31,7 +46,8 @@ const questionData = {
             "B. Multiple Solutions",
             "C. No Solution"
         ],
-        "solutionsDetails": "Main task: Whether the above pyramid has a unique solution, multiple solutions, or no solution. Answer mode: Please explain the reason(s) in the text box."
+        "task": "Main task:"
+        "task": "Whether the above pyramid has a unique solution, multiple solutions, or no solution. Answer mode: Please explain the reason(s) in the text box."
     },
     "A3": {
         "type": "pyramid",
