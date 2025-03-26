@@ -22,11 +22,11 @@ const questionData = {
             [5, null, 13, null, 1]
         ],
         "pyramidColors": [
-            [true],
-            [false, false],
-            [false, true, false],
-            [true, false, false, false],
-            [true, false, true, false, true]
+            [false],
+            [true, true],
+            [true, false, true],
+            [false, true, true, true],
+            [false, true, false, true, false]
         ],
         "solutionsDetails": "Main task: Use the pyramid rule to determine all missing values and complete the pyramid."
     },
@@ -68,11 +68,11 @@ const questionData = {
             [null, null, 13, null, 1]
         ],
         "pyramidColors": [
-            [true],
-            [false, false],
-            [false, true, false],
-            [true, false, false, false],
-            [false, false, true, false, true]
+            [false],
+            [true, true],
+            [true, false, true],
+            [false, true, true, true],
+            [true, true, false, true, false]
         ],
         "solutionsDetails": "Main task: Try to solve the following pyramid by filling in the missing values while following the pyramid rule.",
         "additionalInput": "Please explain how you found the solution."
@@ -122,11 +122,11 @@ const questionData = {
             [null, null, null, null, null]
         ],
         "pyramidColors": [
-            [false],
-            [false, false],
-            [false, false, false],
-            [false, false, false, false],
-            [false, false, false, false, false]
+            [true],
+            [true, true],
+            [true, true, true],
+            [true, true, true, true],
+            [true, true, true, true, true]
         ],
         "solutionsDetails": "Main task: Can you create a pyramid with 5 given numbers? Build a complete pyramid by choosing 5 numbers for the bottom row and filling in all other values using the pyramid rule to ensure that your pyramid has a solution."
     },
@@ -149,9 +149,9 @@ const questionData = {
             [null, 75, null]
         ],
         "pyramidColors": [
-            [true],
-            [true, false],
-            [false, true, false]
+            [false],
+            [false, true],
+            [true, false, true]
         ],
         "solutionsDetails": "Main task: Find the missing numbers and fill in the pyramid completely."
     },
@@ -175,10 +175,10 @@ const questionData = {
             [31, null, null, null]
         ],
         "pyramidColors": [
-            [true],
-            [false, true],
-            [false, true, false],
-            [true, false, false, false]
+            [false],
+            [true, false],
+            [true, false, true],
+            [false, true, true, true]
         ],
         "choices": ["Yes", "No"],
         "solutionsDetails": "Main task: Find the missing numbers and complete the pyramid. Then, confirm that only one solution exists."
@@ -204,10 +204,10 @@ const questionData = {
             [31, null, null, 24]
         ],
         "pyramidColors": [
-            [true],
-            [false, false],
-            [false, true, false],
-            [true, false, false, true]
+            [false],
+            [true, true],
+            [true, false, true],
+            [false, true, true, false]
         ],
         "choices": ["Yes", "No"],
         "solutionsDetails": "Main task: Find the missing numbers and complete the pyramid. Then, confirm that only one solution exists."
@@ -245,11 +245,11 @@ const questionData = {
             [null, null, 13, null, null]
         ],
         "pyramidColors": [
-            [true],
-            [false, false],
-            [false, true, false],
-            [true, false, false, false],
-            [false, false, true, false, false]
+            [false],
+            [true, true],
+            [true, false, true],
+            [false, true, true, true],
+            [true, true, false, true, true]
         ],
         "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
         "solutionsDetails": "Main task: Solve for the missing values and identify the solution type."
@@ -267,11 +267,11 @@ const questionData = {
             [null, null, null, null, null]
         ],
         "pyramidColors": [
-            [false],
-            [false, false],
-            [false, false, false],
-            [false, false, false, false],
-            [false, false, false, false, false]
+            [true],
+            [true, true],
+            [true, true, true],
+            [true, true, true, true],
+            [true, true, true, true, true]
         ],
         "solutionsDetails": "Main task: Create and ensure your pyramid has a solution."
     },
@@ -355,11 +355,11 @@ const questionData = {
             [null, null, null, null, null]
         ],
         "pyramidColors": [
-            [false],
-            [false, false],
-            [false, false, false],
-            [false, false, false, false],
-            [false, false, false, false, false]
+            [true],
+            [true, true],
+            [true, true, true],
+            [true, true, true, true],
+            [true, true, true, true, true]
         ],
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
