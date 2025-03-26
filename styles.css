@@ -69,3 +69,17 @@ button {
 button:hover {
     background-color: #2980b9;
 }
+
+
+#questionImageContainer img {
+    max-width: 50%; // 确保图片不会超过容器宽度
+    height: auto; // 自动调整图片高度以保持比例
+    margin: 0 auto; // 居中图片
+}
+
+#questionImage, #questionImage2, #questionImage3 {
+    max-width: 50%; // 如果需要额外的限制，可设置更小的最大宽度
+    height: auto;
+    display: block; // 确保图片在其容器内正常显示
+    margin: 10px auto; // 增加上下边距，使图片不贴近容器边缘
+}
