@@ -38,7 +38,7 @@ const questionData = {
             "2. Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
             "3. No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule."
         ),
-        "img": "img/A/a2.png",
+        "img": "",
         "hints": [
             "Try to find one solution—fill in the missing numbers step by step using the pyramid rule.",
             "Check if you can find another solution—try adjusting some of the missing numbers while still following the pyramid rule.",
@@ -49,7 +49,8 @@ const questionData = {
             "B. Multiple Solutions",
             "C. No Solution"
         ],
-        "solutionsDetails": "Main task: Whether the above pyramid has a unique solution, multiple solutions, or no solution."
+        "solutionsDetails": "Main task: Whether the above pyramid has a unique solution, multiple solutions, or no solution.",
+        "additionalInput": "Please explain your reasoning."
     },
     "A3": {
         "type": "A3-Question 3: Changing the Position of the Additional Given Number",
@@ -82,18 +83,17 @@ const questionData = {
             "You are a puzzle master at the Mathematical Pyramid Tournament. Two contestants, A and B, have submitted their completed 5-level Brick Pyramid solutions. However, the judges are unsure whether their solutions are correct.\n" +
             "Your role? Act as the final verifier—check their pyramids, and correct any mistakes."
         ),
-        "img": "",
-        "hints": [
-            "Check each row carefully—does every brick follow the sum rule?",
-            "If an error is found, modify the necessary numbers while keeping the pyramid consistent."
-        ],
+        "img": "img/A/a4_1.png",
+        "img2": "img/A/a4_2.png",
+        "hints": [],
         "choices": [
             "A: A is correct",
             "B: B is correct",
             "C: Both A and B",
             "D: Neither A nor B"
         ],
-        "solutionsDetails": "Main task: Verify whether both pyramids are correct, and can you fix the mistakes?"
+        "solutionsDetails": "Main task: Verify whether both pyramids are correct, and can you fix the mistakes.",
+        "additionalInput": "Please explain your reason(s)."
     },
     "A5": {
         "type": "A5-Question 5: Finding the Minimum Information Needed for a Unique Solution",
@@ -103,10 +103,11 @@ const questionData = {
             "Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
             "No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule."
         ),
-        "img": "",
-        "hints": [],
+        "img": "img/A/a5_1.png",
+        "img2": "img/A/a5_2.png",
+        "img3": "img/A/a5_3.png",
         "choices": ["A. 4", "B. 5", "C. 6"],
-        "solutionsDetails": "Main task: What's the least amount of given values required to create a unique-solution pyramid?"
+        "solutionsDetails": ""
     },
     "A6": {
         "type": "A6-Question 6: Design and Solve a Pyramid with Limited Information",
@@ -179,6 +180,7 @@ const questionData = {
             [false, false, false],
             [false, false, false, false]
         ],
+        "choices": ["Yes", "No"],
         "solutionsDetails": "Main task: Find the missing numbers and complete the pyramid. Then, confirm that only one solution exists."
     },
     "B3": {
@@ -207,6 +209,7 @@ const questionData = {
             [false, false, false],
             [false, false, false, false]
         ],
+        "choices": ["Yes", "No"],
         "solutionsDetails": "Main task: Find the missing numbers and complete the pyramid. Then, confirm that only one solution exists."
     },
     "B4": {
@@ -217,18 +220,12 @@ const questionData = {
             "Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
             "No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule."
         ),
-        "img": "",
-        "hints": [
-            "For Pyramid A, try adjusting the bottom row—are there multiple sets of numbers that still satisfy the rule?",
-            "For Pyramid B, check if you can determine a single set of values that works and why no other numbers would satisfy the pyramid rule.",
-            "For Pyramid C, check if the given numbers create a contradiction—do any sums not add up properly?"
-        ],
-        "choices": [
-            "A. Unique Solution",
-            "B. Multiple Solutions",
-            "C. No Solution"
-        ],
-        "solutionsDetails": "Main task: Determine which pyramid represents a unique solution, which has multiple solutions, and which has no solution."
+        "img": "img/B/b4_1.png",
+        "img2": "img/B/b4_2.png",
+        "img3": "img/B/b4_3.png",
+        "hints": [],
+        "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
+        "solutionsDetails": "Main task: Determine solution types for each pyramid."
     },
     "B5": {
         "type": "B5-Question 5: Solve the 5-Level Pyramid and Identify Its Solution Type",
@@ -254,12 +251,8 @@ const questionData = {
             [false, false, false, false],
             [false, false, false, false, false]
         ],
-        "choices": [
-            "A. Unique Solution",
-            "B. Multiple Solutions",
-            "C. No Solution"
-        ],
-        "solutionsDetails": "Main task: Solve for the missing values in the 5-level pyramid and determine whether the solution is unique, has multiple solutions, or has no solution."
+        "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
+        "solutionsDetails": "Main task: Solve for the missing values and identify the solution type."
     },
     "B6": {
         "type": "B6-Question 6: Design and Solve a Pyramid with Limited Information",
@@ -280,14 +273,53 @@ const questionData = {
             [false, false, false, false],
             [false, false, false, false, false]
         ],
-        "solutionsDetails": "Main task: Can you create a pyramid with 5 given numbers? Build a complete pyramid by choosing 5 numbers for the bottom row and filling in all other values using the pyramid rule to ensure that your pyramid has a solution."
+        "solutionsDetails": "Main task: Create and ensure your pyramid has a solution."
+    },
+   "C1": {
+        "type": "C1-Question 1: Understanding Systems of Equations",
+        "task": (
+            "Before solving the Brick Pyramid, let's review how to solve a system of equations.\n" +
+            "A system of equations is a set of two or more equations that have the same variables.\n" +
+            "The goal is to find values for the variables that make all the equations true."
+        ),
+        "img": "",
+        "hints": [
+            "Substitution Method: Solve for one variable first (e.g., rewrite x in terms of y), then substitute into the second equation.",
+            "Elimination Method: Add or subtract the two equations to cancel out one of the variables.",
+            "Checking Your Solution: After solving for x and y, substitute them back into both equations to ensure they are correct."
+        ],
+        "solutionsDetails": "Main task: Consider the following system: x+y=10, x−y=2. Find the values of x and y.",
+        "variables": ["x", "y"]
+    },
+    "C2": {
+        "type": "C2-Question 2: Updating the Pyramid After Changing a Bottom Number",
+        "task": "Start from the bottom row—change 2 to a 3, then recalculate the brick directly above it. Move upward step by step, ensuring that every brick is updated according to the sum rule.",
+        "img": "img/C/c2_1.png",
+        "hints": [],
+        "solutionsDetails": "Main task: Ensure that every brick is updated according to the pyramid rule."
+    },
+    "C3": {
+        "type": "C3-Question 3: How Are the Bottom Numbers Related to the Top Number?",
+        "task": (
+            "In the Brick Pyramid, each number follows this rule:\n" +
+            "Each number is the sum of the two numbers directly below it.\n" +
+            "We know that the top number is 280, but the bottom row numbers are missing."
+        ),
+        "img": "",
+        "hints": [
+            "Assign variables (a, b, c, d) to the unknown bottom-row numbers.",
+            "Use the pyramid rule to express how these numbers add up layer by layer.",
+            "Your final equation should be in the form: A⋅a + B⋅b + C⋅c + D⋅d + E⋅13 = 280"
+        ],
+        "solutionsDetails": "Main task: Formulate the equation that represents the relationship between the bottom row and the top number.",
+        "equationVariables": ["a", "b", "c", "d", "E"]
     },
     "C4": {
         "type": "C4-Question 4: Where Is the Mistake in This Algebraic Pyramid?",
         "task": (
             "The Brick Pyramid follows this rule:\n" +
             "Each brick’s value is the sum of the two bricks directly below it.\n" +
-            "Below is a pyramid where all numbers are expressed as variables. However, the two equations do not follow the pyramid rule."
+            "Below is a pyramid where all numbers are expressed as variables. However, the equations do not correctly follow the pyramid rule."
         ),
         "img": "img/C/c4.png",
         "hints": [
@@ -296,13 +328,11 @@ const questionData = {
             "Identify where the equation does not hold.",
             "Solve for the correct value."
         ],
-        "solutionsDetails": "Main task: Please find the incorrect equation in this pyramid, and revise it."
+        "solutionsDetails": "Main task: Identify and correct the incorrect equation in this pyramid."
     },
     "C5": {
         "type": "C5-Question 5: Solve for the Missing Numbers in the Pyramid",
-        "task": (
-            "Below is a pyramid where some numbers are unknown. Use algebra to solve for the missing values in the bottom row."
-        ),
+        "task": "Below is a pyramid where some numbers are unknown. Use algebra to solve for the missing values in the bottom row.",
         "img": "img/C/c5.png",
         "hints": [
             "Assign variables: Let the bottom row be a, b, c, d, and define each brick above as the sum of the two below it.",
@@ -331,10 +361,8 @@ const questionData = {
             [false, false, false, false],
             [false, false, false, false, false]
         ],
-        "solutionsDetails": "Main task: Can you create a pyramid with 5 given numbers? Build a complete pyramid by choosing 5 numbers for the bottom row and filling in all other values using the pyramid rule to ensure that your pyramid has a solution."
+        "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
-};
-
 
 function loadQuestion(questionId) {
     const question = questionData[questionId];
@@ -347,19 +375,31 @@ function loadQuestion(questionId) {
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
     
+    // Render pyramid if available
+    if (question.pyramidStructure && question.pyramidColors) {
+        renderPyramid(question.pyramidStructure, question.pyramidColors);
+    } else {
+        document.getElementById('interactiveArea').innerHTML = '';
+    }
+
+    // Render images if available
     const imgElement = document.getElementById('questionImage');
     imgElement.src = question.img || '';
+    const imgElement2 = document.getElementById('questionImage2');
+    imgElement2.src = question.img2 || '';
+    const imgElement3 = document.getElementById('questionImage3');
+    imgElement3.src = question.img3 || '';
     
-    renderPyramid(question.pyramidStructure, question.pyramidColors);
+    setupInputs(question.variables, question.equationVariables);
+
     setupHints(question.hints);
 
+    // Manage additional inputs or explanation areas
     const explanationElement = document.getElementById('explanation');
     explanationElement.style.display = question.additionalInput ? 'block' : 'none';
 }
 
 function renderPyramid(pyramidStructure, pyramidColors) {
-    if (!pyramidStructure || !pyramidColors) return;
-
     const pyramidContainer = document.getElementById('interactiveArea');
     pyramidContainer.innerHTML = pyramidStructure.map((row, rowIndex) =>
         `<div class='pyramid-row'>${row.map((value, colIndex) => {
@@ -367,6 +407,21 @@ function renderPyramid(pyramidStructure, pyramidColors) {
             return `<div class='brick' style='background-color:${editable ? 'yellow' : 'white'}'>${editable ? '<input type="text">' : value}</div>`;
         }).join('')}</div>`
     ).join('');
+}
+
+function setupInputs(variables, equationVariables) {
+    const inputsContainer = document.getElementById('inputs');
+    inputsContainer.innerHTML = '';
+
+    if (variables) {
+        inputsContainer.innerHTML += variables.map(variable => `<div>${variable} = <input type="text" id="input${variable}" placeholder="Enter value for ${variable}"></div>`).join('');
+    }
+
+    if (equationVariables) {
+        inputsContainer.innerHTML += '<div>Equation: ';
+        inputsContainer.innerHTML += equationVariables.map(variable => `${variable} <input type="text" id="input${variable}" placeholder="">`).join(' + ');
+        inputsContainer.innerHTML += '</div>';
+    }
 }
 
 function setupHints(hints) {
@@ -378,10 +433,9 @@ function goBack() {
     window.location.href = 'selection.html';
 }
 
-// Navigate to next or previous question
 function navigate(next) {
     const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'A';
+    const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
     questionNumber += next ? 1 : -1;
 
