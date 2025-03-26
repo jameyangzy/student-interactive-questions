@@ -11,7 +11,7 @@ body {
 }
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 1200px;
     height: auto;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -55,7 +55,7 @@ ol {
 }
 
 .option-btn:hover {
-    background-color: #ddd;
+    background-color: #2980b9;
 }
 
 .question {
