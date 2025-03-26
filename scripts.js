@@ -433,6 +433,67 @@ function goBack() {
     window.location.href = 'selection.html';
 }
 
+function generatePyramid(question) {
+    const values = question.pyramid.split(',').map(value => value.trim());
+    const colors = question.pyramid_color.split(',').map(color => color.trim());
+    const pyramidContainer = document.querySelector('.pyramid-container');
+    pyramidContainer.innerHTML = ''; // 清空现有的金字塔结构
+
+    const numRows = calculateNumRows(values.length);
+
+    for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        for (let colIndex = 0; colIndex <= rowIndex; colIndex++) {
+            const index = rowIndex * (rowIndex + 1) / 2 + colIndex;
+            if (index < values.length) {
+                const box = document.createElement('div');
+                box.className = 'box';
+                // 设置背景颜色
+                if (colors[index] === 'true') {
+                    box.classList.add('highlight');
+                }
+                // 根据values中的值设置box内容
+                if (values[index] === '-1') {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    box.appendChild(input);
+                } else if (values[index] === '-2') {
+                    box.textContent = ''; // 空白内容的砖块
+                } else if (values[index] === '?') {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = '?'; // 默认内容是?的输入框
+                    box.appendChild(input);
+                } else {
+                    box.textContent = values[index]; // 数值砖块
+                }
+                row.appendChild(box);
+            }
+        }
+        pyramidContainer.appendChild(row);
+    }
+
+    if (question.textarea === 'true') {
+        // 如果需要文本区，添加文本区
+        const answerSection = document.createElement('div');
+        answerSection.className = 'answer-section';
+        answerSection.innerHTML = '<textarea id="answerInput" placeholder="Enter your answer here"></textarea>';
+        pyramidContainer.appendChild(answerSection);
+    }
+}
+
+// 定义行数计算函数
+function calculateNumRows(count) {
+    let rows = 0;
+    while ((rows * (rows + 1)) / 2 < count) {
+        rows++;
+    }
+    return rows;
+}
+
+
+
 function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
