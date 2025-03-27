@@ -464,7 +464,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-
+function toggleHints() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
