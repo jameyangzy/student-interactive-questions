@@ -419,6 +419,13 @@ function loadQuestion(questionId) {
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
     
+    // 设置图片路径
+    if (question.img) {
+        document.getElementById('questionImage').src = question.img;
+    } else {
+        document.getElementById('questionImage').src = '';
+    }
+
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
@@ -433,6 +440,7 @@ function loadQuestion(questionId) {
         document.getElementById('explanation').style.display = 'none';
     }
 }
+
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
