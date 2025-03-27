@@ -50,7 +50,7 @@ const questionData = {
             "C. No Solution"
         ],
         "solutionsDetails": "Main task: Whether the above pyramid has a unique solution, multiple solutions, or no solution.",
-        "additionalInput": "Please explain your reasoning."
+        "additionalInput": "Please explain the reason(s)."
     },
     "A3": {
         "type": "A3-Question 3: Changing the Position of the Additional Given Number",
@@ -221,6 +221,7 @@ const questionData = {
         "hints": [],
         "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
         "solutionsDetails": "Main task: Determine solution types for each pyramid."
+        "additionalInput": "Please explain your reason(s)."
     },
     "B5": {
         "type": "B5-Question 5: Solve the 5-Level Pyramid and Identify Its Solution Type",
@@ -322,6 +323,7 @@ const questionData = {
         ],
         "solutionsDetails": "Main task: Formulate the equation that represents the relationship between the bottom row and the top number.",
         "equationVariables": ["a", "b", "c", "d", "E"]
+        "additionalInput": "Please write your anser:__ a+___ b +___c + ___d +__* 13 = 280."
     },
     "C4": {
         "type": "C4-Question 4: Where Is the Mistake in This Algebraic Pyramid?",
@@ -350,6 +352,7 @@ const questionData = {
             "Solve step by step: Use substitution or elimination to find the values of a, b, c, and d."
         ],
         "solutionsDetails": "Main task: Solve for the unknown values in the bottom row using a system of equations."
+        "additionalInput": "Please anser a =_____, b=______, c=_____, d=_____."
     },
     "C6": {
         "type": "C6-Question 6: Design and Solve a Pyramid with Limited Information",
@@ -407,14 +410,30 @@ function loadQuestion(questionId) {
         });
     }
 
-    // 控制 `textarea` 的显示
+   // 动态显示或隐藏解释文本框，并设置其 placeholder
     const explanationElement = document.getElementById('explanation');
     if (question.additionalInput) {
         explanationElement.style.display = 'block';
+        explanationElement.placeholder = question.additionalInput;
     } else {
         explanationElement.style.display = 'none';
+        explanationElement.placeholder = 'Explain your answer'; // 设个默认值，不一定必要
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+    loadQuestion(questionId);
+
+    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
+    if (questionNumber === LAST_QUESTION_NUMBER) {
+        document.getElementById('submitButtonContainer').style.display = 'block';
+    }
+});
 
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
