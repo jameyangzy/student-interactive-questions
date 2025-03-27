@@ -434,10 +434,6 @@ function loadQuestion(questionId) {
 }
 
 
-    document.getElementById('explanation').style.display = question.additionalInput ? 'block' : 'none';
-}
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
