@@ -67,6 +67,7 @@ h1 {
 
 .hidden {
     display: none;
+    text-align: left;
 }
 
 .choice-btn {
@@ -87,7 +88,7 @@ textarea#explanation {
     margin: 20px auto;  /* 上下边距为20px，水平居中 */
     width: 80%;  /* 设置宽度为80% */
     max-width: 600px;  /* 设置最大宽度为400px，以适应不同屏幕 */
-    height: 150px;  /* 高度调整为150px */
+    height: 50px;  /* 高度调整为150px */
     padding: 10px;  /* 内部填充，增加舒适度 */
     font-size: 16px;  /* 字体大小 */
     border: 1px solid #ccc;  /* 边框样式 */
@@ -95,10 +96,6 @@ textarea#explanation {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);  /* 轻微阴影，增加层次感 */
 }
 
-
-#explanation{
-    
-}
 
 button {
     background-color: #007BFF;
