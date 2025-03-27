@@ -285,7 +285,8 @@ const questionData = {
             "Checking Your Solution: After solving for x and y, substitute them back into both equations to ensure they are correct."
         ],
         "solutionsDetails": "Main task: Consider the following system: x+y=10, x−y=2. Find the values of x and y.",
-        "variables": ["x", "y"]
+        "variables": ["x", "y"],
+        "additionalInput": "Please write your anser: x=________   y=________."
     },
     "C2": {
         "type": "C2-Question 2: Updating the Pyramid After Changing a Bottom Number",
@@ -339,7 +340,8 @@ const questionData = {
             "Identify where the equation does not hold.",
             "Solve for the correct value."
         ],
-        "solutionsDetails": "Main task: Identify and correct the incorrect equation in this pyramid."
+        "solutionsDetails": "Main task: Identify and correct the incorrect equation in this pyramid.",
+         "additionalInput": "Explain your answer"
     },
     "C5": {
         "type": "C5-Question 5: Solve for the Missing Numbers in the Pyramid",
@@ -379,17 +381,21 @@ const questionData = {
 
 function loadQuestion(questionId) {
     const question = questionData[questionId];
-    if (!question) {
-        console.error(`Question ID ${questionId} not found.`);
-        return;
-    }
-
-    console.log(`Loading question: ${questionId}`); // 调试输出
+    if (!question) return;
 
     document.getElementById('questionType').innerText = question.type;
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
-    
+
+    // 设置图片路径
+    const questionImage = document.getElementById('questionImage');
+    if (question.img) {
+        questionImage.src = question.img;
+        questionImage.style.display = 'block';
+    } else {
+        questionImage.style.display = 'none';
+    }
+
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
@@ -421,6 +427,7 @@ function loadQuestion(questionId) {
         explanationElement.style.display = 'none';
     }
 }
+
 
 
 
