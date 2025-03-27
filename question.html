@@ -17,8 +17,7 @@
     <div id="questionText" style="white-space: pre-wrap;"></div>
     <div id="interactiveArea"></div>
     <div id="taskDetails">Question Details</div>
-    <textarea id="explanation" placeholder="Explain your answer"></textarea>
-    
+    <textarea id="explanation" placeholder="Explain your answer" style="display:none;"></textarea>
     <div id="hintsContainer">
         <button class="hint-btn" onclick="toggleHints()">Hints</button>
         <ul id="hintList" class="hidden"></ul>
@@ -32,11 +31,5 @@
 </div>
 
 <script src="scripts.js"></script>
-<script>
-    function toggleHints() {
-        const hintList = document.getElementById('hintList');
-        hintList.classList.toggle('hidden');
-    }
-</script>
 </body>
 </html>
