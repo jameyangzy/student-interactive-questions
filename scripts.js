@@ -374,21 +374,6 @@ const questionData = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-    console.log('URL Params:', { category, questionNumber, questionId }); // 调试输出
-    loadQuestion(questionId);
-
-    // 如果是最后一道题，则显示提交按钮
-    const LAST_QUESTION_NUMBER = 6; // 需要根据实体定义实际最后题目编号
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
-});
 
 function setupHints(hints) {
     const hintsContainer = document.getElementById('hintsContainer');
@@ -406,26 +391,15 @@ function setupHints(hints) {
     });
 }
 
-
-
 function loadQuestion(questionId) {
     const question = questionData[questionId];
-    if (!question) {
-        goBack();
-        return;
-    }
-    
+    if (!question) return;
+
     document.getElementById('questionType').innerText = question.type;
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
     
-    // 设置图片路径
-    if (question.img) {
-        document.getElementById('questionImage').src = question.img;
-    } else {
-        document.getElementById('questionImage').src = '';
-    }
-
+    // 渲染金字塔
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
@@ -434,12 +408,19 @@ function loadQuestion(questionId) {
 
     setupHints(question.hints);
 
-    if (question.additionalInput) {
-        document.getElementById('explanation').style.display = 'block';
-    } else {
-        document.getElementById('explanation').style.display = 'none';
-    }
+    document.getElementById('explanation').style.display = question.additionalInput ? 'block' : 'none';
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+    loadQuestion(questionId);
+});
+
+
 
 
 function renderPyramid(pyramidStructure, pyramidColors) {
