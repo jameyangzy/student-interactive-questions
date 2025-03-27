@@ -397,14 +397,15 @@ function setupHints(hints) {
     hints.forEach((hint, index) => {
         const hintElement = document.createElement('div');
         hintElement.className = 'hint';
-        hintElement.innerText = hint.text;
+        hintElement.innerText = hint; // 直接使用字符串作为内容
         hintElement.addEventListener('click', () => {
             // 显示提示内容
-            alert(hint.text);
+            alert(hint); // 直接使用字符串作为提示
         });
         hintsContainer.appendChild(hintElement);
     });
 }
+
 
 
 function loadQuestion(questionId) {
