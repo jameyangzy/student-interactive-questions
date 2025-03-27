@@ -412,16 +412,15 @@ function loadQuestion(questionId) {
     choicesContainer.innerHTML = '';  // 清空现有的选择
 
     if (question.choices) {
-        const choicesList = document.createElement('ul');
-        question.choices.forEach(choice => {
-            const choiceElement = document.createElement('li');
-            choiceElement.innerText = choice;
-            choiceElement.addEventListener('click', () => {
+        question.choices.forEach((choice, index) => {
+            const choiceButton = document.createElement('button');
+            choiceButton.className = 'choice-btn';
+            choiceButton.innerText = choice;
+            choiceButton.addEventListener('click', () => {
                 alert(`You selected: ${choice}`);
             });
-            choicesList.appendChild(choiceElement);
+            choicesContainer.appendChild(choiceButton);
         });
-        choicesContainer.appendChild(choicesList);
     }
 
     // 控制 `textarea` 的显示
@@ -433,6 +432,22 @@ function loadQuestion(questionId) {
     }
 }
 
+function setupHints(hints) {
+    const hintList = document.getElementById('hintList');
+    hintList.innerHTML = '';  // 清空现有的提示
+
+    hints.forEach((hint, index) => {
+        const hintItem = document.createElement('li');
+        hintItem.className = 'hint';
+        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
+        hintList.appendChild(hintItem);
+    });
+}
+
+function toggleHints() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
@@ -441,8 +456,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
     loadQuestion(questionId);
-});
 
+    // 如果是最后一道题，则显示提交按钮
+    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
+    if (questionNumber === LAST_QUESTION_NUMBER) {
+        document.getElementById('submitButtonContainer').style.display = 'block';
+    }
+});
 
 
 
