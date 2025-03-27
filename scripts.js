@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (questionNumber === LAST_QUESTION_NUMBER) {
         document.getElementById('submitButtonContainer').style.display = 'block';
     }
-});
+}
 
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
