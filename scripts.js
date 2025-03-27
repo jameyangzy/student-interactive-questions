@@ -377,10 +377,14 @@ const questionData = {
     }
 };
 
-
 function loadQuestion(questionId) {
     const question = questionData[questionId];
-    if (!question) return;
+    if (!question) {
+        console.error(`Question ID ${questionId} not found.`);
+        return;
+    }
+
+    console.log(`Loading question: ${questionId}`); // 调试输出
 
     document.getElementById('questionType').innerText = question.type;
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
@@ -394,9 +398,8 @@ function loadQuestion(questionId) {
 
     setupHints(question.hints);
 
-    // 控制是否显示选择题
     const choicesContainer = document.getElementById('choicesContainer');
-    choicesContainer.innerHTML = '';  // 清空现有的选择
+    choicesContainer.innerHTML = '';
 
     if (question.choices) {
         question.choices.forEach((choice, index) => {
@@ -410,16 +413,15 @@ function loadQuestion(questionId) {
         });
     }
 
-   // 动态显示或隐藏解释文本框，并设置其 placeholder
     const explanationElement = document.getElementById('explanation');
     if (question.additionalInput) {
         explanationElement.style.display = 'block';
         explanationElement.placeholder = question.additionalInput;
     } else {
         explanationElement.style.display = 'none';
-        explanationElement.placeholder = 'Explain your answer'; // 设个默认值，不一定必要
     }
 }
+
 
 
 function setupHints(hints) {
@@ -445,14 +447,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const category = urlParams.get('category') || 'C';
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
+
+    console.log(`Loading question ${questionId}`);  // 调试输出
+
     loadQuestion(questionId);
 
-    // 如果是最后一道题，则显示提交按钮
     const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
     if (questionNumber === LAST_QUESTION_NUMBER) {
         document.getElementById('submitButtonContainer').style.display = 'block';
     }
 });
+
 
 
 function renderPyramid(pyramidStructure, pyramidColors) {
