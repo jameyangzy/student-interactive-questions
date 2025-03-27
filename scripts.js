@@ -375,22 +375,6 @@ const questionData = {
 };
 
 
-function setupHints(hints) {
-    const hintsContainer = document.getElementById('hintsContainer');
-    hintsContainer.innerHTML = '';  // 清空现有的提示
-
-    hints.forEach((hint, index) => {
-        const hintElement = document.createElement('div');
-        hintElement.className = 'hint';
-        hintElement.innerText = hint; // 直接使用字符串作为内容
-        hintElement.addEventListener('click', () => {
-            // 显示提示内容
-            alert(hint); // 直接使用字符串作为提示
-        });
-        hintsContainer.appendChild(hintElement);
-    });
-}
-
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
@@ -464,10 +448,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function toggleHints() {
-    const hintList = document.getElementById('hintList');
-    hintList.classList.toggle('hidden');
-}
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
