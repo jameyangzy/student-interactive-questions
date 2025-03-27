@@ -14,12 +14,15 @@
     <div id="interactiveArea"></div>
     <div id="questionImageContainer"><img id="questionImage" alt=""></div>
     <div id="taskDetails">Question Details</div>
+    
+    <div id="choicesContainer"></div>
+    
     <textarea id="explanation" placeholder="Explain your answer" style="display:none;"></textarea>
+    
     <div id="hintsContainer">
         <button class="hint-btn" onclick="toggleHints()">Hints</button>
         <ul id="hintList" class="hidden"></ul>
     </div>
-    <div id="choicesContainer"></div>
     <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
     <div id="submitButtonContainer" style="display:none;">
