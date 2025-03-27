@@ -49,6 +49,17 @@ h1 {
     margin-bottom: 30px; /* 为每个元素增加间距 */
     text-align: left;
 }
+#questionText {
+    margin-bottom: 30px; /* 保留底部间距 */
+    text-align: left; /* 设置文本左对齐 */
+    line-height: 1.5; /* 设置行高为1.5倍，增加每行间距 */
+}
+#hintList {
+    text-align: left;
+    list-style: none;  /* 去掉默认列表样式 */
+    padding: 0;  /* 清除默认内边距 */
+    margin: 0;  /* 清除默认外边距 */
+}
 
 .hint-btn {
     background-color: #007BFF;
@@ -88,7 +99,7 @@ textarea#explanation {
     margin: 20px auto;  /* 上下边距为20px，水平居中 */
     width: 80%;  /* 设置宽度为80% */
     max-width: 600px;  /* 设置最大宽度为400px，以适应不同屏幕 */
-    height: 50px;  /* 高度调整为150px */
+    height: 50px;  /* 高度调整为50px */
     padding: 10px;  /* 内部填充，增加舒适度 */
     font-size: 16px;  /* 字体大小 */
     border: 1px solid #ccc;  /* 边框样式 */
