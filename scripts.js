@@ -399,7 +399,6 @@ function loadQuestion(questionId) {
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
     
-    // 渲染金字塔
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
@@ -408,8 +407,26 @@ function loadQuestion(questionId) {
 
     setupHints(question.hints);
 
+    // 处理选择题
+    const choicesContainer = document.getElementById('choicesContainer');
+    choicesContainer.innerHTML = '';  // 清空现有的选择
+
+    if (question.choices) {
+        const choicesList = document.createElement('ul');
+        question.choices.forEach(choice => {
+            const choiceElement = document.createElement('li');
+            choiceElement.innerText = choice;
+            choiceElement.addEventListener('click', () => {
+                alert(`You selected: ${choice}`);
+            });
+            choicesList.appendChild(choiceElement);
+        });
+        choicesContainer.appendChild(choicesList);
+    }
+
     document.getElementById('explanation').style.display = question.additionalInput ? 'block' : 'none';
 }
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
