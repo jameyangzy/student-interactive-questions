@@ -380,8 +380,13 @@ const questionData = {
 };
 
 function loadQuestion(questionId) {
-    const question = questionData[questionId];
-    if (!question) return;
+     const question = questionData[questionId];
+
+    if (!question) {
+        // 当问题不存在时，跳转到 selection.html
+        window.location.href = 'selection.html';
+        return;
+    }
 
     document.getElementById('questionType').innerText = question.type;
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
