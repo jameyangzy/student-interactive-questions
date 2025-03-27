@@ -37,7 +37,7 @@ h1 {
     margin: 10px 0; /* 图片容器的垂直间距 */
 }
 
-#questionImage, #questionImage2, #questionImage3 {
+#questionImage{
     max-width: 80%; /* 限制图片最大宽度为容器宽度的80% */
     height: auto;
     display: block;
@@ -46,7 +46,7 @@ h1 {
 
 
 #questionText, #taskDetails, #interactiveArea, #inputs, #explanation, #hintSection, button {
-    margin-bottom: 20px; /* 为每个元素增加间距 */
+    margin-bottom: 30px; /* 为每个元素增加间距 */
 }
 
 .hint-btn {
@@ -136,17 +136,4 @@ button:hover {
     background-color: yellow;
 }
 
-
-#questionImageContainer {
-    display: flex;
-    justify-content: center; /* 在容器水平居中 */
-    margin: 10px 0;
-}
-
-#questionImage, #questionImage2, #questionImage3 {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto; /* 图片居中 */
-}
 
