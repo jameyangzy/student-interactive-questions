@@ -220,7 +220,7 @@ const questionData = {
         "img": "img/B/b4.png",
         "hints": [],
         "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
-        "solutionsDetails": "Main task: Determine solution types for each pyramid."
+        "solutionsDetails": "Main task: Determine solution types for each pyramid.",
         "additionalInput": "Please explain your reason(s)."
     },
     "B5": {
@@ -322,7 +322,7 @@ const questionData = {
             "Your final equation should be in the form: A⋅a + B⋅b + C⋅c + D⋅d + E⋅13 = 280"
         ],
         "solutionsDetails": "Main task: Formulate the equation that represents the relationship between the bottom row and the top number.",
-        "equationVariables": ["a", "b", "c", "d", "E"]
+        "equationVariables": ["a", "b", "c", "d", "E"],
         "additionalInput": "Please write your anser:__ a+___ b +___c + ___d +__* 13 = 280."
     },
     "C4": {
@@ -351,7 +351,7 @@ const questionData = {
             "Use the given values: Set up equations using 31, 75, and 280 to connect the bottom row to the top.",
             "Solve step by step: Use substitution or elimination to find the values of a, b, c, and d."
         ],
-        "solutionsDetails": "Main task: Solve for the unknown values in the bottom row using a system of equations."
+        "solutionsDetails": "Main task: Solve for the unknown values in the bottom row using a system of equations.",
         "additionalInput": "Please anser a =_____, b=______, c=_____, d=_____."
     },
     "C6": {
@@ -421,19 +421,6 @@ function loadQuestion(questionId) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-    loadQuestion(questionId);
-
-    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
-}
 
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
