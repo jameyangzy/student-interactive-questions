@@ -407,7 +407,7 @@ function loadQuestion(questionId) {
 
     setupHints(question.hints);
 
-    // 处理选择题
+    // 控制是否显示选择题
     const choicesContainer = document.getElementById('choicesContainer');
     choicesContainer.innerHTML = '';  // 清空现有的选择
 
@@ -423,6 +423,16 @@ function loadQuestion(questionId) {
         });
         choicesContainer.appendChild(choicesList);
     }
+
+    // 控制 `textarea` 的显示
+    const explanationElement = document.getElementById('explanation');
+    if (question.additionalInput) {
+        explanationElement.style.display = 'block';
+    } else {
+        explanationElement.style.display = 'none';
+    }
+}
+
 
     document.getElementById('explanation').style.display = question.additionalInput ? 'block' : 'none';
 }
