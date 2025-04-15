@@ -1,11 +1,64 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase URL和API密钥
-const supabaseUrl = 'https://jameyangzy's Project.supabase.co';
-const supabaseKey = 'febzoufkcsvpkbjvkeij';
-
-// 创建Supabase客户端
+// Supabase configuration
+const supabaseUrl = 'https://febzoufkcsvpkbjvkeij.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlYnpvdWZrY3N2cGtianZrZWlqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MjgwNjkxMiwiZXhwIjoyMDU4MzgyOTEyfQ.9mzChoVrEMJEYmXSBbgkAKUE_zEEixPon3dPMjrJmSs';
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+
+
+function submitAnswers() {
+    const explanation = document.getElementById('explanation').value;
+    const userPyramid = getUserPyramid();
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+
+    const userAnswers = {
+        question_id: questionId,
+        explanation: explanation,
+        user_pyramid: userPyramid
+    };
+
+    try {
+        supabase.from('answers').insert([userAnswers]).then(({ error }) => {
+            if (error) {
+                console.error('Error:', error);
+                alert('Failed to submit answers. Please try again.');
+            } else {
+                window.location.href = 'end.html';
+            }
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to submit answers. Please try again.');
+    }
+}
+
+function getUserPyramid() {
+    const pyramidContainer = document.getElementById('interactiveArea');
+    const rows = pyramidContainer.getElementsByClassName('pyramid-row');
+
+    const userPyramid = [];
+    for (const row of rows) {
+        const boxes = row.getElementsByClassName('box');
+        const rowValues = [];
+        for (const box of boxes) {
+            const input = box.querySelector('input');
+            if (input) {
+                rowValues.push(input.value ? parseInt(input.value) : null);
+            } else {
+                rowValues.push(box.textContent ? parseInt(box.textContent) : null);
+            }
+        }
+        userPyramid.push(rowValues);
+    }
+    return userPyramid;
+}
+
 
 const questionData = {
     "A1": {
@@ -540,32 +593,6 @@ function navigate(next) {
         } else {
             alert("No more questions available.");
         }
-    }
-}
-
-
-
-async function submitAnswers() {
-    const userAnswers = {
-        task_details: document.getElementById('taskDetails').innerText,
-        explanation: document.getElementById('explanation').value
-    };
-
-    try {
-        // 插入用户答案到Supabase数据库
-        const { data, error } = await supabase
-            .from('answers')
-            .insert([userAnswers]);
-
-        if (error) {
-            throw error;
-        }
-
-        // 如果插入成功，跳转到结束页面
-        window.location.href = 'end.html';
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to submit answers. Please try again.');
     }
 }
 
