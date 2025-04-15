@@ -59,7 +59,6 @@ function getUserPyramid() {
     return userPyramid;
 }
 
-
 const questionData = {
     "A1": {
         "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value",
