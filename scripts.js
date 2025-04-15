@@ -1,4 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
+
+// Supabase configuration
+const supabaseUrl = 'https://your-supabase-url.supabase.co';
+const supabaseKey = 'your-supabase-key';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const questionData = {
     "A1": {
@@ -381,12 +386,147 @@ const questionData = {
     }
 };
 
-// Supabase configuration
-const supabaseUrl = 'https://febzoufkcsvpkbjvkeij.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlYnpvdWZrY3N2cGtianZrZWlqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MjgwNjkxMiwiZXhwIjoyMDU4MzgyOTEyfQ.9mzChoVrEMJEYmXSBbgkAKUE_zEEixPon3dPMjrJmSs';
-const supabase = createClient(supabaseUrl, supabaseKey);
+function loadQuestion(questionId) {
+    const question = questionData[questionId];
+    if (!question) return;
 
+    document.getElementById('questionType').innerText = question.type;
+    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
+    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
 
+    const questionImage = document.getElementById('questionImage');
+    if (question.img) {
+        questionImage.src = question.img;
+        questionImage.style.display = 'block';
+    } else {
+        questionImage.style.display = 'none';
+    }
+
+    if (question.pyramidStructure && question.pyramidColors) {
+        renderPyramid(question.pyramidStructure, question.pyramidColors);
+    } else {
+        document.getElementById('interactiveArea').innerHTML = '';
+    }
+
+    setupHints(question.hints);
+
+    const choicesContainer = document.getElementById('choicesContainer');
+    choicesContainer.innerHTML = '';
+
+    if (question.choices) {
+        question.choices.forEach(choice => {
+            const choiceButton = document.createElement('button');
+            choiceButton.className = 'choice-btn';
+            choiceButton.innerText = choice;
+            choiceButton.addEventListener('click', () => {
+                alert(`You selected: ${choice}`);
+            });
+            choicesContainer.appendChild(choiceButton);
+        });
+    }
+
+    const explanationElement = document.getElementById('explanation');
+    if (question.additionalInput) {
+        explanationElement.style.display = 'block';
+        explanationElement.placeholder = question.additionalInput;
+    } else {
+        explanationElement.style.display = 'none';
+    }
+}
+
+function setupHints(hints) {
+    const hintList = document.getElementById('hintList');
+    hintList.innerHTML = '';
+
+    hints.forEach((hint, index) => {
+        const hintItem = document.createElement('li');
+        hintItem.className = 'hint';
+        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
+        hintList.appendChild(hintItem);
+    });
+}
+
+function toggleHints() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+
+    loadQuestion(questionId);
+
+    const LAST_QUESTION_NUMBER = 6;
+    if (questionNumber === LAST_QUESTION_NUMBER) {
+        document.getElementById('submitButtonContainer').style.display = 'block';
+    }
+});
+
+function renderPyramid(pyramidStructure, pyramidColors) {
+    const pyramidContainer = document.getElementById('interactiveArea');
+    pyramidContainer.innerHTML = '';
+
+    pyramidStructure.forEach((row, rowIndex) => {
+        const pyramidRow = document.createElement('div');
+        pyramidRow.className = 'pyramid-row';
+
+        row.forEach((value, colIndex) => {
+            const box = document.createElement('div');
+            box.className = 'box';
+            const editable = pyramidColors[rowIndex][colIndex];
+
+            if (editable) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = value !== null ? value : '';
+                box.appendChild(input);
+            } else {
+                box.textContent = value !== null ? value : '';
+            }
+
+            pyramidRow.appendChild(box);
+        });
+
+        pyramidContainer.appendChild(pyramidRow);
+    });
+}
+
+function navigate(next) {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category') || 'C';
+    let questionNumber = parseInt(params.get('question')) || 1;
+
+    const currentQuestionId = `${category}${questionNumber}`;
+
+    if (!next) {
+        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
+            window.location.href = 'selection.html';
+        } else {
+            questionNumber -= 1;
+            const previousQuestionId = `${category}${questionNumber}`;
+            if (questionData[previousQuestionId]) {
+                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+                loadQuestion(previousQuestionId);
+            } else {
+                alert("No previous question available.");
+            }
+        }
+    } else {
+        questionNumber += 1;
+        const nextQuestionId = `${category}${questionNumber}`;
+
+        if (questionData[nextQuestionId]) {
+            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+            loadQuestion(nextQuestionId);
+        } else {
+            alert("No more questions available.");
+        }
+    }
+}
 
 function submitAnswers() {
     const explanation = document.getElementById('explanation').value;
@@ -440,158 +580,55 @@ function getUserPyramid() {
     return userPyramid;
 }
 
-function loadQuestion(questionId) {
-    const question = questionData[questionId];
-    if (!question) return;
 
-    document.getElementById('questionType').innerText = question.type;
-    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
-    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
+function submitAnswers() {
+    const explanation = document.getElementById('explanation').value;
+    const userPyramid = getUserPyramid();
 
-    // 设置图片路径
-    const questionImage = document.getElementById('questionImage');
-    if (question.img) {
-        questionImage.src = question.img;
-        questionImage.style.display = 'block';
-    } else {
-        questionImage.style.display = 'none';
-    }
-
-    if (question.pyramidStructure && question.pyramidColors) {
-        renderPyramid(question.pyramidStructure, question.pyramidColors);
-    } else {
-        document.getElementById('interactiveArea').innerHTML = '';
-    }
-
-    setupHints(question.hints);
-
-    const choicesContainer = document.getElementById('choicesContainer');
-    choicesContainer.innerHTML = '';
-
-    if (question.choices) {
-        question.choices.forEach((choice, index) => {
-            const choiceButton = document.createElement('button');
-            choiceButton.className = 'choice-btn';
-            choiceButton.innerText = choice;
-            choiceButton.addEventListener('click', () => {
-                alert(`You selected: ${choice}`);
-            });
-            choicesContainer.appendChild(choiceButton);
-        });
-    }
-
-    const explanationElement = document.getElementById('explanation');
-    if (question.additionalInput) {
-        explanationElement.style.display = 'block';
-        explanationElement.placeholder = question.additionalInput;
-    } else {
-        explanationElement.style.display = 'none';
-    }
-}
-
-
-
-
-function setupHints(hints) {
-    const hintList = document.getElementById('hintList');
-    hintList.innerHTML = '';  // 清空现有的提示
-
-    hints.forEach((hint, index) => {
-        const hintItem = document.createElement('li');
-        hintItem.className = 'hint';
-        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
-        hintList.appendChild(hintItem);
-    });
-}
-
-function toggleHints() {
-    const hintList = document.getElementById('hintList');
-    hintList.classList.toggle('hidden');
-}
-
-document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const category = urlParams.get('category') || 'C';
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    console.log(`Loading question ${questionId}`);  // 调试输出
+    const userAnswers = {
+        question_id: questionId,
+        explanation: explanation,
+        user_pyramid: userPyramid
+    };
 
-    loadQuestion(questionId);
-
-    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
-});
-
-
-
-function renderPyramid(pyramidStructure, pyramidColors) {
-    const pyramidContainer = document.getElementById('interactiveArea');
-    pyramidContainer.innerHTML = '';
-
-    pyramidStructure.forEach((row, rowIndex) => {
-        const pyramidRow = document.createElement('div');
-        pyramidRow.className = 'pyramid-row';
-
-        row.forEach((value, colIndex) => {
-            const box = document.createElement('div');
-            box.className = 'box';
-            const editable = pyramidColors[rowIndex][colIndex];
-
-            if (editable) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = value !== null ? value : '';
-                box.appendChild(input);
+    try {
+        supabase.from('answers').insert([userAnswers]).then(({ error }) => {
+            if (error) {
+                console.error('Error:', error);
+                alert('Failed to submit answers. Please try again.');
             } else {
-                box.textContent = value !== null ? value : '';
+                window.location.href = 'end.html';
             }
-            
-            pyramidRow.appendChild(box);
         });
-
-        pyramidContainer.appendChild(pyramidRow);
-    });
-}
-
-function navigate(next) {
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'C';
-    let questionNumber = parseInt(params.get('question')) || 1;
-
-    // 获取当前题目的 ID
-    const currentQuestionId = `${category}${questionNumber}`;
-
-    // 如果是返回上一题
-    if (!next) {
-        // 检查是否是 A1、B1,C1，若是，则返回到 selection.html
-        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
-            window.location.href = 'selection.html';
-        } else {
-            // 否则返回上一题
-            questionNumber -= 1;
-            const previousQuestionId = `${category}${questionNumber}`;
-            if (questionData[previousQuestionId]) {
-                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-                loadQuestion(previousQuestionId);
-            } else {
-                alert("No previous question available.");
-            }
-        }
-    } else {
-        // 否则，跳到下一题
-        questionNumber += 1;
-        const nextQuestionId = `${category}${questionNumber}`;
-
-        if (questionData[nextQuestionId]) {
-            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-            loadQuestion(nextQuestionId);
-        } else {
-            alert("No more questions available.");
-        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to submit answers. Please try again.');
     }
 }
 
+function getUserPyramid() {
+    const pyramidContainer = document.getElementById('interactiveArea');
+    const rows = pyramidContainer.getElementsByClassName('pyramid-row');
+
+    const userPyramid = [];
+    for (const row of rows) {
+        const boxes = row.getElementsByClassName('box');
+        const rowValues = [];
+        for (const box of boxes) {
+            const input = box.querySelector('input');
+            if (input) {
+                rowValues.push(input.value ? parseInt(input.value) : null);
+            } else {
+                rowValues.push(box.textContent ? parseInt(box.textContent) : null);
+            }
+        }
+        userPyramid.push(rowValues);
+    }
+    return userPyramid;
+}
