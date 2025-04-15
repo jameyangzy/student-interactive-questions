@@ -13,10 +13,9 @@
     <div id="questionText" style="white-space: pre-wrap;"></div>
     <div id="interactiveArea"></div>
     <div id="questionImageContainer"><img id="questionImage" alt=""></div>
-    <div id="taskDetails">Question Details</div>
+    <div id="taskDetails"></div>
     
     <div id="choicesContainer"></div>
-    
     <textarea id="explanation" placeholder="Explain your answer" style="display:none;"></textarea>
     
     <div id="hintsContainer">
@@ -25,9 +24,7 @@
     </div>
     
     <div>
-        <select id="questionSelector" onchange="jumpToQuestion()">
-            <!-- 在scripts.js中动态生成选项 -->
-        </select>
+        <select id="questionSelector" onchange="jumpToQuestion()"></select>
     </div>
     
     <button onclick="navigate(false)">Return</button>
