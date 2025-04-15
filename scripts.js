@@ -410,26 +410,11 @@ function loadQuestion(questionId) {
     }
 
     setupHints(question.hints);
-
-    const choicesContainer = document.getElementById('choicesContainer');
-    choicesContainer.innerHTML = '';
-
-    if (question.choices) {
-        question.choices.forEach((choice, index) => {
-            const choiceButton = document.createElement('button');
-            choiceButton.className = 'choice-btn';
-            choiceButton.innerText = choice;
-            choiceButton.addEventListener('click', (event) => {
-                selectChoice(event.target);
-            });
-            choicesContainer.appendChild(choiceButton);
-        });
-    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'A'; // 默认进入A类题目，如没有参数
+    const category = params.get('category') || 'A';
     const questionNumber = parseInt(params.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
@@ -454,7 +439,7 @@ function populateQuestionSelector(category) {
 function jumpToQuestion() {
     const selectedQuestion = document.getElementById('questionSelector').value;
     loadQuestion(selectedQuestion);
-    history.pushState(null, '', `?category=${selectedQuestion.charAt(0)}&question=${selectedQuestion.charAt(1)}`);
+    history.pushState(null, '', `?category=${selectedQuestion.charAt(0)}&question=${selectedQuestion.slice(1)}`);
 }
 
 function navigate(next) {
@@ -463,12 +448,6 @@ function navigate(next) {
     } else {
         window.location.href = 'end.html';
     }
-}
-
-function selectChoice(button) {
-    const buttons = document.querySelectorAll('.choice-btn');
-    buttons.forEach(btn => btn.style.backgroundColor = '');
-    button.style.backgroundColor = 'lightblue';
 }
 
 function submitAnswers() {
@@ -488,7 +467,7 @@ function submitAnswers() {
     };
 
     try {
-        supabase.from('answers').insert([userAnswers], { onConflict: 'question_id' }).then(({ error }) => {
+        supabase.from('answers').upsert([userAnswers]).then(({ error }) => {
             if (error) {
                 console.error('Error:', error);
                 alert('Failed to submit answers. Please try again.');
