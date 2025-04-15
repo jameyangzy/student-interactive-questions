@@ -389,11 +389,14 @@ const questionData = {
 
 function loadQuestion(questionId) {
     const question = questionData[questionId];
-    if (!question) return;
+    if (!question) {
+        console.error(`Question ID ${questionId} not found.`);
+        return;
+    }
 
     document.getElementById('questionType').innerText = question.type;
-    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
-    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
+    document.getElementById('questionText').innerText = question.task;
+    document.getElementById('taskDetails').innerText = question.solutionsDetails;
 
     const questionImage = document.getElementById('questionImage');
     if (question.img) {
@@ -403,13 +406,33 @@ function loadQuestion(questionId) {
         questionImage.style.display = 'none';
     }
 
+    setupHints(question.hints);
+
+    const choicesContainer = document.getElementById('choicesContainer');
+    choicesContainer.innerHTML = '';
+    if (question.choices) {
+        question.choices.forEach(choice => {
+            const choiceButton = document.createElement('button');
+            choiceButton.className = 'choice-btn';
+            choiceButton.innerText = choice;
+            choiceButton.onclick = () => setChoice(choice);
+            choicesContainer.appendChild(choiceButton);
+        });
+    }
+
+    const explanationElement = document.getElementById('explanation');
+    if (question.additionalInput) {
+        explanationElement.style.display = 'block';
+        explanationElement.placeholder = question.additionalInput;
+    } else {
+        explanationElement.style.display = 'none';
+    }
+
     if (question.pyramidStructure && question.pyramidColors) {
         renderPyramid(question.pyramidStructure, question.pyramidColors);
     } else {
         document.getElementById('interactiveArea').innerHTML = '';
     }
-
-    setupHints(question.hints);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -419,7 +442,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionId = `${category}${questionNumber}`;
 
     loadQuestion(questionId);
-
     populateQuestionSelector(category);
     document.getElementById('questionSelector').value = questionId;
 });
@@ -427,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function populateQuestionSelector(category) {
     const questionSelector = document.getElementById('questionSelector');
     questionSelector.innerHTML = '';
-    
+
     for (let i = 1; i <= 6; i++) {
         const option = document.createElement('option');
         option.value = `${category}${i}`;
@@ -439,7 +461,7 @@ function populateQuestionSelector(category) {
 function jumpToQuestion() {
     const selectedQuestion = document.getElementById('questionSelector').value;
     loadQuestion(selectedQuestion);
-    history.pushState(null, '', `?category=${selectedQuestion.charAt(0)}&question=${selectedQuestion.slice(1)}`);
+    history.pushState(null, '', `?category=${selectedQuestion.charAt(0)}&question=${selectedQuestion.charAt(1)}`);
 }
 
 function navigate(next) {
@@ -500,4 +522,21 @@ function getUserPyramid() {
         userPyramid.push(rowValues);
     }
     return userPyramid;
+}
+
+function toggleHints() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
+
+function setupHints(hints) {
+    const hintList = document.getElementById('hintList');
+    hintList.innerHTML = '';
+
+    hints.forEach((hint, index) => {
+        const hintItem = document.createElement('li');
+        hintItem.className = 'hint';
+        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
+        hintList.appendChild(hintItem);
+    });
 }
