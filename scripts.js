@@ -1,3 +1,12 @@
+import { createClient } from '@supabase/supabase-js';
+
+// Supabase URL和API密钥
+const supabaseUrl = 'https://jameyangzy's Project.supabase.co';
+const supabaseKey = 'febzoufkcsvpkbjvkeij';
+
+// 创建Supabase客户端
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 const questionData = {
     "A1": {
         "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value",
@@ -538,46 +547,25 @@ function navigate(next) {
 
 async function submitAnswers() {
     const userAnswers = {
-        taskDetails: document.getElementById('taskDetails').innerText,
+        task_details: document.getElementById('taskDetails').innerText,
         explanation: document.getElementById('explanation').value
     };
 
-    // GitHub API 操作
     try {
-        const fileResponse = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
-            headers: {
-                Authorization: `token ${token}`
-            }
-        });
+        // 插入用户答案到Supabase数据库
+        const { data, error } = await supabase
+            .from('answers')
+            .insert([userAnswers]);
 
-        if (!fileResponse.ok) {
-            throw new Error('Failed to fetch file information.');
+        if (error) {
+            throw error;
         }
 
-        const file = await fileResponse.json();
-        const sha = file.sha;
-
-        const encodedContent = btoa(JSON.stringify(userAnswers));
-
-        const result = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
-            method: 'PUT',
-            headers: {
-                Authorization: `token ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'Update results',
-                content: encodedContent,
-                sha: sha
-            })
-        });
-
-        if (result.ok) {
-            window.location.href = 'end.html';
-        } else {
-            throw new Error('Failed to update file.');
-        }
+        // 如果插入成功，跳转到结束页面
+        window.location.href = 'end.html';
     } catch (error) {
         console.error('Error:', error);
+        alert('Failed to submit answers. Please try again.');
     }
 }
+
