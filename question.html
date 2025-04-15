@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pyramid Challenge</title>
     <link rel="stylesheet" href="styles.css">
-</head> 
+</head>
 <body>
 <div class="container">
     <h3 id="questionType"></h3>
@@ -25,7 +25,9 @@
     </div>
     
     <div>
-        <select id="questionSelector" onchange="jumpToQuestion()"></select>
+        <select id="questionSelector" onchange="jumpToQuestion()">
+            <!-- 选择题目显示的选项将在JavaScript中动态生成 -->
+        </select>
     </div>
     
     <button onclick="navigate(false)">Return</button>
