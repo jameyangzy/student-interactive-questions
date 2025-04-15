@@ -104,7 +104,7 @@ const questionData = {
         ),
         "img": "img/A/a5.png",
         "choices": ["A. 4", "B. 5", "C. 6"],
-        "solutionsDetails": ""
+        "solutionsDetails": "Whats the least amount of given values required to create a unique-solution pyramid?"
     },
     "A6": {
         "type": "A6-Question 6: Design and Solve a Pyramid with Limited Information",
@@ -380,13 +380,8 @@ const questionData = {
 };
 
 function loadQuestion(questionId) {
-     const question = questionData[questionId];
-
-    if (!question) {
-        // 当问题不存在时，跳转到 selection.html
-        window.location.href = 'selection.html';
-        return;
-    }
+    const question = questionData[questionId];
+    if (!question) return;
 
     document.getElementById('questionType').innerText = question.type;
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
@@ -505,17 +500,41 @@ function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
-    questionNumber += next ? 1 : -1;
 
-    const nextQuestionId = `${category}${questionNumber}`;
+    // 获取当前题目的 ID
+    const currentQuestionId = `${category}${questionNumber}`;
 
-    if (questionData[nextQuestionId]) {
-        history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-        loadQuestion(nextQuestionId);
+    // 如果是返回上一题
+    if (!next) {
+        // 检查是否是 A1、B1,C1，若是，则返回到 selection.html
+        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
+            window.location.href = 'selection.html';
+        } else {
+            // 否则返回上一题
+            questionNumber -= 1;
+            const previousQuestionId = `${category}${questionNumber}`;
+            if (questionData[previousQuestionId]) {
+                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+                loadQuestion(previousQuestionId);
+            } else {
+                alert("No previous question available.");
+            }
+        }
     } else {
-        alert("No more questions available.");
+        // 否则，跳到下一题
+        questionNumber += 1;
+        const nextQuestionId = `${category}${questionNumber}`;
+
+        if (questionData[nextQuestionId]) {
+            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+            loadQuestion(nextQuestionId);
+        } else {
+            alert("No more questions available.");
+        }
     }
 }
+
+
 
 async function submitAnswers() {
     const userAnswers = {
