@@ -387,7 +387,6 @@ const questionData = {
     }
 };
 
-
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
@@ -416,81 +415,46 @@ function loadQuestion(questionId) {
     choicesContainer.innerHTML = '';
 
     if (question.choices) {
-        question.choices.forEach(choice => {
+        question.choices.forEach((choice, index) => {
             const choiceButton = document.createElement('button');
             choiceButton.className = 'choice-btn';
             choiceButton.innerText = choice;
-            choiceButton.addEventListener('click', () => {
-                alert(`You selected: ${choice}`);
+            choiceButton.addEventListener('click', (event) => {
+                selectChoice(event.target);
             });
             choicesContainer.appendChild(choiceButton);
         });
     }
-
-    const explanationElement = document.getElementById('explanation');
-    if (question.additionalInput) {
-        explanationElement.style.display = 'block';
-        explanationElement.placeholder = question.additionalInput;
-    } else {
-        explanationElement.style.display = 'none';
-    }
-}
-
-function setupHints(hints) {
-    const hintList = document.getElementById('hintList');
-    hintList.innerHTML = '';
-
-    hints.forEach((hint, index) => {
-        const hintItem = document.createElement('li');
-        hintItem.className = 'hint';
-        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
-        hintList.appendChild(hintItem);
-    });
-}
-
-function toggleHints() {
-    const hintList = document.getElementById('hintList');
-    hintList.classList.toggle('hidden');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'A'; // 默认进入A类题目
-    const questionId = `${category}1`; // 默认进入1号题
+    const category = params.get('category') || 'A'; // 默认进入A类题目，如没有参数
+    const questionNumber = parseInt(params.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
 
     loadQuestion(questionId);
 
-    // 设置选择器默认值
+    populateQuestionSelector(category);
     document.getElementById('questionSelector').value = questionId;
 });
 
-function renderPyramid(pyramidStructure, pyramidColors) {
-    const pyramidContainer = document.getElementById('interactiveArea');
-    pyramidContainer.innerHTML = '';
+function populateQuestionSelector(category) {
+    const questionSelector = document.getElementById('questionSelector');
+    questionSelector.innerHTML = '';
+    
+    for (let i = 1; i <= 6; i++) {
+        const option = document.createElement('option');
+        option.value = `${category}${i}`;
+        option.innerText = `Question ${category}${i}`;
+        questionSelector.appendChild(option);
+    }
+}
 
-    pyramidStructure.forEach((row, rowIndex) => {
-        const pyramidRow = document.createElement('div');
-        pyramidRow.className = 'pyramid-row';
-
-        row.forEach((value, colIndex) => {
-            const box = document.createElement('div');
-            box.className = 'box';
-            const editable = pyramidColors[rowIndex][colIndex];
-
-            if (editable) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = value !== null ? value : '';
-                box.appendChild(input);
-            } else {
-                box.textContent = value !== null ? value : '';
-            }
-
-            pyramidRow.appendChild(box);
-        });
-
-        pyramidContainer.appendChild(pyramidRow);
-    });
+function jumpToQuestion() {
+    const selectedQuestion = document.getElementById('questionSelector').value;
+    loadQuestion(selectedQuestion);
+    history.pushState(null, '', `?category=${selectedQuestion.charAt(0)}&question=${selectedQuestion.charAt(1)}`);
 }
 
 function navigate(next) {
@@ -501,10 +465,10 @@ function navigate(next) {
     }
 }
 
-function jumpToQuestion() {
-    const selectedQuestion = document.getElementById('questionSelector').value;
-    loadQuestion(selectedQuestion);
-    history.pushState(null, '', `?category=${selectedQuestion.charAt(0)}&question=${selectedQuestion.charAt(1)}`);
+function selectChoice(button) {
+    const buttons = document.querySelectorAll('.choice-btn');
+    buttons.forEach(btn => btn.style.backgroundColor = '');
+    button.style.backgroundColor = 'lightblue';
 }
 
 function submitAnswers() {
@@ -524,7 +488,7 @@ function submitAnswers() {
     };
 
     try {
-        supabase.from('answers').insert([userAnswers]).then(({ error }) => {
+        supabase.from('answers').insert([userAnswers], { onConflict: 'question_id' }).then(({ error }) => {
             if (error) {
                 console.error('Error:', error);
                 alert('Failed to submit answers. Please try again.');
