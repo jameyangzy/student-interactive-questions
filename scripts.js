@@ -387,6 +387,7 @@ const questionData = {
     }
 };
 
+
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
@@ -453,18 +454,14 @@ function toggleHints() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category') || 'A'; // 默认进入A类题目
+    const questionId = `${category}1`; // 默认进入1号题
 
     loadQuestion(questionId);
 
-    const LAST_QUESTION_NUMBER = 6;
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
+    // 设置选择器默认值
+    document.getElementById('questionSelector').value = questionId;
 });
 
 function renderPyramid(pyramidStructure, pyramidColors) {
@@ -497,36 +494,17 @@ function renderPyramid(pyramidStructure, pyramidColors) {
 }
 
 function navigate(next) {
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'C';
-    let questionNumber = parseInt(params.get('question')) || 1;
-
-    const currentQuestionId = `${category}${questionNumber}`;
-
     if (!next) {
-        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
-            window.location.href = 'selection.html';
-        } else {
-            questionNumber -= 1;
-            const previousQuestionId = `${category}${questionNumber}`;
-            if (questionData[previousQuestionId]) {
-                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-                loadQuestion(previousQuestionId);
-            } else {
-                alert("No previous question available.");
-            }
-        }
+        window.location.href = 'selection.html';
     } else {
-        questionNumber += 1;
-        const nextQuestionId = `${category}${questionNumber}`;
-
-        if (questionData[nextQuestionId]) {
-            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-            loadQuestion(nextQuestionId);
-        } else {
-            alert("No more questions available.");
-        }
+        window.location.href = 'end.html';
     }
+}
+
+function jumpToQuestion() {
+    const selectedQuestion = document.getElementById('questionSelector').value;
+    loadQuestion(selectedQuestion);
+    history.pushState(null, '', `?category=${selectedQuestion.charAt(0)}&question=${selectedQuestion.charAt(1)}`);
 }
 
 function submitAnswers() {
@@ -551,7 +529,7 @@ function submitAnswers() {
                 console.error('Error:', error);
                 alert('Failed to submit answers. Please try again.');
             } else {
-                window.location.href = 'end.html';
+                alert('Submission successful!');
             }
         });
     } catch (error) {
