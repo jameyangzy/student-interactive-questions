@@ -445,15 +445,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    console.log(`Loading question ${questionId}`);  // 调试输出
-
     loadQuestion(questionId);
-
-    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
 });
+
 
 
 
