@@ -387,14 +387,16 @@ const questionData = {
     }
 };
 
-
 function loadQuestion(questionId) {
     const question = questionData[questionId];
-    if (!question) return;
+    if (!question) {
+        console.error(`Question ID ${questionId} not found.`);
+        return;
+    }
 
     document.getElementById('questionType').innerText = question.type;
-    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
-    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
+    document.getElementById('questionText').innerText = question.task;
+    document.getElementById('taskDetails').innerText = question.solutionsDetails;
 
     const questionImage = document.getElementById('questionImage');
     if (question.img) {
@@ -404,37 +406,34 @@ function loadQuestion(questionId) {
         questionImage.style.display = 'none';
     }
 
-    if (question.pyramidStructure && question.pyramidColors) {
-        renderPyramid(question.pyramidStructure, question.pyramidColors);
-    } else {
-        document.getElementById('interactiveArea').innerHTML = '';
-    }
-
     setupHints(question.hints);
 
     const choicesContainer = document.getElementById('choicesContainer');
     choicesContainer.innerHTML = '';
-
     if (question.choices) {
         question.choices.forEach(choice => {
             const choiceButton = document.createElement('button');
             choiceButton.className = 'choice-btn';
             choiceButton.innerText = choice;
-            choiceButton.addEventListener('click', () => {
-                alert(`You selected: ${choice}`);
-            });
+            choiceButton.onclick = () => setChoice(choice);
             choicesContainer.appendChild(choiceButton);
         });
     }
 
-    const explanationElement = document.getElementById('explanation');
     if (question.additionalInput) {
-        explanationElement.style.display = 'block';
-        explanationElement.placeholder = question.additionalInput;
+        document.getElementById('explanation').style.display = 'block';
+        document.getElementById('explanation').placeholder = question.additionalInput;
     } else {
-        explanationElement.style.display = 'none';
+        document.getElementById('explanation').style.display = 'none';
+    }
+
+    if (question.pyramidStructure && question.pyramidColors) {
+        renderPyramid(question.pyramidStructure, question.pyramidColors);
+    } else {
+        document.getElementById('interactiveArea').innerHTML = '';
     }
 }
+
 
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
@@ -456,17 +455,20 @@ function toggleHints() {
 document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const category = urlParams.get('category');
+    const questionNumber = urlParams.get('question');
     const questionId = `${category}${questionNumber}`;
 
-    loadQuestion(questionId);
-
-    const LAST_QUESTION_NUMBER = 6;
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
+    if (!questionData[questionId]) {
+        console.error(`Question ID ${questionId} not found.`);
+        return;
     }
+
+    loadQuestion(questionId);
+    populateQuestionSelector(category);
+    document.getElementById('questionSelector').value = questionId;
 });
+
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
