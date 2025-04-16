@@ -389,20 +389,6 @@ const questionData = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('nextButton').addEventListener('click', () => navigate(true));
-    document.getElementById('toggleHintsBtn').addEventListener('click', toggleHints);
-
-    // 原本的加载逻辑保留
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-
-    console.log(`Page loaded with question ID: ${questionId}`);
-    loadQuestion(questionId);
-});
 
 function loadQuestion(questionId) {
     const question = questionData[questionId];
@@ -597,11 +583,8 @@ async function submitAnswers() {
     }
 }
 
-async function submitAllAnswers() {
-    try {
-        window.location.href = 'end.html';
-    } catch (err) {
-        console.error('Error:', err);
-        alert('An error occurred while completing the quiz.');
-    }
-}
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('toggleHintsBtn').addEventListener('click', toggleHints);
+    document.getElementById('returnButton').addEventListener('click', () => navigate(false));
+    document.getElementById('nextButton').addEventListener('click', () => navigate(true));
+});
