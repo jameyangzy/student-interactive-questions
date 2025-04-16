@@ -387,6 +387,7 @@ const questionData = {
     }
 };
 
+
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
@@ -395,7 +396,6 @@ function loadQuestion(questionId) {
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
 
-    // 设置图片路径
     const questionImage = document.getElementById('questionImage');
     if (question.img) {
         questionImage.src = question.img;
@@ -416,7 +416,7 @@ function loadQuestion(questionId) {
     choicesContainer.innerHTML = '';
 
     if (question.choices) {
-        question.choices.forEach((choice, index) => {
+        question.choices.forEach(choice => {
             const choiceButton = document.createElement('button');
             choiceButton.className = 'choice-btn';
             choiceButton.innerText = choice;
@@ -436,12 +436,9 @@ function loadQuestion(questionId) {
     }
 }
 
-
-
-
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
-    hintList.innerHTML = '';  // 清空现有的提示
+    hintList.innerHTML = '';
 
     hints.forEach((hint, index) => {
         const hintItem = document.createElement('li');
@@ -463,17 +460,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    console.log(`Loading question ${questionId}`);  // 调试输出
-
     loadQuestion(questionId);
 
-    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
+    const LAST_QUESTION_NUMBER = 6;
     if (questionNumber === LAST_QUESTION_NUMBER) {
         document.getElementById('submitButtonContainer').style.display = 'block';
     }
 });
-
-
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
@@ -496,7 +489,7 @@ function renderPyramid(pyramidStructure, pyramidColors) {
             } else {
                 box.textContent = value !== null ? value : '';
             }
-            
+
             pyramidRow.appendChild(box);
         });
 
@@ -509,16 +502,12 @@ function navigate(next) {
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
 
-    // 获取当前题目的 ID
     const currentQuestionId = `${category}${questionNumber}`;
 
-    // 如果是返回上一题
     if (!next) {
-        // 检查是否是 A1、B1,C1，若是，则返回到 selection.html
         if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
             window.location.href = 'selection.html';
         } else {
-            // 否则返回上一题
             questionNumber -= 1;
             const previousQuestionId = `${category}${questionNumber}`;
             if (questionData[previousQuestionId]) {
@@ -529,7 +518,6 @@ function navigate(next) {
             }
         }
     } else {
-        // 否则，跳到下一题
         questionNumber += 1;
         const nextQuestionId = `${category}${questionNumber}`;
 
@@ -542,50 +530,54 @@ function navigate(next) {
     }
 }
 
+function submitAnswers() {
+    const explanation = document.getElementById('explanation').value;
+    const userPyramid = getUserPyramid();
 
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
 
-async function submitAnswers() {
     const userAnswers = {
-        taskDetails: document.getElementById('taskDetails').innerText,
-        explanation: document.getElementById('explanation').value
+        question_id: questionId,
+        explanation: explanation,
+        user_pyramid: userPyramid
     };
 
-    // GitHub API 操作
     try {
-        const fileResponse = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
-            headers: {
-                Authorization: `token ${token}`
+        supabase.from('answers').insert([userAnswers]).then(({ error }) => {
+            if (error) {
+                console.error('Error:', error);
+                alert('Failed to submit answers. Please try again.');
+            } else {
+                window.location.href = 'end.html';
             }
         });
-
-        if (!fileResponse.ok) {
-            throw new Error('Failed to fetch file information.');
-        }
-
-        const file = await fileResponse.json();
-        const sha = file.sha;
-
-        const encodedContent = btoa(JSON.stringify(userAnswers));
-
-        const result = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
-            method: 'PUT',
-            headers: {
-                Authorization: `token ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'Update results',
-                content: encodedContent,
-                sha: sha
-            })
-        });
-
-        if (result.ok) {
-            window.location.href = 'end.html';
-        } else {
-            throw new Error('Failed to update file.');
-        }
     } catch (error) {
         console.error('Error:', error);
+        alert('Failed to submit answers. Please try again.');
     }
+}
+
+function getUserPyramid() {
+    const pyramidContainer = document.getElementById('interactiveArea');
+    const rows = pyramidContainer.getElementsByClassName('pyramid-row');
+
+    const userPyramid = [];
+    for (const row of rows) {
+        const boxes = row.getElementsByClassName('box');
+        const rowValues = [];
+        for (const box of boxes) {
+            const input = box.querySelector('input');
+            if (input) {
+                rowValues.push(input.value ? parseInt(input.value) : null);
+            } else {
+                rowValues.push(box.textContent ? parseInt(box.textContent) : null);
+            }
+        }
+        userPyramid.push(rowValues);
+    }
+    return userPyramid;
 }
