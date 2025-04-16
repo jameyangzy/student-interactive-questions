@@ -1,18 +1,14 @@
-import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
 
-// Supabase configuration
-const supabaseUrl = 'https://febzoufkcsvpkbjvkeij.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlYnpvdWZrY3N2cGtianZrZWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MDY5MTIsImV4cCI6MjA1ODM4MjkxMn0.ox1vLEy9qjMhxJsQa9f81Hm9DKJWQWqhbiMEReqmMLU';
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-console.log('Supabase client initialized.');
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://febzoufkcsvpkbjvkeij.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlYnpvdWZrY3N2cGtianZrZWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MDY5MTIsImV4cCI6MjA1ODM4MjkxMn0.ox1vLEy9qjMhxJsQa9f81Hm9DKJWQWqhbiMEReqmMLU'
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 const questionData = {
     "A1": {
         "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value",
         "task": (
-            "Welcome to the Brick Pyramid Challenge!  In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid.\n" +
+            "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid.\n" +
             "Each brick follows a simple rule:\n " +
             "Every brick is the sum of the two bricks directly below it.\n" +
             "In this pyramid, one value is already given—the bottom-left brick is 5.\n" +
@@ -389,8 +385,21 @@ const questionData = {
     }
 };
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+
+    console.log(`Page loaded with question ID: ${questionId}`);
+    loadQuestion(questionId);
+});
+
 function loadQuestion(questionId) {
     const question = questionData[questionId];
+    console.log(`Loading question: ${questionId}`, question);
     if (!question) return;
 
     document.getElementById('questionType').innerText = question.type;
@@ -422,9 +431,7 @@ function loadQuestion(questionId) {
             choiceButton.className = 'choice-btn';
             choiceButton.innerText = choice;
             choiceButton.addEventListener('click', () => {
-                // 移除所有按钮的选中状态
                 choicesContainer.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
-                // 为当前选择的按钮添加选中状态
                 choiceButton.classList.add('selected');
             });
             choicesContainer.appendChild(choiceButton);
@@ -440,16 +447,6 @@ function loadQuestion(questionId) {
         explanationElement.style.display = 'none';
     }
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-
-    loadQuestion(questionId);
-});
 
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
@@ -502,16 +499,12 @@ function navigate(next) {
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
 
-    // 获取当前题目的 ID
     const currentQuestionId = `${category}${questionNumber}`;
 
-    // 如果是返回上一题
     if (!next) {
-        // 检查是否是 A1、B1,C1，若是，则返回到 selection.html
         if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
             window.location.href = 'selection.html';
         } else {
-            // 否则返回上一题
             questionNumber -= 1;
             const previousQuestionId = `${category}${questionNumber}`;
             if (questionData[previousQuestionId]) {
@@ -522,10 +515,8 @@ function navigate(next) {
             }
         }
     } else {
-        // 否则，跳到下一题
         questionNumber += 1;
         const nextQuestionId = `${category}${questionNumber}`;
-
         if (questionData[nextQuestionId]) {
             history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
             loadQuestion(nextQuestionId);
@@ -536,23 +527,19 @@ function navigate(next) {
 }
 
 async function submitAnswers() {
-    // 获取当前问题ID
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const category = urlParams.get('category') || 'C';
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    // 获取选择题答案
     const choices = [...document.querySelectorAll('.choice-btn')];
     const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
     const answer = selectedChoice ? selectedChoice.innerText : '';
 
-    // 获取填空题答案
     const explanationElement = document.getElementById('explanation');
     const explanationAnswer = explanationElement.value.trim();
 
-    // 获取金字塔答案
     const pyramidContainer = document.getElementById('interactiveArea');
     const pyramidStructure = [];
     const userAnswers = [];
@@ -590,11 +577,10 @@ async function submitAnswers() {
             alert('There was an error submitting your answers.');
         } else {
             alert('Your answers have been submitted successfully.');
-            if (questionNumber === LAST_QUESTION_NUMBER) {
-                // 如果是最后一题后执行完整提交跳转
+            // 如果是最后一题后执行完整提交跳转，否则跳到下一题
+            if (document.querySelector('#submitButtonContainer').style.display === 'block') {
                 submitAllAnswers();
             } else {
-                // 跳到下一题
                 navigate(true);
             }
         }
@@ -604,10 +590,8 @@ async function submitAnswers() {
     }
 }
 
-// 完整提交后跳转函数
 async function submitAllAnswers() {
     try {
-        // 跳转到end.html，假设已经成功提交所有题目的答案
         window.location.href = 'end.html';
     } catch (err) {
         console.error('Error:', err);
