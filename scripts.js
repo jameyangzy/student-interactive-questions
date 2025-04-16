@@ -389,134 +389,79 @@ const questionData = {
     }
 };
 
+document.addEventListener('DOMContentLoaded', () => {
+    // 绑定按钮事件
+    document.getElementById('toggleHintsBtn').addEventListener('click', toggleHints);
+    document.getElementById('returnButton').addEventListener('click', () => navigate(false));
+    document.getElementById('nextButton').addEventListener('click', () => navigate(true));
+    document.getElementById('submitButton').addEventListener('click', submitAnswers);
 
+    // 获取URL参数
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+
+    console.log(`Page loaded with question ID: ${questionId}`);
+    loadQuestion(questionId);
+});
+
+// 加载问题
 function loadQuestion(questionId) {
-    const question = questionData[questionId];
-    console.log(`Loading question: ${questionId}`, question);
-    if (!question) return;
+    // 这里应该根据questionId加载对应的问题和答案选项
+    console.log("Loading question:", questionId);
+    
+    // 示例加载问题
+    const questionText = "What is the capital of France?";
+    const choices = ["Paris", "London", "Berlin", "Madrid"];
+    const hints = ["It's the city of lights.", "It's located in Europe."];
 
-    document.getElementById('questionType').innerText = question.type;
-    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
-    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
+    // 填充问题文本
+    document.getElementById('questionText').innerText = questionText;
 
-    const questionImage = document.getElementById('questionImage');
-    if (question.img) {
-        questionImage.src = question.img;
-        questionImage.style.display = 'block';
-    } else {
-        questionImage.style.display = 'none';
-    }
-
-    if (question.pyramidStructure && question.pyramidColors) {
-        renderPyramid(question.pyramidStructure, question.pyramidColors);
-    } else {
-        document.getElementById('interactiveArea').innerHTML = '';
-    }
-
-    setupHints(question.hints);
-
-    const choicesContainer = document.getElementById('choicesContainer');
+    // 填充选择题选项
+    const choicesContainer = document.getElementById('choices');
     choicesContainer.innerHTML = '';
-
-    if (question.choices) {
-        question.choices.forEach((choice, index) => {
-            const choiceButton = document.createElement('button');
-            choiceButton.className = 'choice-btn';
-            choiceButton.innerText = choice;
-            choiceButton.addEventListener('click', () => {
-                choicesContainer.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
-                choiceButton.classList.add('selected');
-            });
-            choicesContainer.appendChild(choiceButton);
-        });
-    }
-
-    const explanationElement = document.getElementById('explanation');
-    explanationElement.value = ''; // 清除文本框内容
-    if (question.additionalInput) {
-        explanationElement.style.display = 'block';
-        explanationElement.placeholder = question.additionalInput;
-    } else {
-        explanationElement.style.display = 'none';
-    }
-}
-
-function setupHints(hints) {
-    const hintList = document.getElementById('hintList');
-    hintList.innerHTML = '';  // 清空现有的提示
-
-    hints.forEach((hint, index) => {
-        const hintItem = document.createElement('li');
-        hintItem.className = 'hint';
-        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
-        hintList.appendChild(hintItem);
+    choices.forEach(choice => {
+        const button = document.createElement('button');
+        button.classList.add('choice-btn');
+        button.innerText = choice;
+        button.addEventListener('click', () => selectChoice(button));
+        choicesContainer.appendChild(button);
     });
+
+    // 填充提示
+    const hintList = document.getElementById('hintList');
+    hintList.innerHTML = '';
+    hints.forEach(hint => {
+        const listItem = document.createElement('li');
+        listItem.innerText = hint;
+        hintList.appendChild(listItem);
+    });
+
+    // 显示提交按钮
+    document.getElementById('submitButton').style.display = 'inline-block';
 }
 
+// 选择选项
+function selectChoice(button) {
+    const choices = document.querySelectorAll('.choice-btn');
+    choices.forEach(choice => choice.classList.remove('selected'));
+    button.classList.add('selected');
+}
+
+// 切换提示的显示与隐藏
 function toggleHints() {
     const hintList = document.getElementById('hintList');
     hintList.classList.toggle('hidden');
 }
 
-function renderPyramid(pyramidStructure, pyramidColors) {
-    const pyramidContainer = document.getElementById('interactiveArea');
-    pyramidContainer.innerHTML = '';
-
-    pyramidStructure.forEach((row, rowIndex) => {
-        const pyramidRow = document.createElement('div');
-        pyramidRow.className = 'pyramid-row';
-
-        row.forEach((value, colIndex) => {
-            const box = document.createElement('div');
-            box.className = 'box';
-            const editable = pyramidColors[rowIndex][colIndex];
-
-            if (editable) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = value !== null ? value : '';
-                box.appendChild(input);
-            } else {
-                box.textContent = value !== null ? value : '';
-            }
-            
-            pyramidRow.appendChild(box);
-        });
-
-        pyramidContainer.appendChild(pyramidRow);
-    });
-}
-
-function navigate(next) {
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'C';
-    let questionNumber = parseInt(params.get('question')) || 1;
-
-    const currentQuestionId = `${category}${questionNumber}`;
-
-    if (!next) {
-        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
-            window.location.href = 'selection.html';
-        } else {
-            questionNumber -= 1;
-            const previousQuestionId = `${category}${questionNumber}`;
-            if (questionData[previousQuestionId]) {
-                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-                loadQuestion(previousQuestionId);
-            } else {
-                alert("No previous question available.");
-            }
-        }
-    } else {
-        questionNumber += 1;
-        const nextQuestionId = `${category}${questionNumber}`;
-        if (questionData[nextQuestionId]) {
-            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-            loadQuestion(nextQuestionId);
-        } else {
-            alert("No more questions available.");
-        }
-    }
+// 导航功能
+function navigate(isNext) {
+    const currentQuestion = parseInt(window.location.search.split('=')[1]) || 1;
+    const nextQuestion = isNext ? currentQuestion + 1 : currentQuestion - 1;
+    window.location.href = `question.html?category=C&question=${nextQuestion}`;
 }
 
 async function submitAnswers() {
@@ -582,9 +527,3 @@ async function submitAnswers() {
         alert('An error occurred while submitting your answers.');
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('toggleHintsBtn').addEventListener('click', toggleHints);
-    document.getElementById('returnButton').addEventListener('click', () => navigate(false));
-    document.getElementById('nextButton').addEventListener('click', () => navigate(true));
-});
