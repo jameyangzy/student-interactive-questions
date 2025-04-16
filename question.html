@@ -7,29 +7,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="container">
     <div class="question-header">
-        <div id="questionId"></div>
-        <h3 id="questionType"></h3>
+        <div class="question-number" id="questionNumber">Question</div>
+        <h2 id="questionType" class="centered-title"></h2>
     </div>
-    <div id="questionText"></div>
-    <div id="interactiveArea"></div>
-    <div id="questionImageContainer">
-        <img id="questionImage" alt="">
+    <div id="questionText" class="question-text"></div>
+    <div id="taskDetails" class="task-details"></div>
+    <div id="questionImage" class="question-image" style="display: none;"></div>
+    <div id="interactiveArea" class="interactive-area"></div>
+    <div id="choicesContainer" class="choices-container"></div>
+    <textarea id="explanation" class="explanation-textarea" placeholder="Explain your answer..."></textarea>
+    <button id="toggleHintsBtn">Show/Hide Hints</button>
+    <ul id="hintList" class="hidden hint-list"></ul>
+    <div id="buttonContainer" class="button-container">
+        <button id="backButton">Previous</button>
+        <button id="nextButton">Next</button>
     </div>
-    <div id="taskDetails"></div>
-    <div id="choicesContainer"></div>
-    <textarea id="explanation" placeholder="Explain your answer"></textarea>
-    <div id="hintsContainer">
-        <button class="hint-btn" onclick="toggleHints()">Hints</button>
-        <ul id="hintList" class="hidden"></ul>
+    <div id="submitButtonContainer" style="display: none;">
+        <button onclick="submitAnswers()">Submit</button>
     </div>
-    <div class="navigation-buttons">
-        <button onclick="navigate(false)">Return</button>
-        <button onclick="navigate(true)">Next</button>
-    </div>
-    <div id="submitButtonContainer"><button onclick="submitAllAnswers()">Submit</button></div>
-</div>
-<script type="module" src="scripts.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
