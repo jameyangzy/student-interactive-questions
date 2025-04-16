@@ -1,11 +1,12 @@
+import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
+
 // Supabase configuration
 const supabaseUrl = 'https://febzoufkcsvpkbjvkeij.supabase.co';
-
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlYnpvdWZrY3N2cGtianZrZWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MDY5MTIsImV4cCI6MjA1ODM4MjkxMn0.ox1vLEy9qjMhxJsQa9f81Hm9DKJWQWqhbiMEReqmMLU';
-console.log('Supabase library loaded, initializing client...');
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-console.log('Supabase client initialized.');
 
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+console.log('Supabase client initialized.');
 
 const questionData = {
     "A1": {
