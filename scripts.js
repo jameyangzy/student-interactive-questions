@@ -417,8 +417,9 @@ function loadQuestion(questionId) {
             choiceButton.className = 'choice-btn';
             choiceButton.innerText = choice;
             choiceButton.addEventListener('click', () => {
-                // 改变选择后的按钮颜色
-                choices.forEach(btn => btn.classList.remove('selected'));
+                // 移除所有按钮的选中状态
+                choicesContainer.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+                // 为当前选择的按钮添加选中状态
                 choiceButton.classList.add('selected');
             });
             choicesContainer.appendChild(choiceButton);
@@ -434,6 +435,24 @@ function loadQuestion(questionId) {
         explanationElement.style.display = 'none';
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+
+    console.log(`Loading question ${questionId}`);  // 调试输出
+
+    loadQuestion(questionId);
+
+    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
+    if (questionNumber === LAST_QUESTION_NUMBER) {
+        document.getElementById('submitButtonContainer').style.display = 'block';
+    }
+});
+
 
 
 
@@ -455,20 +474,6 @@ function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-
-    loadQuestion(questionId);
-
-    const LAST_QUESTION_NUMBER = 6;
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
-});
 
 
 function renderPyramid(pyramidStructure, pyramidColors) {
