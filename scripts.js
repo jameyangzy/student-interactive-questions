@@ -389,8 +389,11 @@ const questionData = {
     }
 };
 
-
 document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('nextButton').addEventListener('click', () => navigate(true));
+    document.getElementById('toggleHintsBtn').addEventListener('click', toggleHints);
+
+    // 原本的加载逻辑保留
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const category = urlParams.get('category') || 'C';
