@@ -1,3 +1,7 @@
+// Supabase configuration
+const supabaseUrl = 'https://febzoufkcsvpkbjvkeij.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlYnpvdWZrY3N2cGtianZrZWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MDY5MTIsImV4cCI6MjA1ODM4MjkxMn0.ox1vLEy9qjMhxJsQa9f81Hm9DKJWQWqhbiMEReqmMLU';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const questionData = {
     "A1": {
@@ -538,47 +542,65 @@ function navigate(next) {
 
 
 async function submitAnswers() {
-    const userAnswers = {
-        taskDetails: document.getElementById('taskDetails').innerText,
-        explanation: document.getElementById('explanation').value
-    };
+    // 获取当前问题ID
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
 
-    // GitHub API 操作
-    try {
-        const fileResponse = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
-            headers: {
-                Authorization: `token ${token}`
+    // 获取选择题答案
+    const choices = [...document.querySelectorAll('.choice-btn')];
+    const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
+    const answer = selectedChoice ? selectedChoice.innerText : '';
+
+    // 获取填空题答案
+    const explanationElement = document.getElementById('explanation');
+    const explanationAnswer = explanationElement.value.trim();
+
+    // 获取金字塔答案
+    const pyramidContainer = document.getElementById('interactiveArea');
+    const pyramidStructure = [];
+    const userAnswers = [];
+
+    [...pyramidContainer.querySelectorAll('.pyramid-row')].forEach(row => {
+        const rowValues = [];
+        const userRowValues = [];
+        [...row.childNodes].forEach(box => {
+            const input = box.querySelector('input');
+            if (input) {
+                userRowValues.push(input.value ? parseInt(input.value, 10) : null);
             }
+            rowValues.push(box.textContent ? parseInt(box.textContent, 10) : null);
         });
+        pyramidStructure.push(rowValues);
+        userAnswers.push(userRowValues);
+    });
 
-        if (!fileResponse.ok) {
-            throw new Error('Failed to fetch file information.');
-        }
+    const pyramidData = JSON.stringify({
+        structure: pyramidStructure,
+        user_answers: userAnswers
+    });
 
-        const file = await fileResponse.json();
-        const sha = file.sha;
+    try {
+        const { data, error } = await supabase.from('user_answers').insert([
+            {
+                question_id: questionId,
+                answer: answer || explanationAnswer,
+                pyramid_structure: pyramidData
+            }
+        ]);
 
-        const encodedContent = btoa(JSON.stringify(userAnswers));
-
-        const result = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
-            method: 'PUT',
-            headers: {
-                Authorization: `token ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'Update results',
-                content: encodedContent,
-                sha: sha
-            })
-        });
-
-        if (result.ok) {
-            window.location.href = 'end.html';
+        if (error) {
+            console.error('Error inserting data:', error);
+            alert('There was an error submitting your answers.');
         } else {
-            throw new Error('Failed to update file.');
+            alert('Your answers have been submitted successfully.');
+            // Optionally navigate to the next question or a confirmation page here
+            navigate(true);
         }
-    } catch (error) {
-        console.error('Error:', error);
+    } catch (err) {
+        console.error('Error:', err);
+        alert('An error occurred while submitting your answers.');
     }
 }
