@@ -436,8 +436,6 @@ function loadQuestion(questionId) {
     }
 }
 
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -447,9 +445,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadQuestion(questionId);
 });
-
-
-
 
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
@@ -467,8 +462,6 @@ function toggleHints() {
     const hintList = document.getElementById('hintList');
     hintList.classList.toggle('hidden');
 }
-
-
 
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
@@ -536,7 +529,6 @@ function navigate(next) {
         }
     }
 }
-
 
 async function submitAnswers() {
     // 获取当前问题ID
