@@ -457,8 +457,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
     hintList.innerHTML = '';  // 清空现有的提示
