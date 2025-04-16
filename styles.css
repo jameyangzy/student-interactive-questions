@@ -21,6 +21,10 @@ body {
     text-align: center;
     margin: 20px; /* 增加整体的页面垂直间距 */
 }
+.choice-btn.selected {
+    background-color: #0056b3; /* 选中时的背景颜色 */
+    color: #fff; /* 选中时的文本颜色 */
+}
 
 h3 {
     margin-bottom: 20px; /* 为标题增加间距 */
