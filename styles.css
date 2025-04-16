@@ -10,7 +10,6 @@ body {
     align-items: center;
     justify-content: center; /* 垂直居中页面内容 */
 }
-
 .container {
     width: 90%; /* 使用更大宽度比例 */
     max-width: 800px; /* 增大最大宽度限制 */
