@@ -392,7 +392,6 @@ function loadQuestion(questionId) {
     document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
     document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
 
-    // 设置图片路径
     const questionImage = document.getElementById('questionImage');
     if (question.img) {
         questionImage.src = question.img;
@@ -418,13 +417,16 @@ function loadQuestion(questionId) {
             choiceButton.className = 'choice-btn';
             choiceButton.innerText = choice;
             choiceButton.addEventListener('click', () => {
-                alert(`You selected: ${choice}`);
+                // 改变选择后的按钮颜色
+                choices.forEach(btn => btn.classList.remove('selected'));
+                choiceButton.classList.add('selected');
             });
             choicesContainer.appendChild(choiceButton);
         });
     }
 
     const explanationElement = document.getElementById('explanation');
+    explanationElement.value = ''; // 清除文本框内容
     if (question.additionalInput) {
         explanationElement.style.display = 'block';
         explanationElement.placeholder = question.additionalInput;
@@ -460,16 +462,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    console.log(`Loading question ${questionId}`);  // 调试输出
-
     loadQuestion(questionId);
 
-    const LAST_QUESTION_NUMBER = 6; // 根据实际需要定义最后题目编号
+    const LAST_QUESTION_NUMBER = 6;
     if (questionNumber === LAST_QUESTION_NUMBER) {
         document.getElementById('submitButtonContainer').style.display = 'block';
     }
 });
-
 
 
 function renderPyramid(pyramidStructure, pyramidColors) {
@@ -540,7 +539,6 @@ function navigate(next) {
 }
 
 
-
 async function submitAnswers() {
     // 获取当前问题ID
     const queryString = window.location.search;
@@ -596,11 +594,27 @@ async function submitAnswers() {
             alert('There was an error submitting your answers.');
         } else {
             alert('Your answers have been submitted successfully.');
-            // Optionally navigate to the next question or a confirmation page here
-            navigate(true);
+            if (questionNumber === LAST_QUESTION_NUMBER) {
+                // 如果是最后一题后执行完整提交跳转
+                submitAllAnswers();
+            } else {
+                // 跳到下一题
+                navigate(true);
+            }
         }
     } catch (err) {
         console.error('Error:', err);
         alert('An error occurred while submitting your answers.');
+    }
+}
+
+// 完整提交后跳转函数
+async function submitAllAnswers() {
+    try {
+        // 跳转到end.html，假设已经成功提交所有题目的答案
+        window.location.href = 'end.html';
+    } catch (err) {
+        console.error('Error:', err);
+        alert('An error occurred while completing the quiz.');
     }
 }
