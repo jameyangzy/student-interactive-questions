@@ -11,21 +11,25 @@
         <h1 id="pageTitle" style="text-align: center;">Question Page</h1>
         <div id="questionSection">
             <p id="questionText" style="text-align: left;"></p>
-            <div id="choices">
+            <div id="questionImageContainer" style="display: none;">
+                <img id="questionImage" src="" alt="Question Image" style="width: 100%; height: auto;">
+            </div>
+            <div id="choicesContainer">
+                <!-- Choices will be dynamically added here -->
             </div>
             <div id="hintSection" class="hidden">
                 <h3>Hints:</h3>
                 <ul id="hintList">
+                    <!-- Hints will be dynamically added here -->
                 </ul>
             </div>
-
             <textarea id="explanation" placeholder="Type your explanation here..." rows="4" cols="50"></textarea>
         </div>
         <div id="buttonSection">
-            <button id="toggleHintsBtn" class="hint-btn">Hints</button>
+            <button id="toggleHintsBtn" class="hint-btn">Show Hints</button>
             <button id="returnButton">Return</button>
             <button id="nextButton">Next</button>
-            <button id="submitButton" style="display:none;">Submit</button>
+            <button id="submitButton" style="display: none;">Submit</button>
         </div>
     </div>
     <script src="scripts.js"></script>
