@@ -388,154 +388,85 @@ const questionData = {
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
 };
-
-// Load the question based on the question ID
-function loadQuestion(questionId) {
-    const question = questionData[questionId];
-    if (!question) return;
-
-    document.getElementById('questionType').innerText = question.type;
-    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
-    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
-
-    // Set image path if provided
-    const questionImage = document.getElementById('questionImage');
-    if (question.img) {
-        questionImage.src = question.img;
-        questionImage.style.display = 'block';
-    } else {
-        questionImage.style.display = 'none';
-    }
-
-    // Render pyramid if pyramid structure is provided
-    if (question.pyramidStructure && question.pyramidColors) {
-        renderPyramid(question.pyramidStructure, question.pyramidColors);
-    } else {
-        document.getElementById('interactiveArea').innerHTML = '';
-    }
-
-    // Set up hints for the question
-    setupHints(question.hints);
-
-    // Display choices if available
-    const choicesContainer = document.getElementById('choicesContainer');
-    choicesContainer.innerHTML = '';
-
-    if (question.choices) {
-        question.choices.forEach((choice, index) => {
-            const choiceButton = document.createElement('button');
-            choiceButton.className = 'choice-btn';
-            choiceButton.innerText = choice;
-            choiceButton.addEventListener('click', () => {
-                alert(`You selected: ${choice}`);
-            });
-            choicesContainer.appendChild(choiceButton);
-        });
-    }
-
-    // Handle additional input for the question
-    const explanationElement = document.getElementById('explanation');
-    if (question.additionalInput) {
-        explanationElement.style.display = 'block';
-        explanationElement.placeholder = question.additionalInput;
-    } else {
-        explanationElement.style.display = 'none';
-    }
-}
-
-// Setup the hints for the question
-function setupHints(hints) {
-    const hintList = document.getElementById('hintList');
-    hintList.innerHTML = '';  // Clear existing hints
-
-    hints.forEach((hint, index) => {
-        const hintItem = document.createElement('li');
-        hintItem.className = 'hint';
-        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
-        hintList.appendChild(hintItem);
-    });
-}
-
-// Toggle visibility of hints
-function toggleHints() {
-    const hintList = document.getElementById('hintList');
-    hintList.classList.toggle('hidden');
-}
-
-// Render the pyramid structure
-function renderPyramid(pyramidStructure, pyramidColors) {
-    const pyramidArea = document.getElementById('interactiveArea');
-    pyramidArea.innerHTML = '';  // Clear existing pyramid
-
-    pyramidStructure.forEach((row, rowIndex) => {
-        const rowElement = document.createElement('div');
-        rowElement.className = 'pyramid-row';
-        row.forEach((cell, cellIndex) => {
-            const cellElement = document.createElement('div');
-            cellElement.className = 'pyramid-cell';
-            if (cell !== null) {
-                cellElement.innerText = cell;
-            }
-
-            if (pyramidColors[rowIndex] && pyramidColors[rowIndex][cellIndex]) {
-                cellElement.classList.add('colored');
-            }
-            rowElement.appendChild(cellElement);
-        });
-        pyramidArea.appendChild(rowElement);
-    });
-}
-
-// Event listener for toggling hints when the button is clicked
-document.getElementById('toggleHintsBtn').addEventListener('click', toggleHints);
-
-// Event listeners for navigation (Next, Previous)
-document.getElementById('returnButton').addEventListener('click', () => navigate(false));
-document.getElementById('nextButton').addEventListener('click', () => navigate(true));
-
-// Event listener for submitting the question
-document.getElementById('submitButton').addEventListener('click', () => submitAnswer());
-
-// Handle navigation (Next and Previous buttons)
-function navigate(isNext) {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    let category = urlParams.get('category') || 'C';
-    let questionNumber = parseInt(urlParams.get('question')) || 1;
-
-    if (isNext) {
-        questionNumber = Math.min(questionNumber + 1, 6); // Go to the next question
-    } else {
-        questionNumber = Math.max(questionNumber - 1, 1); // Go to the previous question
-    }
-
-    const questionId = `${category}${questionNumber}`;
-    loadQuestion(questionId);
-
-    if (questionNumber === 6) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
-}
-
-
-// Load the current question when the page loads
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    // 获取URL中的参数
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const category = urlParams.get('category') || 'C';
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    console.log(`Loading question ${questionId}`);
-
+    // 加载题目信息
     loadQuestion(questionId);
 
-    const LAST_QUESTION_NUMBER = 6; // Define the last question number as needed
-    if (questionNumber === LAST_QUESTION_NUMBER) {
-        document.getElementById('submitButtonContainer').style.display = 'block';
-    }
+    // 选择按钮的点击事件
+    const choices = [...document.querySelectorAll('.choice-btn')];
+    choices.forEach(choice => {
+        choice.addEventListener('click', () => {
+            choices.forEach(btn => btn.classList.remove('selected'));  // 移除之前选中的按钮
+            choice.classList.add('selected');  // 为当前选中的按钮添加样式
+        });
+    });
+
+    // 切换提示的显示/隐藏
+    const toggleHintsBtn = document.getElementById('toggleHintsBtn');
+    const hintSection = document.getElementById('hintSection');
+    toggleHintsBtn.addEventListener('click', () => {
+        hintSection.classList.toggle('hidden');
+        toggleHintsBtn.textContent = hintSection.classList.contains('hidden') ? 'Show Hints' : 'Hide Hints';
+    });
+
+    // 下一题按钮的点击事件
+    const nextButton = document.getElementById('nextButton');
+    nextButton.addEventListener('click', () => {
+        navigate(true); // 跳到下一题
+    });
+
+    // 返回按钮的点击事件
+    const returnButton = document.getElementById('returnButton');
+    returnButton.addEventListener('click', () => {
+        navigate(false); // 返回上一题
+    });
+
+    // 提交按钮的点击事件
+    const submitButton = document.getElementById('submitButton');
+    submitButton.addEventListener('click', () => {
+        submitAnswers();  // 提交答案
+    });
 });
 
+// 加载题目信息
+async function loadQuestion(questionId) {
+    // 根据题目ID加载相关问题内容，可以从数据库或其他地方获取
+    // 此处仅为示例，假设你已经有题目数据
+    const questionText = `Question ${questionId} text here`; // 获取题目内容
+    const choicesData = ['Choice A', 'Choice B', 'Choice C', 'Choice D']; // 获取选项数据
+    const hints = ['Hint 1', 'Hint 2', 'Hint 3']; // 获取提示数据
+
+    // 设置题目文本
+    document.getElementById('questionText').textContent = questionText;
+
+    // 动态加载选择项
+    const choicesContainer = document.getElementById('choicesContainer');
+    choicesContainer.innerHTML = '';
+    choicesData.forEach(choice => {
+        const choiceBtn = document.createElement('button');
+        choiceBtn.classList.add('choice-btn');
+        choiceBtn.textContent = choice;
+        choicesContainer.appendChild(choiceBtn);
+    });
+
+    // 加载提示信息
+    const hintList = document.getElementById('hintList');
+    hintList.innerHTML = '';
+    hints.forEach(hint => {
+        const listItem = document.createElement('li');
+        listItem.textContent = hint;
+        hintList.appendChild(listItem);
+    });
+}
+
+// 提交答案
 async function submitAnswers() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -543,13 +474,16 @@ async function submitAnswers() {
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
+    // 获取选中的答案
     const choices = [...document.querySelectorAll('.choice-btn')];
     const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
     const answer = selectedChoice ? selectedChoice.innerText : '';
 
+    // 获取解释输入框的内容
     const explanationElement = document.getElementById('explanation');
     const explanationAnswer = explanationElement.value.trim();
 
+    // 获取金字塔数据（假设在页面中有相应结构）
     const pyramidContainer = document.getElementById('interactiveArea');
     const pyramidStructure = [];
     const userAnswers = [];
@@ -573,14 +507,13 @@ async function submitAnswers() {
         user_answers: userAnswers
     });
 
+    // 提交数据到后端（假设使用supabase）
     try {
-        const { data, error } = await supabase.from('user_answers').insert([
-            {
-                question_id: questionId,
-                answer: answer || explanationAnswer,
-                pyramid_structure: pyramidData
-            }
-        ]);
+        const { data, error } = await supabase.from('user_answers').insert([{
+            question_id: questionId,
+            answer: answer || explanationAnswer,
+            pyramid_structure: pyramidData
+        }]);
 
         if (error) {
             console.error('Error inserting data:', error);
@@ -598,4 +531,27 @@ async function submitAnswers() {
         console.error('Error:', err);
         alert('An error occurred while submitting your answers.');
     }
+}
+
+// 提交所有答案（例如最后一题的提交）
+async function submitAllAnswers() {
+    try {
+        const response = await fetch('/submitAllAnswers', { method: 'POST' });
+        if (!response.ok) {
+            throw new Error('Failed to submit all answers');
+        }
+        alert('All answers submitted successfully!');
+    } catch (err) {
+        console.error('Error submitting all answers:', err);
+        alert('Error submitting all answers.');
+    }
+}
+
+// 跳转到下一题或上一题
+function navigate(isNext) {
+    const currentQuestion = parseInt(new URLSearchParams(window.location.search).get('question')) || 1;
+    const nextQuestion = isNext ? currentQuestion + 1 : currentQuestion - 1;
+    const category = new URLSearchParams(window.location.search).get('category') || 'C';
+
+    window.location.href = `?category=${category}&question=${nextQuestion}`;
 }
