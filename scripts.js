@@ -8,7 +8,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const questionData = {
     "A1": {
-        "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value ",
+        "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value",
         "task": (
             "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid.\n" +
             "Each brick follows a simple rule:\n" +
@@ -544,33 +544,48 @@ function navigate(next) {
 
 
 
-function submitAnswers() {
-    const explanation = document.getElementById('explanation').value;
-    const userPyramid = getUserPyramid();
-
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-
+async function submitAnswers() {
     const userAnswers = {
-        question_id: questionId,
-        explanation: explanation,
-        user_pyramid: userPyramid
+        taskDetails: document.getElementById('taskDetails').innerText,
+        explanation: document.getElementById('explanation').value
     };
 
+    // GitHub API 操作
     try {
-        supabase.from('answers').upsert([userAnswers]).then(({ error }) => {
-            if (error) {
-                console.error('Error:', error);
-                alert('Failed to submit answers. Please try again.');
-            } else {
-                alert('Submission successful!');
+        const fileResponse = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
+            headers: {
+                Authorization: `token ${token}`
             }
         });
+
+        if (!fileResponse.ok) {
+            throw new Error('Failed to fetch file information.');
+        }
+
+        const file = await fileResponse.json();
+        const sha = file.sha;
+
+        const encodedContent = btoa(JSON.stringify(userAnswers));
+
+        const result = await fetch(`https://api.github.com/repos/<owner>/<repo>/contents/results.json`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'Update results',
+                content: encodedContent,
+                sha: sha
+            })
+        });
+
+        if (result.ok) {
+            window.location.href = 'end.html';
+        } else {
+            throw new Error('Failed to update file.');
+        }
     } catch (error) {
         console.error('Error:', error);
-        alert('Failed to submit answers. Please try again.');
     }
 }
