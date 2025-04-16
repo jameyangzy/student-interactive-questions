@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pyramid Challenge</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- 首先加载 Supabase 库 -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2.x.x/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -25,6 +23,7 @@
     <button onclick="navigate(true)">Next</button>
     <div id="submitButtonContainer" style="display:none;"> <button onclick="submitAllAnswers()">Submit</button> </div>
 </div>
-<script src="scripts.js"></script>
+<!-- 使用 type="module" 来引入 scripts.js -->
+<script type="module" src="scripts.js"></script>
 </body>
 </html>
