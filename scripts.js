@@ -8,7 +8,7 @@ const questionData = {
         "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value",
         "task": (
             "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid.\n" +
-            "Each brick follows a simple rule:\n" +
+            "Each brick follows a simple rule:\n " +
             "Every brick is the sum of the two bricks directly below it.\n" +
             "In this pyramid, one value is already given—the bottom-left brick is 5.\n" +
             "Your task is to fill in the missing numbers so that the pyramid follows the rule."
