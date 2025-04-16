@@ -8,7 +8,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const questionData = {
     "A1": {
-        "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value",
+        "type": "A1-Question 1: Solve the 5-Level Pyramid with a Given Value ",
         "task": (
             "Welcome to the Brick Pyramid Challenge! In this problem, you will apply logical reasoning and step-by-step calculations to fill in missing values in a 5-level pyramid.\n" +
             "Each brick follows a simple rule:\n" +
