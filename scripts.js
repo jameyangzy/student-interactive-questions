@@ -225,13 +225,18 @@ const questionData = {
             "In our pyramid problem, we have three different types of solutions:\n" +
             "Unique Solution: The pyramid has a unique solution, meaning that there is only one possible way to fill in the missing values.\n" +
             "Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
-            "No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule."
+            "No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule.\n" 
+            "A. Unique Solution, B. Multiple Solutions, C. No Solution" 
         ),
         "img": "img/B/b4.png",
         "hints": [],
-        "choices": ["A. Unique Solution", "B. Multiple Solutions", "C. No Solution"],
-        "solutionsDetails": "Main task: Determine solution types for each pyramid.",
-        "additionalInput": "Please explain your reason(s)."
+        "solutionsDetails": "A. Unique Solution, B. Multiple Solutions, C. No Solution .\n"+
+                            "Main task: Determine solution types for each pyramid." ,
+        "additionalInput": "Pyramid A has(a) .\n"+
+                            "Pyramid B has;(a) .\n"+
+                            "Pyramid C has (a) .\n"+
+                            "Please explain your reason(s)."
+     
     },
     "B5": {
         "type": "B5-Question 5: Solve the 5-Level Pyramid and Identify Its Solution Type",
@@ -308,7 +313,7 @@ const questionData = {
             [null, null],
             [null, null, null],
             [null, null, null, null],
-            [1, 2, 3, 4, 5]
+            [1, 3, 3, 4, 5]
         ],
         "pyramidColors": [
             [true],
