@@ -574,7 +574,7 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
-export export async function submitAllAnswers() {
+export async function submitAllAnswers() {
     try {
         const insertPromises = [];
 
