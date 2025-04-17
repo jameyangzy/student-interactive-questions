@@ -574,6 +574,7 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
+
 async function submitAnswers() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -586,21 +587,17 @@ async function submitAnswers() {
     const answerChoice = selectedChoice ? selectedChoice.innerText : '';
 
     const explanationElement = document.getElementById('explanation');
-    const explanationAnswer = explanationElement.value;
+    const explanationAnswer = explanationElement.value.trim();
 
     const pyramidContainer = document.getElementById('interactiveArea');
-    const userAnswers = userAnswersStore[questionId]?.pyramidAnswers || [];
-
-    const pyramidData = JSON.stringify({
-        user_answers: userAnswers
-    });
+    const pyramidData = userAnswersStore[questionId]?.pyramidAnswers || [];
 
     try {
         const { data, error } = await supabase.from('user_answers').insert([
             {
                 question_id: questionId,
                 answer: explanationAnswer || answerChoice,
-                pyramid_structure: pyramidData
+                pyramid_structure: JSON.stringify(pyramidData)
             }
         ]);
 
@@ -609,14 +606,12 @@ async function submitAnswers() {
             alert('There was an error submitting your answers.');
         } else {
             alert('Your answers have been submitted successfully.');
-            navigate(true);
         }
     } catch (err) {
         console.error('Error:', err);
         alert('An error occurred while submitting your answers.');
     }
 }
-
 
 export function submitAllAnswers() {
     try {
