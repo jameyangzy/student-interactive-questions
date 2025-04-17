@@ -25,6 +25,10 @@
         <button onclick="submitAllAnswers()">Submit</button>
     </div>
 </div>
-<script type="module" src="scripts.js"></script>
+<script type="module">
+    import { toggleHints, navigate } from './scripts.js';
+    window.toggleHints = toggleHints;
+    window.navigate = navigate;
+</script>
 </body>
 </html>
