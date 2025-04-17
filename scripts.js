@@ -406,6 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadQuestion(questionId);
 });
 
+
 export function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
@@ -459,7 +460,7 @@ export function loadQuestion(questionId) {
     if (question.additionalInput) {
         explanationElement.style.display = 'block';
         explanationElement.placeholder = question.additionalInput;
-        explanationElement.value = userAnswersStore[questionId]?.explanation || ''; // 恢复当前题目的答案
+        explanationElement.value = userAnswersStore[questionId]?.explanation || ''; // 恢复每个题目的答案
         explanationElement.addEventListener('input', (e) => {
             userAnswersStore[questionId] = {
                 ...userAnswersStore[questionId],
@@ -468,7 +469,7 @@ export function loadQuestion(questionId) {
         });
     } else {
         explanationElement.style.display = 'none';
-        explanationElement.value = ''; // 在没有额外输入情况下清空文本框
+        explanationElement.value = ''; // 确保空白
     }
 
     const submitButtonContainer = document.getElementById('submitButtonContainer');
@@ -478,10 +479,47 @@ export function loadQuestion(questionId) {
         submitButtonContainer.style.display = 'none';
     }
 
-    // 隐藏提示
     const hintList = document.getElementById('hintList');
     hintList.classList.add('hidden');
 }
+
+// 同步触发事件和状态保存
+function renderPyramid(pyramidStructure, pyramidColors, questionId) {
+    const pyramidContainer = document.getElementById('interactiveArea');
+    pyramidContainer.innerHTML = '';
+
+    pyramidStructure.forEach((row, rowIndex) => {
+        const pyramidRow = document.createElement('div');
+        pyramidRow.className = 'pyramid-row';
+
+        row.forEach((value, colIndex) => {
+            const box = document.createElement('div');
+            box.className = 'box';
+            const editable = pyramidColors[rowIndex][colIndex];
+            if (editable) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                const storedValue = userAnswersStore[questionId]?.pyramidAnswers?.[rowIndex]?.[colIndex];
+                input.value = storedValue !== undefined ? storedValue : '';
+                input.addEventListener('input', (e) => {
+                    if (!userAnswersStore[questionId]) {
+                        userAnswersStore[questionId] = {};
+                    }
+                    if (!userAnswersStore[questionId].pyramidAnswers) {
+                        userAnswersStore[questionId].pyramidAnswers = pyramidStructure.map(row => row.map(() => null));
+                    }
+                    userAnswersStore[questionId].pyramidAnswers[rowIndex][colIndex] = e.target.value;
+                });
+                box.appendChild(input);
+            } else {
+                box.textContent = value !== null ? value : '';
+            }
+            pyramidRow.appendChild(box);
+        });
+        pyramidContainer.appendChild(pyramidRow);
+    });
+}
+
 
 
 export function navigate(next) {
@@ -571,7 +609,6 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
-
 async function submitAnswers() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -581,31 +618,15 @@ async function submitAnswers() {
 
     const choices = [...document.querySelectorAll('.choice-btn')];
     const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
-    const answer = selectedChoice ? selectedChoice.innerText : '';
+    const answerChoice = selectedChoice ? selectedChoice.innerText : '';
 
     const explanationElement = document.getElementById('explanation');
-    const explanationAnswer = explanationElement.value.trim();
+    const explanationAnswer = explanationElement.value;
 
     const pyramidContainer = document.getElementById('interactiveArea');
-    const pyramidStructure = [];
-    const userAnswers = [];
-
-    [...pyramidContainer.querySelectorAll('.pyramid-row')].forEach(row => {
-        const rowValues = [];
-        const userRowValues = [];
-        [...row.childNodes].forEach(box => {
-            const input = box.querySelector('input');
-            if (input) {
-                userRowValues.push(input.value ? parseInt(input.value, 10) : null);
-            }
-            rowValues.push(box.textContent ? parseInt(box.textContent, 10) : null);
-        });
-        pyramidStructure.push(rowValues);
-        userAnswers.push(userRowValues);
-    });
+    const userAnswers = userAnswersStore[questionId]?.pyramidAnswers || [];
 
     const pyramidData = JSON.stringify({
-        structure: pyramidStructure,
         user_answers: userAnswers
     });
 
@@ -613,7 +634,7 @@ async function submitAnswers() {
         const { data, error } = await supabase.from('user_answers').insert([
             {
                 question_id: questionId,
-                answer: answer || explanationAnswer,
+                answer: explanationAnswer || answerChoice,
                 pyramid_structure: pyramidData
             }
         ]);
@@ -630,6 +651,7 @@ async function submitAnswers() {
         alert('An error occurred while submitting your answers.');
     }
 }
+
 
 export function submitAllAnswers() {
     try {
