@@ -388,85 +388,148 @@ const questionData = {
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
 };
-document.addEventListener('DOMContentLoaded', function () {
-    // 获取URL中的参数
+
+
+document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const category = urlParams.get('category') || 'C';
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    // 加载题目信息
+    console.log(`Page loaded with question ID: ${questionId}`);
     loadQuestion(questionId);
-
-    // 选择按钮的点击事件
-    const choices = [...document.querySelectorAll('.choice-btn')];
-    choices.forEach(choice => {
-        choice.addEventListener('click', () => {
-            choices.forEach(btn => btn.classList.remove('selected'));  // 移除之前选中的按钮
-            choice.classList.add('selected');  // 为当前选中的按钮添加样式
-        });
-    });
-
-    // 切换提示的显示/隐藏
-    const toggleHintsBtn = document.getElementById('toggleHintsBtn');
-    const hintSection = document.getElementById('hintSection');
-    toggleHintsBtn.addEventListener('click', () => {
-        hintSection.classList.toggle('hidden');
-        toggleHintsBtn.textContent = hintSection.classList.contains('hidden') ? 'Show Hints' : 'Hide Hints';
-    });
-
-    // 下一题按钮的点击事件
-    const nextButton = document.getElementById('nextButton');
-    nextButton.addEventListener('click', () => {
-        navigate(true); // 跳到下一题
-    });
-
-    // 返回按钮的点击事件
-    const returnButton = document.getElementById('returnButton');
-    returnButton.addEventListener('click', () => {
-        navigate(false); // 返回上一题
-    });
-
-    // 提交按钮的点击事件
-    const submitButton = document.getElementById('submitButton');
-    submitButton.addEventListener('click', () => {
-        submitAnswers();  // 提交答案
-    });
 });
 
-// 加载题目信息
-async function loadQuestion(questionId) {
-    // 根据题目ID加载相关问题内容，可以从数据库或其他地方获取
-    // 此处仅为示例，假设你已经有题目数据
-    const questionText = `Question ${questionId} text here`; // 获取题目内容
-    const choicesData = ['Choice A', 'Choice B', 'Choice C', 'Choice D']; // 获取选项数据
-    const hints = ['Hint 1', 'Hint 2', 'Hint 3']; // 获取提示数据
+function loadQuestion(questionId) {
+    const question = questionData[questionId];
+    console.log(`Loading question: ${questionId}`, question);
+    if (!question) return;
 
-    // 设置题目文本
-    document.getElementById('questionText').textContent = questionText;
+    document.getElementById('questionType').innerText = question.type;
+    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
+    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
 
-    // 动态加载选择项
+    const questionImage = document.getElementById('questionImage');
+    if (question.img) {
+        questionImage.src = question.img;
+        questionImage.style.display = 'block';
+    } else {
+        questionImage.style.display = 'none';
+    }
+
+    if (question.pyramidStructure && question.pyramidColors) {
+        renderPyramid(question.pyramidStructure, question.pyramidColors);
+    } else {
+        document.getElementById('interactiveArea').innerHTML = '';
+    }
+
+    setupHints(question.hints);
+
     const choicesContainer = document.getElementById('choicesContainer');
     choicesContainer.innerHTML = '';
-    choicesData.forEach(choice => {
-        const choiceBtn = document.createElement('button');
-        choiceBtn.classList.add('choice-btn');
-        choiceBtn.textContent = choice;
-        choicesContainer.appendChild(choiceBtn);
-    });
 
-    // 加载提示信息
+    if (question.choices) {
+        question.choices.forEach((choice, index) => {
+            const choiceButton = document.createElement('button');
+            choiceButton.className = 'choice-btn';
+            choiceButton.innerText = choice;
+            choiceButton.addEventListener('click', () => {
+                choicesContainer.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+                choiceButton.classList.add('selected');
+            });
+            choicesContainer.appendChild(choiceButton);
+        });
+    }
+
+    const explanationElement = document.getElementById('explanation');
+    explanationElement.value = ''; // 清除文本框内容
+    if (question.additionalInput) {
+        explanationElement.style.display = 'block';
+        explanationElement.placeholder = question.additionalInput;
+    } else {
+        explanationElement.style.display = 'none';
+    }
+}
+
+function setupHints(hints) {
     const hintList = document.getElementById('hintList');
-    hintList.innerHTML = '';
-    hints.forEach(hint => {
-        const listItem = document.createElement('li');
-        listItem.textContent = hint;
-        hintList.appendChild(listItem);
+    hintList.innerHTML = '';  // 清空现有的提示
+
+    hints.forEach((hint, index) => {
+        const hintItem = document.createElement('li');
+        hintItem.className = 'hint';
+        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
+        hintList.appendChild(hintItem);
     });
 }
 
-// 提交答案
+function toggleHints() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
+
+function renderPyramid(pyramidStructure, pyramidColors) {
+    const pyramidContainer = document.getElementById('interactiveArea');
+    pyramidContainer.innerHTML = '';
+
+    pyramidStructure.forEach((row, rowIndex) => {
+        const pyramidRow = document.createElement('div');
+        pyramidRow.className = 'pyramid-row';
+
+        row.forEach((value, colIndex) => {
+            const box = document.createElement('div');
+            box.className = 'box';
+            const editable = pyramidColors[rowIndex][colIndex];
+
+            if (editable) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = value !== null ? value : '';
+                box.appendChild(input);
+            } else {
+                box.textContent = value !== null ? value : '';
+            }
+            
+            pyramidRow.appendChild(box);
+        });
+
+        pyramidContainer.appendChild(pyramidRow);
+    });
+}
+
+function navigate(next) {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category') || 'C';
+    let questionNumber = parseInt(params.get('question')) || 1;
+
+    const currentQuestionId = `${category}${questionNumber}`;
+
+    if (!next) {
+        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
+            window.location.href = 'selection.html';
+        } else {
+            questionNumber -= 1;
+            const previousQuestionId = `${category}${questionNumber}`;
+            if (questionData[previousQuestionId]) {
+                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+                loadQuestion(previousQuestionId);
+            } else {
+                alert("No previous question available.");
+            }
+        }
+    } else {
+        questionNumber += 1;
+        const nextQuestionId = `${category}${questionNumber}`;
+        if (questionData[nextQuestionId]) {
+            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+            loadQuestion(nextQuestionId);
+        } else {
+            alert("No more questions available.");
+        }
+    }
+}
+
 async function submitAnswers() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -474,16 +537,13 @@ async function submitAnswers() {
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
 
-    // 获取选中的答案
     const choices = [...document.querySelectorAll('.choice-btn')];
     const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
     const answer = selectedChoice ? selectedChoice.innerText : '';
 
-    // 获取解释输入框的内容
     const explanationElement = document.getElementById('explanation');
     const explanationAnswer = explanationElement.value.trim();
 
-    // 获取金字塔数据（假设在页面中有相应结构）
     const pyramidContainer = document.getElementById('interactiveArea');
     const pyramidStructure = [];
     const userAnswers = [];
@@ -507,13 +567,14 @@ async function submitAnswers() {
         user_answers: userAnswers
     });
 
-    // 提交数据到后端（假设使用supabase）
     try {
-        const { data, error } = await supabase.from('user_answers').insert([{
-            question_id: questionId,
-            answer: answer || explanationAnswer,
-            pyramid_structure: pyramidData
-        }]);
+        const { data, error } = await supabase.from('user_answers').insert([
+            {
+                question_id: questionId,
+                answer: answer || explanationAnswer,
+                pyramid_structure: pyramidData
+            }
+        ]);
 
         if (error) {
             console.error('Error inserting data:', error);
@@ -533,25 +594,11 @@ async function submitAnswers() {
     }
 }
 
-// 提交所有答案（例如最后一题的提交）
 async function submitAllAnswers() {
     try {
-        const response = await fetch('/submitAllAnswers', { method: 'POST' });
-        if (!response.ok) {
-            throw new Error('Failed to submit all answers');
-        }
-        alert('All answers submitted successfully!');
+        window.location.href = 'end.html';
     } catch (err) {
-        console.error('Error submitting all answers:', err);
-        alert('Error submitting all answers.');
+        console.error('Error:', err);
+        alert('An error occurred while completing the quiz.');
     }
-}
-
-// 跳转到下一题或上一题
-function navigate(isNext) {
-    const currentQuestion = parseInt(new URLSearchParams(window.location.search).get('question')) || 1;
-    const nextQuestion = isNext ? currentQuestion + 1 : currentQuestion - 1;
-    const category = new URLSearchParams(window.location.search).get('category') || 'C';
-
-    window.location.href = `?category=${category}&question=${nextQuestion}`;
 }
