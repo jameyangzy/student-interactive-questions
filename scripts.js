@@ -406,8 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadQuestion(questionId);
 });
 
-
-export function loadQuestion(questionId) {
+function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
 
@@ -442,10 +441,10 @@ export function loadQuestion(questionId) {
             choiceButton.addEventListener('click', () => {
                 choicesContainer.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
                 choiceButton.classList.add('selected');
-                userAnswersStore[questionId] = {
-                    ...userAnswersStore[questionId],
-                    selectedChoice: index
-                };
+                if (!userAnswersStore[questionId]) {
+                    userAnswersStore[questionId] = {};
+                }
+                userAnswersStore[questionId].selectedChoice = index;
             });
 
             choicesContainer.appendChild(choiceButton);
@@ -457,16 +456,17 @@ export function loadQuestion(questionId) {
     }
 
     const explanationElement = document.getElementById('explanation');
+    explanationElement.value = ''; // 清除文本框内容
     if (question.additionalInput) {
         explanationElement.style.display = 'block';
         explanationElement.placeholder = question.additionalInput;
-        explanationElement.value = userAnswersStore[questionId]?.explanation || ''; // 恢复每个题目的答案
-        explanationElement.addEventListener('input', (e) => {
-            userAnswersStore[questionId] = {
-                ...userAnswersStore[questionId],
-                explanation: e.target.value
-            };
-        });
+        explanationElement.value = userAnswersStore[questionId]?.explanation || ''; // 恢复每题的答案
+        explanationElement.oninput = (e) => {
+            if (!userAnswersStore[questionId]) {
+                userAnswersStore[questionId] = {};
+            }
+            userAnswersStore[questionId].explanation = e.target.value;
+        };
     } else {
         explanationElement.style.display = 'none';
         explanationElement.value = ''; // 确保空白
@@ -483,7 +483,6 @@ export function loadQuestion(questionId) {
     hintList.classList.add('hidden');
 }
 
-// 同步触发事件和状态保存
 function renderPyramid(pyramidStructure, pyramidColors, questionId) {
     const pyramidContainer = document.getElementById('interactiveArea');
     pyramidContainer.innerHTML = '';
@@ -519,6 +518,7 @@ function renderPyramid(pyramidStructure, pyramidColors, questionId) {
         pyramidContainer.appendChild(pyramidRow);
     });
 }
+
 
 
 
