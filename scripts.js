@@ -226,7 +226,6 @@ const questionData = {
             "Unique Solution: The pyramid has a unique solution, meaning that there is only one possible way to fill in the missing values.\n" +
             "Multiple Solutions: The pyramid has multiple solutions, meaning that there are many different possible ways to fill in the missing values.\n" +
             "No Solution: The pyramid has no solution, meaning that there is no possible way to assign values to the missing bricks while satisfying the pyramid rule.\n" 
-            "A. Unique Solution, B. Multiple Solutions, C. No Solution" 
         ),
         "img": "img/B/b4.png",
         "hints": [],
