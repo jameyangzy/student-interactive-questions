@@ -574,18 +574,22 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
-export async function submitAllAnswers() {
+export export async function submitAllAnswers() {
     try {
         const insertPromises = [];
 
         for (const questionId in userAnswersStore) {
             const answerData = userAnswersStore[questionId];
+
+            const selectedChoice = answerData.selectedChoice || null;
+            const explanation = answerData.explanation || null;
             const pyramidData = answerData.pyramidAnswers || [];
 
             const insertPromise = supabase.from('user_answers').insert([
                 {
                     question_id: questionId,
-                    answer: answerData.explanation || answerData.selectedChoice || '',
+                    selected_choice: selectedChoice,
+                    explanation: explanation,
                     pyramid_structure: JSON.stringify(pyramidData)
                 }
             ]);
@@ -594,7 +598,7 @@ export async function submitAllAnswers() {
         }
 
         const results = await Promise.all(insertPromises);
-        
+
         for (const { error } of results) {
             if (error) {
                 console.error('Error inserting data:', error);
