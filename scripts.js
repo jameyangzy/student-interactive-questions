@@ -451,11 +451,10 @@ export function loadQuestion(questionId) {
     }
 
     const explanationElement = document.getElementById('explanation');
-    explanationElement.value = ''; // 清除文本框内容
     if (question.additionalInput) {
         explanationElement.style.display = 'block';
         explanationElement.placeholder = question.additionalInput;
-        explanationElement.value = userAnswersStore[questionId]?.explanation || '';
+        explanationElement.value = userAnswersStore[questionId]?.explanation || ''; // 恢复当前题目的答案
         explanationElement.addEventListener('input', (e) => {
             userAnswersStore[questionId] = {
                 ...userAnswersStore[questionId],
@@ -464,6 +463,7 @@ export function loadQuestion(questionId) {
         });
     } else {
         explanationElement.style.display = 'none';
+        explanationElement.value = ''; // 在没有额外输入情况下清空文本框
     }
 
     const submitButtonContainer = document.getElementById('submitButtonContainer');
@@ -477,6 +477,7 @@ export function loadQuestion(questionId) {
     const hintList = document.getElementById('hintList');
     hintList.classList.add('hidden');
 }
+
 
 export function navigate(next) {
     const params = new URLSearchParams(window.location.search);
@@ -625,7 +626,7 @@ async function submitAnswers() {
     }
 }
 
-async function submitAllAnswers() {
+export function submitAllAnswers() {
     try {
         window.location.href = 'end.html';
     } catch (err) {
