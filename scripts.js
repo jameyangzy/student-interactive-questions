@@ -389,18 +389,6 @@ const questionData = {
     }
 };
 
-import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js';
-
-const supabaseUrl = 'https://febzoufkcsvpkbjvkeij.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlYnpvdWZrY3N2cGtianZrZWlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4MDY5MTIsImV4cCI6MjA1ODM4MjkxMn0.ox1vLEy9qjMhxJsQa9f81Hm9DKJWQWqhbiMEReqmMLU';
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-const questionData = {
-    // 这里填入所有问题数据
-};
-
-const userAnswersStore = {};
-
 // function to load question
 function loadQuestion(questionId) {
     const question = questionData[questionId];
