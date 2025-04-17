@@ -401,6 +401,24 @@ document.addEventListener('DOMContentLoaded', function() {
     loadQuestion(questionId);
 });
 
+
+
+function setupHints(hints) {
+    const hintList = document.getElementById('hintList');
+    hintList.innerHTML = '';  // 清空现有的提示
+
+    hints.forEach((hint, index) => {
+        const hintItem = document.createElement('li');
+        hintItem.className = 'hint';
+        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
+        hintList.appendChild(hintItem);
+    });
+}
+
+// 用于存储用户答案的对象
+const userAnswersStore = {};
+
+// 修改loadQuestion以恢复答案
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     console.log(`Loading question: ${questionId}`, question);
@@ -419,7 +437,7 @@ function loadQuestion(questionId) {
     }
 
     if (question.pyramidStructure && question.pyramidColors) {
-        renderPyramid(question.pyramidStructure, question.pyramidColors);
+        renderPyramid(question.pyramidStructure, question.pyramidColors, questionId);
     } else {
         document.getElementById('interactiveArea').innerHTML = '';
     }
@@ -437,9 +455,16 @@ function loadQuestion(questionId) {
             choiceButton.addEventListener('click', () => {
                 choicesContainer.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
                 choiceButton.classList.add('selected');
+                userAnswersStore[questionId].selectedChoice = index;
             });
+
             choicesContainer.appendChild(choiceButton);
         });
+
+        // 恢复用户选择的答案
+        if (userAnswersStore[questionId] && userAnswersStore[questionId].selectedChoice !== undefined) {
+            choicesContainer.children[userAnswersStore[questionId].selectedChoice].classList.add('selected');
+        }
     }
 
     const explanationElement = document.getElementById('explanation');
@@ -447,24 +472,27 @@ function loadQuestion(questionId) {
     if (question.additionalInput) {
         explanationElement.style.display = 'block';
         explanationElement.placeholder = question.additionalInput;
+        explanationElement.value = userAnswersStore[questionId]?.explanation || '';
+        explanationElement.addEventListener('input', (e) => {
+            userAnswersStore[questionId] = {
+                ...userAnswersStore[questionId],
+                explanation: e.target.value
+            };
+        });
     } else {
         explanationElement.style.display = 'none';
     }
+
+    const submitButtonContainer = document.getElementById('submitButtonContainer');
+    if (questionId === 'A6' || questionId === 'B6' || questionId === 'C6') {
+        submitButtonContainer.style.display = 'block';
+    } else {
+        submitButtonContainer.style.display = 'none';
+    }
 }
 
-function setupHints(hints) {
-    const hintList = document.getElementById('hintList');
-    hintList.innerHTML = '';  // 清空现有的提示
-
-    hints.forEach((hint, index) => {
-        const hintItem = document.createElement('li');
-        hintItem.className = 'hint';
-        hintItem.innerText = `Hint ${index + 1}: ${hint}`;
-        hintList.appendChild(hintItem);
-    });
-}
-
-function renderPyramid(pyramidStructure, pyramidColors) {
+// 示范如何在renderPyramid函数中恢复输入
+function renderPyramid(pyramidStructure, pyramidColors, questionId) {
     const pyramidContainer = document.getElementById('interactiveArea');
     pyramidContainer.innerHTML = '';
 
@@ -480,18 +508,29 @@ function renderPyramid(pyramidStructure, pyramidColors) {
             if (editable) {
                 const input = document.createElement('input');
                 input.type = 'text';
-                input.value = value !== null ? value : '';
+                const storedValue = userAnswersStore[questionId]?.pyramidAnswers?.[rowIndex]?.[colIndex];
+                input.value = storedValue !== undefined ? storedValue : value !== null ? value : '';
+                input.addEventListener('input', (e) => {
+                    if (!userAnswersStore[questionId]) {
+                        userAnswersStore[questionId] = {};
+                    }
+                    if (!userAnswersStore[questionId].pyramidAnswers) {
+                        userAnswersStore[questionId].pyramidAnswers = pyramidStructure.map(row => row.map(() => null));
+                    }
+                    userAnswersStore[questionId].pyramidAnswers[rowIndex][colIndex] = e.target.value;
+                });
                 box.appendChild(input);
             } else {
                 box.textContent = value !== null ? value : '';
             }
-            
+
             pyramidRow.appendChild(box);
         });
 
         pyramidContainer.appendChild(pyramidRow);
     });
 }
+
 
 export function toggleHints() {
     const hintList = document.getElementById('hintList');
