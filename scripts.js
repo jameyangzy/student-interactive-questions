@@ -574,50 +574,39 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
-
-export async function submitAnswers() {
+export async function submitAllAnswers() {
     try {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const category = urlParams.get('category') || 'C';
-        const questionNumber = parseInt(urlParams.get('question')) || 1;
-        const questionId = `${category}${questionNumber}`;
+        const insertPromises = [];
 
-        const choices = [...document.querySelectorAll('.choice-btn')];
-        const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
-        const answerChoice = selectedChoice ? selectedChoice.innerText : '';
+        for (const questionId in userAnswersStore) {
+            const answerData = userAnswersStore[questionId];
+            const pyramidData = answerData.pyramidAnswers || [];
 
-        const explanationElement = document.getElementById('explanation');
-        const explanationAnswer = explanationElement.value.trim();
+            const insertPromise = supabase.from('user_answers').insert([
+                {
+                    question_id: questionId,
+                    answer: answerData.explanation || answerData.selectedChoice || '',
+                    pyramid_structure: JSON.stringify(pyramidData)
+                }
+            ]);
 
-        const pyramidContainer = document.getElementById('interactiveArea');
-        const pyramidData = userAnswersStore[questionId]?.pyramidAnswers || [];
-
-        const { data, error } = await supabase.from('user_answers').insert([
-            {
-                question_id: questionId,
-                answer: explanationAnswer || answerChoice,
-                pyramid_structure: JSON.stringify(pyramidData)
-            }
-        ]);
-
-        if (error) {
-            console.error('Error inserting data:', error);
-            alert('There was an error submitting your answers.');
-        } else {
-            alert('Your answers have been submitted successfully.');
+            insertPromises.push(insertPromise);
         }
+
+        const results = await Promise.all(insertPromises);
+        
+        for (const { error } of results) {
+            if (error) {
+                console.error('Error inserting data:', error);
+                alert('There was an error submitting some of your answers.');
+                return;
+            }
+        }
+
+        alert('All your answers have been submitted successfully.');
+        window.location.href = 'end.html'; // Redirect to the end page
     } catch (err) {
         console.error('Error:', err);
         alert('An error occurred while submitting your answers.');
-    }
-}
-
-export function submitAllAnswers() {
-    try {
-        window.location.href = 'end.html';
-    } catch (err) {
-        console.error('Error:', err);
-        alert('An error occurred while completing the quiz.');
     }
 }
