@@ -230,11 +230,12 @@ const questionData = {
         "img": "img/B/b4.png",
         "hints": [],
         "solutionsDetails": "A. Unique Solution, B. Multiple Solutions, C. No Solution .\n"+
-                            "Main task: Determine solution types for each pyramid." ,
-        "additionalInput": "Pyramid A has(a) .\n"+
-                            "Pyramid B has;(a) .\n"+
-                            "Pyramid C has (a) .\n"+
-                            "Please explain your reason(s)."
+                            "\n"+
+                            "Main task: Determine solution types for each pyramid.\n"+
+                            "Pyramid A has(a) .\n"+
+                            "Pyramid B has(a) .\n"+
+                            "Pyramid C has(a) .",
+        "additionalInput": "Please explain your reason(s)."
      
     },
     "B5": {
