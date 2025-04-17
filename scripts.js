@@ -531,75 +531,61 @@ export function navigate(next) {
 }
 
 
-async function submitAnswers() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
+function loadQuestion(questionId) {
+    const question = questionData[questionId];
+    console.log(`Loading question: ${questionId}`, question);
+    if (!question) return;
 
-    const choices = [...document.querySelectorAll('.choice-btn')];
-    const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
-    const answer = selectedChoice ? selectedChoice.innerText : '';
+    document.getElementById('questionType').innerText = question.type;
+    document.getElementById('questionText').innerText = question.task.replace(/\n/g, "\n");
+    document.getElementById('taskDetails').innerText = question.solutionsDetails.replace(/\n/g, "\n");
+
+    const questionImage = document.getElementById('questionImage');
+    if (question.img) {
+        questionImage.src = question.img;
+        questionImage.style.display = 'block';
+    } else {
+        questionImage.style.display = 'none';
+    }
+
+    if (question.pyramidStructure && question.pyramidColors) {
+        renderPyramid(question.pyramidStructure, question.pyramidColors);
+    } else {
+        document.getElementById('interactiveArea').innerHTML = '';
+    }
+
+    setupHints(question.hints);
+
+    const choicesContainer = document.getElementById('choicesContainer');
+    choicesContainer.innerHTML = '';
+
+    if (question.choices) {
+        question.choices.forEach((choice, index) => {
+            const choiceButton = document.createElement('button');
+            choiceButton.className = 'choice-btn';
+            choiceButton.innerText = choice;
+            choiceButton.addEventListener('click', () => {
+                choicesContainer.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected'));
+                choiceButton.classList.add('selected');
+            });
+            choicesContainer.appendChild(choiceButton);
+        });
+    }
 
     const explanationElement = document.getElementById('explanation');
-    const explanationAnswer = explanationElement.value.trim();
-
-    const pyramidContainer = document.getElementById('interactiveArea');
-    const pyramidStructure = [];
-    const userAnswers = [];
-
-    [...pyramidContainer.querySelectorAll('.pyramid-row')].forEach(row => {
-        const rowValues = [];
-        const userRowValues = [];
-        [...row.childNodes].forEach(box => {
-            const input = box.querySelector('input');
-            if (input) {
-                userRowValues.push(input.value ? parseInt(input.value, 10) : null);
-            }
-            rowValues.push(box.textContent ? parseInt(box.textContent, 10) : null);
-        });
-        pyramidStructure.push(rowValues);
-        userAnswers.push(userRowValues);
-    });
-
-    const pyramidData = JSON.stringify({
-        structure: pyramidStructure,
-        user_answers: userAnswers
-    });
-
-    try {
-        const { data, error } = await supabase.from('user_answers').insert([
-            {
-                question_id: questionId,
-                answer: answer || explanationAnswer,
-                pyramid_structure: pyramidData
-            }
-        ]);
-
-        if (error) {
-            console.error('Error inserting data:', error);
-            alert('There was an error submitting your answers.');
-        } else {
-            alert('Your answers have been submitted successfully.');
-            // 如果是最后一题后执行完整提交跳转，否则跳到下一题
-            if (document.querySelector('#submitButtonContainer').style.display === 'block') {
-                submitAllAnswers();
-            } else {
-                navigate(true);
-            }
-        }
-    } catch (err) {
-        console.error('Error:', err);
-        alert('An error occurred while submitting your answers.');
+    explanationElement.value = ''; // 清除文本框内容
+    if (question.additionalInput) {
+        explanationElement.style.display = 'block';
+        explanationElement.placeholder = question.additionalInput;
+    } else {
+        explanationElement.style.display = 'none';
     }
-}
 
-async function submitAllAnswers() {
-    try {
-        window.location.href = 'end.html';
-    } catch (err) {
-        console.error('Error:', err);
-        alert('An error occurred while completing the quiz.');
+    // 判断是否为最后一题，显示Submit按钮
+    const submitButtonContainer = document.getElementById('submitButtonContainer');
+    if (questionId === 'A6' || questionId === 'B6' || questionId === 'C6') {
+        submitButtonContainer.style.display = 'block';
+    } else {
+        submitButtonContainer.style.display = 'none';
     }
 }
