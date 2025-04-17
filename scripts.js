@@ -464,11 +464,6 @@ function setupHints(hints) {
     });
 }
 
-function toggleHints() {
-    const hintList = document.getElementById('hintList');
-    hintList.classList.toggle('hidden');
-}
-
 function renderPyramid(pyramidStructure, pyramidColors) {
     const pyramidContainer = document.getElementById('interactiveArea');
     pyramidContainer.innerHTML = '';
@@ -498,7 +493,12 @@ function renderPyramid(pyramidStructure, pyramidColors) {
     });
 }
 
-function navigate(next) {
+export function toggleHints() {
+    const hintList = document.getElementById('hintList');
+    hintList.classList.toggle('hidden');
+}
+
+export function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
@@ -529,6 +529,7 @@ function navigate(next) {
         }
     }
 }
+
 
 async function submitAnswers() {
     const queryString = window.location.search;
