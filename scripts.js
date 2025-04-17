@@ -396,7 +396,7 @@ const questionData = {
 
 const userAnswersStore = {}; // 初始化用户答案存储对象
 
-document.addEventListener('DOMContentLoaded', function() {
+ document.addEventListener('DOMContentLoaded', function() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const category = urlParams.get('category') || 'C';
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadQuestion(questionId);
 });
 
-function loadQuestion(questionId) {
+export function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
 
