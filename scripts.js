@@ -575,24 +575,24 @@ export function toggleHints() {
 }
 
 
-async function submitAnswers() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-
-    const choices = [...document.querySelectorAll('.choice-btn')];
-    const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
-    const answerChoice = selectedChoice ? selectedChoice.innerText : '';
-
-    const explanationElement = document.getElementById('explanation');
-    const explanationAnswer = explanationElement.value.trim();
-
-    const pyramidContainer = document.getElementById('interactiveArea');
-    const pyramidData = userAnswersStore[questionId]?.pyramidAnswers || [];
-
+export async function submitAnswers() {
     try {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const category = urlParams.get('category') || 'C';
+        const questionNumber = parseInt(urlParams.get('question')) || 1;
+        const questionId = `${category}${questionNumber}`;
+
+        const choices = [...document.querySelectorAll('.choice-btn')];
+        const selectedChoice = choices.find(choice => choice.classList.contains('selected'));
+        const answerChoice = selectedChoice ? selectedChoice.innerText : '';
+
+        const explanationElement = document.getElementById('explanation');
+        const explanationAnswer = explanationElement.value.trim();
+
+        const pyramidContainer = document.getElementById('interactiveArea');
+        const pyramidData = userAnswersStore[questionId]?.pyramidAnswers || [];
+
         const { data, error } = await supabase.from('user_answers').insert([
             {
                 question_id: questionId,
