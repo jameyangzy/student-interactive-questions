@@ -513,12 +513,12 @@ function setupHints(hints) {
     }
 }
 
-function toggleHints() {
+export function toggleHints() {
     const hintList = document.getElementById('hintList');
     hintList.classList.toggle('hidden');
 }
 
-function navigate(next) {
+export function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
