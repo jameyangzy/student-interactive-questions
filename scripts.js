@@ -388,7 +388,19 @@ const questionData = {
         "solutionsDetails": "Main task: Create and complete a pyramid by choosing 5 numbers for the bottom row, ensuring it can be filled using the pyramid rule."
     }
 };
-// function to load question
+
+const userAnswersStore = {}; // 初始化用户答案存储对象
+
+document.addEventListener('DOMContentLoaded', function() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const category = urlParams.get('category') || 'C';
+    const questionNumber = parseInt(urlParams.get('question')) || 1;
+    const questionId = `${category}${questionNumber}`;
+
+    loadQuestion(questionId);
+});
+
 function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
@@ -460,9 +472,45 @@ function loadQuestion(questionId) {
     } else {
         submitButtonContainer.style.display = 'none';
     }
+
+    // 隐藏提示
+    const hintList = document.getElementById('hintList');
+    hintList.classList.add('hidden');
 }
 
-// function to render pyramid
+function navigate(next) {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category') || 'C';
+    let questionNumber = parseInt(params.get('question')) || 1;
+
+    const currentQuestionId = `${category}${questionNumber}`;
+
+    if (!next) {
+        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
+            window.location.href = 'selection.html';
+        } else {
+            questionNumber -= 1;
+            const previousQuestionId = `${category}${questionNumber}`;
+            if (questionData[previousQuestionId]) {
+                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+                loadQuestion(previousQuestionId);
+            } else {
+                alert("No previous question available.");
+            }
+        }
+    } else {
+        questionNumber += 1;
+        const nextQuestionId = `${category}${questionNumber}`;
+        if (questionData[nextQuestionId]) {
+            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
+            loadQuestion(nextQuestionId);
+        } else {
+            alert("No more questions available.");
+        }
+    }
+}
+
+
 function renderPyramid(pyramidStructure, pyramidColors, questionId) {
     const pyramidContainer = document.getElementById('interactiveArea');
     pyramidContainer.innerHTML = '';
@@ -499,7 +547,6 @@ function renderPyramid(pyramidStructure, pyramidColors, questionId) {
     });
 }
 
-// function to setup hints (ensure it checks for hints existence)
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
     hintList.innerHTML = ''; 
@@ -513,42 +560,11 @@ function setupHints(hints) {
     }
 }
 
-export function toggleHints() {
+function toggleHints() {
     const hintList = document.getElementById('hintList');
     hintList.classList.toggle('hidden');
 }
 
-export function navigate(next) {
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get('category') || 'C';
-    let questionNumber = parseInt(params.get('question')) || 1;
-
-    const currentQuestionId = `${category}${questionNumber}`;
-
-    if (!next) {
-        if (currentQuestionId === 'A1' || currentQuestionId === 'B1' || currentQuestionId === 'C1') {
-            window.location.href = 'selection.html';
-        } else {
-            questionNumber -= 1;
-            const previousQuestionId = `${category}${questionNumber}`;
-            if (questionData[previousQuestionId]) {
-                history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-                loadQuestion(previousQuestionId);
-            } else {
-                alert("No previous question available.");
-            }
-        }
-    } else {
-        questionNumber += 1;
-        const nextQuestionId = `${category}${questionNumber}`;
-        if (questionData[nextQuestionId]) {
-            history.pushState(null, '', `?category=${category}&question=${questionNumber}`);
-            loadQuestion(nextQuestionId);
-        } else {
-            alert("No more questions available.");
-        }
-    }
-}
 
 async function submitAnswers() {
     const queryString = window.location.search;
@@ -617,13 +633,3 @@ async function submitAllAnswers() {
         alert('An error occurred while completing the quiz.');
     }
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const category = urlParams.get('category') || 'C';
-    const questionNumber = parseInt(urlParams.get('question')) || 1;
-    const questionId = `${category}${questionNumber}`;
-
-    loadQuestion(questionId);
-});
