@@ -22,15 +22,17 @@
     <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
     <div id="submitButtonContainer" style="display: none;">
-    <button onclick="submitAllAnswers()">Submit</button>
+    <button onclick="submitAnswers()">Submit</button>
     </div>
+
 </div>
 <script type="module">
-    import { loadQuestion, navigate, toggleHints, submitAllAnswers } from './scripts.js';
+    import { loadQuestion, navigate, toggleHints, submitAllAnswers, submitAnswers } from './scripts.js';
     window.loadQuestion = loadQuestion;
     window.navigate = navigate;
     window.toggleHints = toggleHints;
     window.submitAllAnswers = submitAllAnswers;
+    window.submitAnswers = submitAnswers;
 </script>
 
 </body>
