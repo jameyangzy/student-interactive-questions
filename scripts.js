@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadQuestion(questionId);
 });
 
-function loadQuestion(questionId) {
+export function loadQuestion(questionId) {
     const question = questionData[questionId];
     if (!question) return;
 
@@ -478,7 +478,7 @@ function loadQuestion(questionId) {
     hintList.classList.add('hidden');
 }
 
-function navigate(next) {
+export function navigate(next) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category') || 'C';
     let questionNumber = parseInt(params.get('question')) || 1;
@@ -560,7 +560,7 @@ function setupHints(hints) {
     }
 }
 
-function toggleHints() {
+export function toggleHints() {
     const hintList = document.getElementById('hintList');
     hintList.classList.toggle('hidden');
 }
