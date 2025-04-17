@@ -555,41 +555,6 @@ export function navigate(next) {
 }
 
 
-function renderPyramid(pyramidStructure, pyramidColors, questionId) {
-    const pyramidContainer = document.getElementById('interactiveArea');
-    pyramidContainer.innerHTML = '';
-
-    pyramidStructure.forEach((row, rowIndex) => {
-        const pyramidRow = document.createElement('div');
-        pyramidRow.className = 'pyramid-row';
-
-        row.forEach((value, colIndex) => {
-            const box = document.createElement('div');
-            box.className = 'box';
-            const editable = pyramidColors[rowIndex][colIndex];
-            if (editable) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                const storedValue = userAnswersStore[questionId]?.pyramidAnswers?.[rowIndex]?.[colIndex];
-                input.value = storedValue !== undefined ? storedValue : value !== null ? value : '';
-                input.addEventListener('input', (e) => {
-                    if (!userAnswersStore[questionId]) {
-                        userAnswersStore[questionId] = {};
-                    }
-                    if (!userAnswersStore[questionId].pyramidAnswers) {
-                        userAnswersStore[questionId].pyramidAnswers = pyramidStructure.map(row => row.map(() => null));
-                    }
-                    userAnswersStore[questionId].pyramidAnswers[rowIndex][colIndex] = e.target.value;
-                });
-                box.appendChild(input);
-            } else {
-                box.textContent = value !== null ? value : '';
-            }
-            pyramidRow.appendChild(box);
-        });
-        pyramidContainer.appendChild(pyramidRow);
-    });
-}
 
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
