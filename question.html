@@ -22,18 +22,19 @@
     <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
     <div id="submitButtonContainer" style="display: none;">
-    <button onclick="submitAnswers()">Submit</button>
+        <!-- 用于提交当前题目 -->
+        <button onclick="submitAnswers()">Submit Current</button>
+        <!-- 用于提交所有题目，完成问卷 -->
+        <button onclick="submitAllAnswers()">Submit All</button>
     </div>
-
 </div>
 <script type="module">
-    import { loadQuestion, navigate, toggleHints, submitAllAnswers, submitAnswers } from './scripts.js';
+    import { loadQuestion, navigate, toggleHints, submitAnswers, submitAllAnswers } from './scripts.js';
     window.loadQuestion = loadQuestion;
     window.navigate = navigate;
     window.toggleHints = toggleHints;
-    window.submitAllAnswers = submitAllAnswers;
     window.submitAnswers = submitAnswers;
+    window.submitAllAnswers = submitAllAnswers;
 </script>
-
 </body>
 </html>
