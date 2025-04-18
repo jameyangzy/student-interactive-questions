@@ -574,8 +574,7 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
-
-export async function submitUserAnswers() {
+export async function submitAllAnswers() {
     try {
         const category = window.location.search.split('category=')[1][0] || 'C'; // 获取题目类型
 
