@@ -584,10 +584,9 @@ export async function submitAllAnswers() {
             const questionInfo = questionData[questionId];
 
             // 获取选择题答案的内容，而不是索引
-            const selectedChoiceIndex = answerData.selectedChoice;
             let selectedChoiceContent = null;
-            if (questionInfo.choices && selectedChoiceIndex !== undefined) {
-                selectedChoiceContent = questionInfo.choices[selectedChoiceIndex];
+            if (questionInfo.choices && answerData.selectedChoice !== undefined) {
+                selectedChoiceContent = questionInfo.choices[answerData.selectedChoice];
             }
 
             const explanation = answerData.explanation || '';
