@@ -608,7 +608,7 @@ export async function submitUserAnswers() {
         }
 
         // 插入到数据库中
-        const { error } = await supabase.from('user_answers').insert([userAnswersRecord]);
+        const { error } = await supabase.from('useranswers').insert([userAnswersRecord]);
 
         if (error) {
             console.error('Error inserting data:', error);
