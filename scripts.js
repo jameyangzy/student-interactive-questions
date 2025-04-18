@@ -555,7 +555,6 @@ export function navigate(next) {
 }
 
 
-
 function setupHints(hints) {
     const hintList = document.getElementById('hintList');
     hintList.innerHTML = ''; 
