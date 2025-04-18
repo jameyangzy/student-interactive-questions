@@ -583,27 +583,27 @@ export async function submitAllAnswers() {
             const answerData = userAnswersStore[questionId];
             const questionInfo = questionData[questionId];
 
-            // 获取选择题答案的内容，而不是索引
+            // 获取选择题答案的内容；使用题目选择项的索引从 choices 数组中获取
+            const selectedChoiceIndex = answerData.selectedChoice;
             let selectedChoiceContent = null;
-            if (questionInfo.choices && answerData.selectedChoice !== undefined) {
-                selectedChoiceContent = questionInfo.choices[answerData.selectedChoice];
+            if (questionInfo.choices && selectedChoiceIndex !== undefined) {
+                selectedChoiceContent = questionInfo.choices[selectedChoiceIndex];
             }
 
             const explanation = answerData.explanation || '';
             const pyramidData = answerData.pyramidAnswers || [];
 
-            // 组合所有答案到一个对象中
+            // 按数据库字段顺序构建答案记录
             const answerRecord = {
                 question_id: questionId,
-                answer: explanation, // 推荐将文本解释填写在这，如果有具体数据
                 pyramid_structure: JSON.stringify(pyramidData),
                 selected_choice: selectedChoiceContent, // 存储选择题内容
                 explanation: explanation,
+                answer: explanation || selectedChoiceContent || '', // 综合答案内容
                 submitted_at: new Date().toISOString() // 自动补充提交时间
             };
 
             const insertPromise = supabase.from('user_answers').insert([answerRecord]);
-
             insertPromises.push(insertPromise);
         }
 
