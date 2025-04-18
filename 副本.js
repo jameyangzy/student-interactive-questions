@@ -578,23 +578,37 @@ export async function submitAllAnswers() {
     try {
         const insertPromises = [];
 
+        // 遍历 userAnswersStore 中所有题目数据
         for (const questionId in userAnswersStore) {
             const answerData = userAnswersStore[questionId];
+            const questionInfo = questionData[questionId];
+
+            // 获取选择题答案的内容；使用题目选择项的索引从 choices 数组中获取
+            const selectedChoiceIndex = answerData.selectedChoice;
+            let selectedChoiceContent = null;
+            if (questionInfo.choices && selectedChoiceIndex !== undefined) {
+                selectedChoiceContent = questionInfo.choices[selectedChoiceIndex];
+            }
+
+            const explanation = answerData.explanation || '';
             const pyramidData = answerData.pyramidAnswers || [];
 
-            const insertPromise = supabase.from('user_answers').insert([
-                {
-                    question_id: questionId,
-                    answer: answerData.explanation || answerData.selectedChoice || '',
-                    pyramid_structure: JSON.stringify(pyramidData)
-                }
-            ]);
+            // 按数据库字段顺序构建答案记录
+            const answerRecord = {
+                question_id: questionId,
+                pyramid_structure: JSON.stringify(pyramidData),
+                selected_choice: selectedChoiceContent, // 存储选择题内容
+                explanation: explanation,
+                answer: explanation || selectedChoiceContent || '', // 综合答案内容
+                submitted_at: new Date().toISOString() // 自动补充提交时间
+            };
 
+            const insertPromise = supabase.from('user_answers').insert([answerRecord]);
             insertPromises.push(insertPromise);
         }
 
         const results = await Promise.all(insertPromises);
-        
+
         for (const { error } of results) {
             if (error) {
                 console.error('Error inserting data:', error);
