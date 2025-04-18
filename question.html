@@ -8,6 +8,12 @@
 </head>
 <body>
 <div class="container">
+    <!-- 添加用户名输入框 -->
+    <div id="userNameContainer" style="margin-bottom: 20px;">
+        <label for="userName">Name:</label>
+        <input type="text" id="userName" placeholder="Enter your name" />
+    </div>
+
     <h3 id="questionType"></h3>
     <div id="questionText" style="white-space: pre-wrap;"></div>
     <div id="interactiveArea"></div>
@@ -22,12 +28,12 @@
     <button onclick="navigate(false)">Return</button>
     <button onclick="navigate(true)">Next</button>
     <div id="submitButtonContainer" style="display: none;">
-        <!-- Only submit all answers on final question -->
         <button onclick="submitAllAnswers()">Submit</button>
     </div>
 </div>
 <script type="module">
     import { loadQuestion, navigate, toggleHints, submitAllAnswers } from './scripts.js';
+
     window.loadQuestion = loadQuestion;
     window.navigate = navigate;
     window.toggleHints = toggleHints;
