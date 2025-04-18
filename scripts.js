@@ -397,12 +397,24 @@ const questionData = {
 const userAnswersStore = {}; // 初始化用户答案存储对象
 
  document.addEventListener('DOMContentLoaded', function() {
+    // 恢复用户名
+    const userNameInput = document.getElementById('userName');
+    const savedName = localStorage.getItem('userName');
+    if (savedName) {
+        userNameInput.value = savedName;
+    }
+
+    // 保存用户名到 localStorage
+    userNameInput.addEventListener('input', function() {
+        localStorage.setItem('userName', userNameInput.value);
+    });
+
+    // 加载问题
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const category = urlParams.get('category') || 'C';
     const questionNumber = parseInt(urlParams.get('question')) || 1;
     const questionId = `${category}${questionNumber}`;
-
     loadQuestion(questionId);
 });
 
@@ -573,12 +585,15 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
+// 提交所有答案函数
 export async function submitAllAnswers() {
     try {
+        const userName = document.getElementById('userName').value || 'Anonymous'; // 获取用户名
         const category = window.location.search.split('category=')[1][0] || 'C'; // 获取题目类型
 
-        // 在这里构建整个用户答案对象
+        // 构建用户答案记录
         const userAnswersRecord = {
+            user_name: userName,
             category: category,
         };
 
@@ -606,7 +621,7 @@ export async function submitAllAnswers() {
         }
 
         // 插入到数据库中
-        const { error } = await supabase.from('useranswers').insert([userAnswersRecord]);
+        const { error } = await supabase.from('user_answers').insert([userAnswersRecord]);
 
         if (error) {
             console.error('Error inserting data:', error);
