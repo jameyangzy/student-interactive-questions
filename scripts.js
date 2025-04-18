@@ -574,51 +574,50 @@ export function toggleHints() {
     hintList.classList.toggle('hidden');
 }
 
-export async function submitAllAnswers() {
-    try {
-        const insertPromises = [];
 
-        // 遍历 userAnswersStore 中所有题目数据
-        for (const questionId in userAnswersStore) {
+export async function submitUserAnswers() {
+    try {
+        const category = window.location.search.split('category=')[1][0] || 'C'; // 获取题目类型
+
+        // 在这里构建整个用户答案对象
+        const userAnswersRecord = {
+            category: category,
+        };
+
+        for (let i = 1; i <= 6; i++) { // 假设题目数量为6
+            const questionId = `${category}${i}`;
             const answerData = userAnswersStore[questionId];
             const questionInfo = questionData[questionId];
 
-            // 获取选择题答案的内容；使用题目选择项的索引从 choices 数组中获取
-            const selectedChoiceIndex = answerData.selectedChoice;
-            let selectedChoiceContent = null;
-            if (questionInfo.choices && selectedChoiceIndex !== undefined) {
-                selectedChoiceContent = questionInfo.choices[selectedChoiceIndex];
+            if (answerData && questionInfo) {
+                const selectedChoiceIndex = answerData.selectedChoice;
+                let selectedChoiceContent = null;
+                if (questionInfo.choices && selectedChoiceIndex !== undefined) {
+                    selectedChoiceContent = questionInfo.choices[selectedChoiceIndex];
+                }
+
+                const explanation = answerData.explanation || '';
+                const pyramidData = answerData.pyramidAnswers || [];
+
+                // 按照题目ID，金字塔结构，选择题内容和解释的数据结构存储
+                userAnswersRecord[`question${i}_id`] = questionId;
+                userAnswersRecord[`question${i}_pyramid_structure`] = JSON.stringify(pyramidData);
+                userAnswersRecord[`question${i}_selected_choice`] = selectedChoiceContent || '';
+                userAnswersRecord[`question${i}_explanation`] = explanation || '';
             }
-
-            const explanation = answerData.explanation || '';
-            const pyramidData = answerData.pyramidAnswers || [];
-
-            // 按数据库字段顺序构建答案记录
-            const answerRecord = {
-                question_id: questionId,
-                pyramid_structure: JSON.stringify(pyramidData),
-                selected_choice: selectedChoiceContent, // 存储选择题内容
-                explanation: explanation,
-                answer: explanation || selectedChoiceContent || '', // 综合答案内容
-                submitted_at: new Date().toISOString() // 自动补充提交时间
-            };
-
-            const insertPromise = supabase.from('user_answers').insert([answerRecord]);
-            insertPromises.push(insertPromise);
         }
 
-        const results = await Promise.all(insertPromises);
+        // 插入到数据库中
+        const { error } = await supabase.from('user_answers').insert([userAnswersRecord]);
 
-        for (const { error } of results) {
-            if (error) {
-                console.error('Error inserting data:', error);
-                alert('There was an error submitting some of your answers.');
-                return;
-            }
+        if (error) {
+            console.error('Error inserting data:', error);
+            alert('There was an error submitting your answers.');
+            return;
         }
 
         alert('All your answers have been submitted successfully.');
-        window.location.href = 'end.html'; // Redirect to the end page
+        window.location.href = 'end.html'; // 页面重定向
     } catch (err) {
         console.error('Error:', err);
         alert('An error occurred while submitting your answers.');
