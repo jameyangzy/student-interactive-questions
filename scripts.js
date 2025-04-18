@@ -581,18 +581,23 @@ export async function submitAllAnswers() {
         // 遍历 userAnswersStore 中所有题目数据
         for (const questionId in userAnswersStore) {
             const answerData = userAnswersStore[questionId];
+            const questionInfo = questionData[questionId];
 
-            // 获取选择题答案，文本解释和金字塔结构
-            const selectedChoice = answerData.selectedChoice !== undefined ? answerData.selectedChoice : null;
+            // 获取选择题答案的内容，而不是索引
+            let selectedChoiceContent = null;
+            if (questionInfo.choices && answerData.selectedChoice !== undefined) {
+                selectedChoiceContent = questionInfo.choices[answerData.selectedChoice];
+            }
+
             const explanation = answerData.explanation || '';
             const pyramidData = answerData.pyramidAnswers || [];
 
             // 组合所有答案到一个对象中
             const answerRecord = {
                 question_id: questionId,
-                answer: explanation, // 如果您有一个综合答案字段来表示，您可以选择合并该数据
+                answer: explanation, // 推荐将文本解释填写在这，如果有具体数据
                 pyramid_structure: JSON.stringify(pyramidData),
-                selected_choice: selectedChoice,
+                selected_choice: selectedChoiceContent, // 存储选择题内容
                 explanation: explanation,
                 submitted_at: new Date().toISOString() // 自动补充提交时间
             };
@@ -619,4 +624,3 @@ export async function submitAllAnswers() {
         alert('An error occurred while submitting your answers.');
     }
 }
-
